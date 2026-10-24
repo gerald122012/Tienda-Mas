@@ -1,0 +1,360 @@
+{
+  "id": "catalogo_002",
+  "nombre": "Azúcar rubia",
+  "query": "\"brown sugar\" bowl",
+  "candidates": [
+    {
+      "pageid": 62026835,
+      "ns": 6,
+      "title": "File:Cube sugar bowl at Matching Green, Essex, England.jpg",
+      "index": 1,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg/500px-Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 400,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg/1280px-Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg/500px-Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 400,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg/1280px-Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Cube_sugar_bowl_at_Matching_Green%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cube_sugar_bowl_at_Matching_Green,_Essex,_England.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=62026835",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2017-08-30 09:26:25",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Cube sugar bowl at Matching Green, Essex, England",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Brown sugar|Personality rights warning|Condiments of the United Kingdom|Matching Green|Photographs with aspect ratio of 5:4|Self-published work|August 2017 in Essex|Acabashi photos: food and drink|Bowls with food|England photographs taken on 2017-08-26|Sugar cubes in open sugar bowls or boxes etc.|Matching photos taken with Canon PowerShot SX60 HS|White sugar cubes",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "GPSLatitude": {
+              "value": "51.776455",
+              "source": "commons-desc-page"
+            },
+            "GPSLongitude": {
+              "value": "0.224506",
+              "source": "commons-desc-page"
+            },
+            "GPSMapDatum": {
+              "value": "WGS-84",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "A bowl of brown and white lump sugar at The Chequers on the village green at <a href=\"https://en.wikipedia.org/wiki/Matching_Green\" class=\"extiw\" title=\"en:Matching Green\">Matching Green</a>, <a href=\"https://en.wikipedia.org/wiki/Essex\" class=\"extiw\" title=\"en:Essex\">Essex</a>, England.<br><b>Camera</b>: <a href=\"https://en.wikipedia.org/wiki/Canon_PowerShot_SX60_HS\" class=\"extiw\" title=\"w:Canon PowerShot SX60 HS\">Canon PowerShot SX60 HS</a><br><b>Software</b>: File lens-corrected, optimized, perhaps cropped, with <a href=\"https://en.wikipedia.org/wiki/DxO_OpticsPro\" class=\"extiw\" title=\"en:DxO OpticsPro\">DxO OpticsPro 11 Elite</a>, and likely further optimized with <a href=\"https://en.wikipedia.org/wiki/Adobe_Photoshop#CS2\" class=\"extiw\" title=\"en:Adobe Photoshop\">Adobe Photoshop CS2</a>.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2017-08-26 15:07:21",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/User:Acabashi\" title=\"User:Acabashi\">Acabashi</a>",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<div style=\"clear:both; border:1px solid #999999; margin:1em 0.8em; padding:0.5em 0.8em; background-color: #ffffff; font-size: 100%;\">\n<p><span class=\"mw-default-size\" typeof=\"mw:File\"><a href=\"//commons.wikimedia.org/wiki/File:CCBYSA_yellow.png\" class=\"mw-file-description\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/2/29/CCBYSA_yellow.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail_unscaled\" decoding=\"async\" loading=\"lazy\" width=\"87\" height=\"35\" class=\"mw-file-element\" data-file-width=\"87\" data-file-height=\"35\"></a></span>\n</p><p>Permission is given to reuse this file under conditions stipulated by <a href=\"https://en.wikipedia.org/wiki/Creative_Commons\" class=\"extiw\" title=\"en:Creative Commons\">Creative Commons</a> <a rel=\"nofollow\" class=\"external text\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.en\">Attribution-ShareAlike 4.0 International</a> licensing. Please note that although this file is <a href=\"//commons.wikimedia.org/wiki/Commons:Licensing\" title=\"Commons:Licensing\">freely licenced</a> it is <b>not in the <a href=\"https://en.wikipedia.org/wiki/Public_domain\" class=\"extiw\" title=\"en:Public domain\">public domain</a></b>, and might have specific <b>exclusion</b> for use in <b>social media</b>.\n</p><p>Before download and reuse, please consult the Wikimedia page <a href=\"//commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia\" title=\"Commons:Reusing content outside Wikimedia\">Reusing content outside Wikimedia</a>. Attribution <b>must</b> be given for republishing this image in <b>any</b> media, and requires the name of the creator (<a href=\"//commons.wikimedia.org/wiki/User:Acabashi\" title=\"User:Acabashi\">Acabashi</a>), and a link to the content here if web based, or written accreditation if not web based. If you change, manipulate or add to any resolution of the file, or use the file or parts of it within other works, on publication in any media you <b>must still</b> credit the creator here as described above for this original image used, and must detail the changes you made. In all cases you must also add follow-on <a rel=\"nofollow\" class=\"external text\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.en\">Attribution-ShareAlike 4.0 International</a> copyright license and disclaimer notices. You must state that your variation is freely available under this same level Creative Commons license, and that any follow-on publishing by others, with or without their further changes as above, must add the same licensing statement, and attribution referral to the original image here.\n</p><p><b>Put simply</b>, you must not re-publish this file without attribution and Creative Commons license, whether or not you have built on it, or with it, and you must not insist on your own copyright notification stopping others from freely using it or your variation or composite.\n</p><p><b>Online attribution</b>: Image © <a href=\"//commons.wikimedia.org/wiki/User:Acabashi\" title=\"User:Acabashi\">Acabashi</a>; <a rel=\"nofollow\" class=\"external text\" href=\"https://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons CC-BY-SA 4.0</a>; Source: <a href=\"//commons.wikimedia.org/wiki/Main_Page\" title=\"Main Page\">Wikimedia Commons</a><br>\n</p>\n<b>Print attribution</b>: Image © Acabashi, Creative Commons CC-BY-SA 4.0, Wikimedia Commons</div>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "personality",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 75882759,
+      "ns": 6,
+      "title": "File:2018-07-21 06 34 30 A bowl of Quaker Instant Oatmeal-Maple and Brown Sugar served as part of breakfast at the Ramada by Wyndham Rochelle Park Near Paramus in Rochelle Park Township, Bergen County, New Jersey.jpg",
+      "index": 2,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township%2C_Bergen_County%2C_New_Jersey.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 375,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township%2C_Bergen_County%2C_New_Jersey.jpg/1280px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township%2C_Bergen_County%2C_New_Jersey.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 375,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township%2C_Bergen_County%2C_New_Jersey.jpg/1280px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township%2C_Bergen_County%2C_New_Jersey.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:2018-07-21_06_34_30_A_bowl_of_Quaker_Instant_Oatmeal-Maple_and_Brown_Sugar_served_as_part_of_breakfast_at_the_Ramada_by_Wyndham_Rochelle_Park_Near_Paramus_in_Rochelle_Park_Township,_Bergen_County,_New_Jersey.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=75882759",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2019-01-16 05:35:27",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "2018-07-21 06 34 30 A bowl of Quaker Instant Oatmeal-Maple and Brown Sugar served as part of breakfast at the Ramada by Wyndham Rochelle Park Near Paramus in Rochelle Park Township, Bergen County, New Jersey",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Quaker Instant Oatmeal|Self-published work|Files with coordinates missing SDC location of creation|United States photographs taken on 2018-07-21|July 2018 in New Jersey|Hotel breakfast|Famartin's 2018 photos|Famartin's July 2018 photos|Food at the Ramada by Wyndham Rochelle Park Near Paramus",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "GPSLatitude": {
+              "value": "40.918797",
+              "source": "commons-desc-page"
+            },
+            "GPSLongitude": {
+              "value": "-74.086556",
+              "source": "commons-desc-page"
+            },
+            "GPSMapDatum": {
+              "value": "WGS-84",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "A bowl of Quaker Instant Oatmeal-Maple and Brown Sugar served as part of breakfast at the Ramada by Wyndham Rochelle Park Near Paramus in Rochelle Park Township, Bergen County, New Jersey",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2018-07-21 06:34:30",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/User:Famartin\" title=\"User:Famartin\">Famartin</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 77602504,
+      "ns": 6,
+      "title": "File:2019-03-26 19 34 29 A bowl of Quaker Instant Oatmeal Maple and Brown Sugar Flavor in the Dulles section of Sterling, Loudoun County, Virginia.jpg",
+      "index": 3,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg/500px-2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 375,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg/1280px-2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg/500px-2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 375,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg/1280px-2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:2019-03-26_19_34_29_A_bowl_of_Quaker_Instant_Oatmeal_Maple_and_Brown_Sugar_Flavor_in_the_Dulles_section_of_Sterling,_Loudoun_County,_Virginia.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=77602504",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2019-03-27 20:02:05",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "2019-03-26 19 34 29 A bowl of Quaker Instant Oatmeal Maple and Brown Sugar Flavor in the Dulles section of Sterling, Loudoun County, Virginia",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Quaker Instant Oatmeal|Self-published work|Files with coordinates missing SDC location of creation|March 2019 in Virginia|United States photographs taken on 2019-03-26|Food in Dulles, Virginia|Famartin's 2019 photos|Famartin's March 2019 photos",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "GPSLatitude": {
+              "value": "38.976669",
+              "source": "commons-desc-page"
+            },
+            "GPSLongitude": {
+              "value": "-77.486406",
+              "source": "commons-desc-page"
+            },
+            "GPSMapDatum": {
+              "value": "WGS-84",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "A bowl of Quaker Instant Oatmeal Maple and Brown Sugar Flavor in the Dulles section of Sterling, Loudoun County, Virginia",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2019-03-26 19:34:29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a rel=\"mw:WikiLink\" href=\"https://commons.wikimedia.org/wiki/User:Famartin\" title=\"User:Famartin\">Famartin</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "pageid": 74765654,
+    "ns": 6,
+    "title": "File:Strawberry yoghurt clip art.png",
+    "index": 1,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "thumburl": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Strawberry_yoghurt_clip_art.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "thumbwidth": 500,
+        "thumbheight": 754,
+        "thumbattribs": {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Strawberry_yoghurt_clip_art.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+          "decoding": "async",
+          "loading": "lazy",
+          "width": 500,
+          "height": 754
+        },
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Strawberry_yoghurt_clip_art.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Strawberry_yoghurt_clip_art.png",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=74765654",
+        "extmetadata": {
+          "DateTime": {
+            "value": "2018-11-30 14:53:50",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Strawberry yoghurt clip art",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Food and drink in art|Media from SMART-Servier Medical Art|SMART-Servier Medical Art - Food|Clip art by Netha Hussain",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "Clip art of strawberry yoghurt",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2018-11-30",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<a rel=\"nofollow\" class=\"external free\" href=\"https://smart.servier.com/\">https://smart.servier.com/</a>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "Smart Servier",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 3.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 3.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/3.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-3.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        },
+        "mime": "image/png"
+      }
+    ]
+  }
+]

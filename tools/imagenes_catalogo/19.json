@@ -1,0 +1,325 @@
+{
+  "id": "catalogo_019",
+  "nombre": "Leche descremada",
+  "query": "\"skimmed milk\"",
+  "candidates": [
+    {
+      "pageid": 46913409,
+      "ns": 6,
+      "title": "File:Skim milk poured into cereal bowl.jpg",
+      "index": 1,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Skim_milk_poured_into_cereal_bowl.jpg/500px-Skim_milk_poured_into_cereal_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 332,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Skim_milk_poured_into_cereal_bowl.jpg/1280px-Skim_milk_poured_into_cereal_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Skim_milk_poured_into_cereal_bowl.jpg/500px-Skim_milk_poured_into_cereal_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 332,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Skim_milk_poured_into_cereal_bowl.jpg/1280px-Skim_milk_poured_into_cereal_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Skim_milk_poured_into_cereal_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Skim_milk_poured_into_cereal_bowl.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=46913409",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2016-02-11 05:15:09",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Skim milk poured into cereal bowl",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Breakfast|Skimmed milk|Flickr images reviewed by FlickreviewR|Milk and cereal|People pouring beverages|Milk bottles of Canada",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Simple tastes, I have. Cold cereal, banana with cinnamon on top, skim milk. Perfection.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2008-10-14 09:33",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/kpwerker/2988199272/\">365.105 (Favourite Breakfast)</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/64693558@N00\">Kim Piper Werker</a> from Vancouver, BC, Canada",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 2.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 2.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/2.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-2.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 62480149,
+      "ns": 6,
+      "title": "File:Q-Melk Skummet melk 1 liter melkekartong datomerking best før 2017-09 skimmed milk Norway 03.jpg",
+      "index": 2,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg/500px-Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 1025,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg/1280px-Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg/500px-Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 1025,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg/1280px-Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Q-Melk_Skummet_melk_1_liter_melkekartong_datomerking_best_f%C3%B8r_2017-09_skimmed_milk_Norway_03.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=62480149",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2017-09-16 13:41:39",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Q-Melk Skummet melk 1 liter melkekartong datomerking best før 2017-09 skimmed milk Norway 03",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Shelf life|Skimmed milk|Milk cartons|Self-published work|Pink and white objects|Pink packaging|Dairying in Norway|Files with coordinates missing SDC location of creation|Milk in Norway|Photographs taken on 2017-09-16",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "GPSLatitude": {
+              "value": "59.118194",
+              "source": "commons-desc-page"
+            },
+            "GPSLongitude": {
+              "value": "10.394042",
+              "source": "commons-desc-page"
+            },
+            "GPSMapDatum": {
+              "value": "WGS-84",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Carton with skimmed milk produced at the Q dairies in Norway. Shelf life marking in Norwegian (\"Best before but not bad after [2017-09-21])\".",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2017-09-16 13:38:48",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/User:Wolfmann\" title=\"User:Wolfmann\">Wolfmann</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 68531165,
+      "ns": 6,
+      "title": "File:BC856 HUI-1608.jpg",
+      "index": 3,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/BC856_HUI-1608.jpg/500px-BC856_HUI-1608.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 338,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/BC856_HUI-1608.jpg/1280px-BC856_HUI-1608.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/BC856_HUI-1608.jpg/500px-BC856_HUI-1608.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 338,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/BC856_HUI-1608.jpg/1280px-BC856_HUI-1608.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/76/BC856_HUI-1608.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:BC856_HUI-1608.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=68531165",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2018-04-24 15:11:27",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "<div class=\"fn\">\nHuizinga collectie melkboer - NIOD - 216851</div>",
+              "source": "commons-desc-page"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Media from Netwerk Oorlogsbronnen|Author died more than 70 years ago public domain images|Media from NIOD|Skimmed milk|Uploaded with pattypan|Unknown date|CC-PD-Mark|Milkmen in the Netherlands|Milk cans in the Netherlands|Photographs by Menno Huizinga|Milk vehicles in the Netherlands|Hungerwinter in The Hague",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Artist": {
+              "value": "<bdi><a href=\"https://www.wikidata.org/wiki/Q2411611\" class=\"extiw\" title=\"d:Q2411611\"><span title=\"Dutch photographer (1907-1947)\">Menno Huizinga</span></a></bdi>",
+              "source": "commons-desc-page"
+            },
+            "ImageDescription": {
+              "value": "Foto uit de collectie Huizinga van het NIOD. Een melkboer verkoopt in de herfst van 1944 taptemelk. Menno Huizinga was onderdeel van de Ondergedoken Camera en maakte illegaal foto’s tijdens de bezetting. Dit deed hij hoofdzakelijk in zijn woonplaats Den Haag.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "Unknown date",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "This media file is part of the collection curated by <a href=\"//commons.wikimedia.org/wiki/Commons:Netwerk_Oorlogsbronnen\" title=\"Commons:Netwerk Oorlogsbronnen\">Netwerk Oorlogsbronnen</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://www.oorlogsbronnen.nl/\">external site</a>) and donated in the context of a <a href=\"//commons.wikimedia.org/wiki/Commons:Netwerk_Oorlogsbronnen\" title=\"Commons:Netwerk Oorlogsbronnen\">partnership program</a>.",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "Public domain",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Public domain",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "false",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Copyrighted": {
+              "value": "False",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "pd",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

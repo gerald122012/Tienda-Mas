@@ -1,0 +1,329 @@
+{
+  "id": "catalogo_014",
+  "nombre": "Néctar de manzana",
+  "query": "\"apple juice\" glass",
+  "candidates": [
+    {
+      "pageid": 164447123,
+      "ns": 6,
+      "title": "File:A plate serving of cheese ,kiwi ,grapes,salami with a glass of apple juice.jpg",
+      "index": 1,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg/500px-A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 667,
+          "responsiveUrls": {
+            "2": "https://upload.wikimedia.org/wikipedia/commons/7/75/A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg/500px-A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 667,
+            "srcset": "https://upload.wikimedia.org/wikipedia/commons/7/75/A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/A_plate_serving_of_cheese_%2Ckiwi_%2Cgrapes%2Csalami_with_a_glass_of_apple_juice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:A_plate_serving_of_cheese_,kiwi_,grapes,salami_with_a_glass_of_apple_juice.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=164447123",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2025-04-30 13:45:58",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "A plate serving of cheese ,kiwi ,grapes,salami with a glass of apple juice",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Cheese|Salami|Apple juice|Cuisine of Botswana|Grapes as food|Self-published work|Fruit of Botswana|Uploaded via Campaign:wlafrica|Meats of Botswana|Images from Wiki Loves Africa 2025|Images from Wiki Loves Africa 2025 in Botswana|Images from Wiki Loves Africa 2025 to check",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "This is an image with the theme \"<i>Farm to Plate</i>\" from:",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2025-04-30",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/User:Olgatladi2020\" title=\"User:Olgatladi2020\">Olgatladi2020</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 97281799,
+      "ns": 6,
+      "title": "File:Eatable Coffee Cup Top (1241053111).jpg",
+      "index": 2,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Eatable_Coffee_Cup_Top_%281241053111%29.jpg/500px-Eatable_Coffee_Cup_Top_%281241053111%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 375,
+          "responsiveUrls": {
+            "2": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Eatable_Coffee_Cup_Top_%281241053111%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Eatable_Coffee_Cup_Top_%281241053111%29.jpg/500px-Eatable_Coffee_Cup_Top_%281241053111%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 375,
+            "srcset": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Eatable_Coffee_Cup_Top_%281241053111%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Eatable_Coffee_Cup_Top_%281241053111%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Eatable_Coffee_Cup_Top_(1241053111).jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=97281799",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2020-12-05 14:05:02",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Eatable Coffee Cup Top (1241053111)",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Coffee cups|Flickr images reviewed by FlickreviewR 2|Flickr images missing SDC published in",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "<p>Solution to plastic coffee cup tops. \nOne thing which bugged me about the Eden Project as they try to promote being \"waste neutral\" is they used wooden forks in the cafe's which are likely to get thrown away; why not use steel ones and wash them and not throw them away, dhurh? You can remelt steel and make other things with it, try burning wood and you are making Co2, I don't care if it's sustaianable wood, give me a steel fork you crazy fools, non of it makes sense, Wood is pourous, now you have created a health hazard you HAVE to throw it away, just use steel forks for gods sake, what's wrong with them, I think they are insane! cardboard coffee cups? No use mugs you mug!!\n</p><p>It's like the folks who buy Fair Trade apple juice, without relaising orchids in the UK are going bust because the supermarkets are squeezing them, where's the UK's fair trade label? Everything to do with it was GREENWASH, the trains which took people down to the biomes ran on biodesiel, yet you can't get to the place without a car, in the first place!!\n</p>\n(Greenwash is when folks show how caring they are, but are in fact not as squeeky clean as they make out, the green acitivsit who travels the world attending confrences is polluting more than my non-passport existance ever will? Just stop the madness)",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2007-08-26 17:52",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/leejordan/1241053111/\">Eatable Coffee Cup Top</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/30249912@N00\">Lee Jordan</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 2.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 2.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/2.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-2.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pageid": 41967755,
+      "ns": 6,
+      "title": "File:Apple juice glass.jpg",
+      "index": 3,
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Apple_juice_glass.jpg/500px-Apple_juice_glass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "thumbwidth": 500,
+          "thumbheight": 667,
+          "responsiveUrls": {
+            "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Apple_juice_glass.jpg/1280px-Apple_juice_glass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+          },
+          "thumbattribs": {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Apple_juice_glass.jpg/500px-Apple_juice_glass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "decoding": "async",
+            "loading": "lazy",
+            "width": 500,
+            "height": 667,
+            "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Apple_juice_glass.jpg/1280px-Apple_juice_glass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+          },
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Apple_juice_glass.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Apple_juice_glass.jpg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=41967755",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2015-07-30 13:47:34",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Apple juice glass",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Apple juice|Self-published work|Uploaded with Commons Reloaded|Files with coordinates missing SDC location of creation|France photographs taken on 2015-07-30",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "GPSLatitude": {
+              "value": "45.754040",
+              "source": "commons-desc-page"
+            },
+            "GPSLongitude": {
+              "value": "4.889620",
+              "source": "commons-desc-page"
+            },
+            "GPSMapDatum": {
+              "value": "WGS-84",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Apple juice glass.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "30 July 2015 (according to <span lang=\"en\" dir=\"ltr\"><a href=\"https://en.wikipedia.org/wiki/Exif\" class=\"extiw\" title=\"en:Exif\">Exif</a></span> data)",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/User:JeanBono\" class=\"mw-redirect\" title=\"User:JeanBono\">JeanBono</a>",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY 4.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 4.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/4.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-4.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "catalogo_003",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_003.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-52097e04-f044-4587-b393-1814e5ce1111.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_003-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_006",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_006.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-fef375df-390b-44ad-9b03-b4d538086c88.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_006-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_009",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_009.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-0984dea5-ca6f-49c5-9e45-6ff041a361a4.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_009-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_010",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_010.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-0bd9f9b9-3494-4713-8c71-c4df72d1c72c.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_010-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_011",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_011.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-85f23e07-ca3a-4b05-a74b-0932681c91eb.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_011-limpia.png",
+    "prompt": "Use case: precise-object-edit. Store catalog product packshot. Remove only exterior advertising panels and badges; preserve original real branded package and label. Center full product on pure white #FFFFFF with margins. No extra panels, captions, floating objects, watermarks or borders."
+  },
+  {
+    "id": "catalogo_012",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_012.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-b821801c-bae2-4c64-a9c7-49c26dd2bfaf.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_012-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_013",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_013.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-752d942a-b90b-4f8a-8e27-9b9bbbfaeb5a.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_013-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_015",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_015.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-97edf669-be05-41d3-a83b-bc6045d7772d.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_015-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_016",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_016.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-e02dd356-607b-4adf-be47-10f314154929.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_016-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_020",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_020.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-1be83afa-78d7-48c1-ac94-82677e9b891a.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_020-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_025",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_025.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-ec5422fd-bf24-4e84-a08c-cadf8d4fad10.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_025-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_029",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_029.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-7b5361e6-c6a2-4ea5-ae6e-6395e732c5c1.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_029-limpia.png",
+    "prompt": "Use case: precise-object-edit. Store catalog product packshot. Remove only exterior advertising panels and badges; preserve original real branded package and label. Center full product on pure white #FFFFFF with margins. No extra panels, captions, floating objects, watermarks or borders."
+  },
+  {
+    "id": "catalogo_030",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_030.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-f64cef4c-8f88-46b3-a128-dbb722c7b246.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_030-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_033",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_033.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-1467be80-7773-4ea0-9b6f-a874066a3239.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_033-limpia.png",
+    "prompt": "Use case: precise-object-edit. Store catalog product packshot. Remove only exterior advertising panels and badges; preserve original real branded package and label. Center full product on pure white #FFFFFF with margins. No extra panels, captions, floating objects, watermarks or borders."
+  },
+  {
+    "id": "catalogo_034",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_034.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-0fa54402-4c52-44d3-b78f-3ba537566f59.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_034-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_035",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_035.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-4a04e4e4-10ce-424c-a7fe-3339f7de7d46.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_035-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_036",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_036.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-97f469a6-847d-4a82-83f2-1a0d7fe34e94.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_036-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_039",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_039.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-f3fc9b8f-2dd1-439d-af4b-336fadfa9abf.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_039-limpia.png",
+    "prompt": "Precise product photo edit. Remove every advertising sidebar, external caption strip, size badge and promotional panel OUTSIDE the physical package. Keep only the original packaged product centered upright on pure white #FFFFFF background. Preserve the actual package silhouette, brand, label, printed text, colors and all printing on the package exactly. Do not redesign packaging or remove anything printed on the package itself. Remove any floating ingredient or decorative objects outside the package. Full product visible with white margins, no cropping, no new captions, no watermark. Deliver a single clean store catalog packshot of this same product."
+  },
+  {
+    "id": "catalogo_040",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_040.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-a2724cd6-17b0-4c93-9531-bc3efeee959f.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_040-limpia.png",
+    "prompt": "Use case: precise-object-edit. Store catalog product packshot. Remove only exterior advertising panels and badges; preserve original real branded package and label. Center full product on pure white #FFFFFF with margins. No extra panels, captions, floating objects, watermarks or borders."
+  },
+  {
+    "id": "catalogo_008",
+    "herramienta": "image_gen integrada",
+    "entrada": "assets/productos/marcas/catalogo_008.jpg",
+    "archivoGenerado": "C:\\Users\\gejoz\\.codex\\generated_images\\01a14727-0ae1-7ec0-b48d-e3880d9cc4d4\\exec-3558e5f9-c5ba-4394-9185-80de68e57638.png",
+    "archivoFinal": "assets/productos/marcas/catalogo_008-limpia.png",
+    "prompt": "Use case: precise-object-edit. Remove ONLY the detached purple right sidebar reading IDEAL PARA COCINAR and detached pink 1 kg badge. Preserve the entire original Blanca Flor flour bag and everything printed on that physical bag exactly, including illustrations, logo and weight. Center this same full flour bag upright on solid pure white #FFFFFF background, white margins, no cropping, no shadows, no added objects or panels. Do not redesign packaging."
+  }
+]

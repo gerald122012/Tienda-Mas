@@ -1,0 +1,105 @@
+[
+  {
+    "pageid": 28260475,
+    "ns": 6,
+    "title": "File:Blue bucket with Bruce hardwood floor cleaner.jpg",
+    "index": 1,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg/500px-Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "thumbwidth": 500,
+        "thumbheight": 539,
+        "responsiveUrls": {
+          "2": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+        },
+        "thumbattribs": {
+          "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg/500px-Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+          "decoding": "async",
+          "loading": "lazy",
+          "width": 500,
+          "height": 539,
+          "srcset": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+        },
+        "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Blue_bucket_with_Bruce_hardwood_floor_cleaner.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=28260475",
+        "extmetadata": {
+          "DateTime": {
+            "value": "2013-09-13 15:34:43",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Blue bucket with Bruce hardwood floor cleaner",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Flooring|Cleaning products|Self-published work|Blue buckets|Plastic buckets",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "A blue plastic bucket containing cleaning products, including Bruce brand hardwood and laminate floor cleaner in a trigger spray bottle.  Bruce is used for general cleaning of all no-wax hardwood and laminate floors, purportedly unique in its ability to lift soil from the surface of urethane finishes without leaving a film or residue.  Bruce cleaner requires no rinsing.  Bruce was developed by experts in hardwood flooring.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2013-09-13 11:29:12",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Thekohser\" title=\"User:Thekohser\">Thekohser</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 3.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 3.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/3.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-3.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ]
+  }
+]

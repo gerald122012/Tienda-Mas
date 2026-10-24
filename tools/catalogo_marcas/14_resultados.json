@@ -1,0 +1,3512 @@
+[
+  {
+    "productId": "100989854",
+    "productName": "Bebida CIFRUT Citrus Punch Botella 3L",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "bebida-cifrut-citrus-punch-botella-3l",
+    "productReference": "20393541",
+    "productReferenceCode": "20393541",
+    "categoryId": "966",
+    "productTitle": "Bebida CIFRUT Citrus Punch Botella 3L| plazaVea",
+    "metaTagDescription": "¡Compra online Bebida CIFRUT Citrus Punch Botella 3L desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2024-04-01T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {},
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Bebidas Refrescantes/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/966/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/bebida-cifrut-citrus-punch-botella-3l/p",
+    "CantidadBiPrecioMK": [
+      "4"
+    ],
+    "Atributos no visibles": [
+      "CantidadBiPrecioMK"
+    ],
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 3.03L"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "3.03"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Surtido"
+    ],
+    "allSpecifications": [
+      "CantidadBiPrecioMK",
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Surtido"
+    ],
+    "allSpecificationsGroups": [
+      "Atributos no visibles",
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "11358928",
+        "name": "Bebida CIFRUT Citrus Punch Botella 3L",
+        "nameComplete": "Bebida CIFRUT Citrus Punch Botella 3L",
+        "complementName": "",
+        "ean": "7750670018982",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "20393541"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": null,
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34362474",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34362474-#width#-#height#/20393541.jpg?v=639125061061200000\" width=\"#width#\" height=\"#height#\" alt=\"20393541\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34362474/20393541.jpg?v=639125061061200000",
+            "imageText": "20393541",
+            "imageLastModified": "2026-04-23T01:55:06.1200000Z"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=11358928&qty=1&seller=1&sc=1&price=650&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "Price": 6.5,
+              "ListPrice": 6.9,
+              "PriceWithoutDiscount": 6.9,
+              "FullSellingPrice": 6.5,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjNiMGE5MGNlLTg4MTctNGYxNy05MzEwLWEwOWE3YTZmNmUwZCIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjo2NTAsInByaWNlV2l0aG91dERpc2NvdW50Ijo2OTAsInNlbGxlciI6IjEiLCJpZCI6IjExMzU4OTI4IiwiYWNjb3VudE5hbWUiOiJwbGF6YXZlYSIsInNhbGVzQ2hhbm5lbCI6IjEifSwiZXhwIjoxNzkyNjI3NTk5LCJpYXQiOjE3OTI2MjU3OTksImp0aSI6IjM1YWJjOTM5LTgxZWEtNDkzMi04YzA3LTU3MWQ5NjRhNzZjZiIsImlzcyI6InNlc3Npb24vZGF0YS1zaWduZXIifQ.NheguIKOdgO6zqcpXnMiZJmR96nnmW8OL-POD17GXPIITPCaaACHpHBUjwhtr7_xRd4hxFfq_G_adcEDDK3Xhg",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T00:00:00Z",
+              "AvailableQuantity": 10,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T22:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T22:00:00Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ]
+  },
+  {
+    "productId": "100989853",
+    "productName": "Bebida CIFRUT Fruit Punch Botella 3L",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "bebida-cifrut-fruit-punch-botella-3l",
+    "productReference": "20393542",
+    "productReferenceCode": "20393542",
+    "categoryId": "966",
+    "productTitle": "Bebida CIFRUT Fruit Punch Botella 3L| plazaVea",
+    "metaTagDescription": "¡Compra online Bebida CIFRUT Fruit Punch Botella 3L desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2024-04-01T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {},
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Bebidas Refrescantes/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/966/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/bebida-cifrut-fruit-punch-botella-3l/p",
+    "CantidadBiPrecioMK": [
+      "4"
+    ],
+    "Atributos no visibles": [
+      "CantidadBiPrecioMK"
+    ],
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 3.03L"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "3.03"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Surtido"
+    ],
+    "allSpecifications": [
+      "CantidadBiPrecioMK",
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Surtido"
+    ],
+    "allSpecificationsGroups": [
+      "Atributos no visibles",
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "11358927",
+        "name": "Bebida CIFRUT Fruit Punch Botella 3L",
+        "nameComplete": "Bebida CIFRUT Fruit Punch Botella 3L",
+        "complementName": "",
+        "ean": "7750670018999",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "20393542"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": null,
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34362473",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34362473-#width#-#height#/20393542.jpg?v=639125061054500000\" width=\"#width#\" height=\"#height#\" alt=\"20393542\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34362473/20393542.jpg?v=639125061054500000",
+            "imageText": "20393542",
+            "imageLastModified": "2026-04-23T01:55:05.4500000Z"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=11358927&qty=1&seller=1&sc=1&price=650&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 6.5,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 6.5,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "Price": 6.5,
+              "ListPrice": 6.9,
+              "PriceWithoutDiscount": 6.9,
+              "FullSellingPrice": 6.5,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImMwMjExZDdiLTc3ZjgtNDEyOS04MzZjLWZiMWYzMzdhMzQzOSIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjo2NTAsInByaWNlV2l0aG91dERpc2NvdW50Ijo2OTAsInNlbGxlciI6IjEiLCJpZCI6IjExMzU4OTI3IiwiYWNjb3VudE5hbWUiOiJwbGF6YXZlYSIsInNhbGVzQ2hhbm5lbCI6IjEifSwiZXhwIjoxNzkyNjI3NTk5LCJpYXQiOjE3OTI2MjU3OTksImp0aSI6Ijk5ODU4MWEyLWM1ZTAtNDU2My05MjFkLWM4YTNjOWYxMTcxOSIsImlzcyI6InNlc3Npb24vZGF0YS1zaWduZXIifQ.vtVAePWdUiQDEsI9akauVYltEFMIKjQb_Ot9KuC3P26lHwQEbVFsZl4NM_4V0Qjf1auQAg4zeeyuXaSgwoWHiQ",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T00:00:00Z",
+              "AvailableQuantity": 12,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 650,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 650,
+                        "total": 650,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 650,
+                            "total": 650
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ]
+  },
+  {
+    "productId": "6323",
+    "productName": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "refresco-cifrut-citrus-punch-botella-1-5l",
+    "productReference": "1960354002",
+    "productReferenceCode": "1960354002",
+    "categoryId": "966",
+    "productTitle": "Refresco CIFRUT Citrus Punch Botella 1.5L | plazaVea",
+    "metaTagDescription": "¡Compra Online Refresco CIFRUT Citrus Punch Botella 1.5L desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2026-02-02T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {
+      "7339": "Delivery Express",
+      "8337": "Colección FOOD Express",
+      "16828": "Vive el verano"
+    },
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Bebidas Refrescantes/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/966/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/refresco-cifrut-citrus-punch-botella-1-5l/p",
+    "Tag Stock Tienda": [
+      "No"
+    ],
+    "Tag Stock CD": [
+      "No"
+    ],
+    "CantidadBiPrecioMK": [
+      "6"
+    ],
+    "Atributos no visibles": [
+      "Tag Stock Tienda",
+      "Tag Stock CD",
+      "CantidadBiPrecioMK"
+    ],
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Descripción del producto": [
+      "<!-- Descripción -->\n<!-- Highlights (Importante a destacar - Características) -->\n<div class=\"containerHighlight\">\n    <div class=\"containerHighlight__content\">\n        <center><h5>Importante destacar</h5></center><ul><li>Refresco saborizado </li><li>Marca: CIFRUT </li><li> Contenido 1.5L </li></ul>    </div>\n</div>\n<!-- Highlights (Importante a destacar - Características) -->\n<!-- Descripción -->\n<div class=\"contentProduct\">\n    <center><h6>Descripción del producto</h6></center><div align=\"justify\"><center><p style=\"color:#FF2D00\"><b>JUGOS Y REFRESCOS INSTÁNTANEOS </b></p></center><br>\n<p><a href ='https://www.plazavea.com.pe/' target ='_blank'>plazaVea</a> presenta una gran variedad de <a href ='https://www.plazavea.com.pe/bebidas/jugos/' target ='_blank'>Jugos </a>que permitirán que comiences tu día con mucha energía y sabor. Disfruta de deliciosos <a href ='https://www.plazavea.com.pe/bebidas/jugos/jugos-y-nectares/' target ='_blank'>Jugos y Néctares </a>, elaborados con pulpa o esencia  de frutas que aportarán nutrientes a tu organismo y a la vez te mantendrán hidratado. Encuentra Jugos de Durazno, Manzana, Pera, Piña, Naranja y acompañalos con unos <a href ='https://www.plazavea.com.pe/Bebidas/' target ='_blank'>Snacks</a>, esta será la combinación perfecta para cualquier ocasión.</p><br>\n<p>Incluso si tienes visitas de imprevisto puedes obtar por preparar un <a href ='https://www.plazavea.com.pe/bebidas/jugos/refrescos-instantaneos/' target ='_blank'>Refresco Instántaneo</a> , gracias a su fácil preparación podrás tenerlo listo al instante. En <a href ='https://www.plazavea.com.pe/' target ='_blank'>plazaVea</a> podrás encontrar una gran variedad de sabores, elige el tuyo y engrie a tu familia y amigos.</p><br>\n<center><p><b>¡Conoce la mejor variedad de <strong> Jugos y Néctares</strong> en plazaVea Online!</b></p></center><br>\n\n<center><img src=\" https://plazavea.vteximg.com.br/arquivos/jugos-y-nectares.jpg\" alt=\"jugos\"></center>\n<br>"
+    ],
+    "Descripción": [
+      "Descripción del producto"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 1.5L"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "1.5"
+    ],
+    "Carbohidratos Totales": [
+      "87,5 g"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Porción Sugerida": [
+      "240 ml"
+    ],
+    "Sabor": [
+      "Naranja, mandarina y limón"
+    ],
+    "Formato": [
+      "Líquido"
+    ],
+    "Alérgenos Declarados": [
+      "No"
+    ],
+    "Azúcares Por Porción": [
+      "14g"
+    ],
+    "Calorías Por Porción": [
+      "59 kcal"
+    ],
+    "Carbohidratos Por Porción": [
+      "14g"
+    ],
+    "Descripción Nutricional": [
+      "Vitamina c (30m), vitamina b6 (0. 2mg), vitamina a (120ug), vitamina b12 (0. 36ug)"
+    ],
+    "Grasas Por Porción": [
+      "0 g"
+    ],
+    "Porciones Por Envase": [
+      "6.25"
+    ],
+    "Proteínas Por Porción": [
+      "0 g"
+    ],
+    "Sodio Por Porción": [
+      "16mg"
+    ],
+    "Tipo De Edulcorante": [
+      "Intenso (sin 960)"
+    ],
+    "Calorías Totales": [
+      "368,75 kcal"
+    ],
+    "Azúcares Totales": [
+      "87,5 g"
+    ],
+    "Grasas Totales": [
+      "0 g"
+    ],
+    "Proteínas Totales": [
+      "0 g"
+    ],
+    "Sodio Total": [
+      "100 mg"
+    ],
+    "Volumen Neto": [
+      "1.5L"
+    ],
+    "Advertencias De Consumo": [
+      "Agítese antes de consumir. Consumir antes de la fecha de vencimiento indicada en el envase"
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Porción Sugerida",
+      "Sabor",
+      "Formato",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Descripción Nutricional",
+      "Grasas Por Porción",
+      "Porciones Por Envase",
+      "Proteínas Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Grasas Totales",
+      "Proteínas Totales",
+      "Sodio Total",
+      "Volumen Neto",
+      "Advertencias De Consumo"
+    ],
+    "allSpecifications": [
+      "Tag Stock Tienda",
+      "Tag Stock CD",
+      "CantidadBiPrecioMK",
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Descripción del producto",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Porción Sugerida",
+      "Sabor",
+      "Formato",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Descripción Nutricional",
+      "Grasas Por Porción",
+      "Porciones Por Envase",
+      "Proteínas Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Grasas Totales",
+      "Proteínas Totales",
+      "Sodio Total",
+      "Volumen Neto",
+      "Advertencias De Consumo"
+    ],
+    "allSpecificationsGroups": [
+      "Atributos no visibles",
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Descripción",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "6057",
+        "name": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+        "nameComplete": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+        "complementName": "",
+        "ean": "",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "1960354002"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": null,
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34331931",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34331931-#width#-#height#/1960354002.jpg?v=639124909184930000\" width=\"#width#\" height=\"#height#\" alt=\"1960354002\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34331931/1960354002.jpg?v=639124909184930000",
+            "imageText": "1960354002",
+            "imageLastModified": "2026-04-22T21:41:58.4930000Z"
+          }
+        ],
+        "attachments": [
+          {
+            "id": 1,
+            "name": "Observacion",
+            "required": false,
+            "domainValues": "[{\"FieldName\":\"Observacion\",\"MaxCaracters\":\"200\",\"DomainValues\":\"\"}]"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=6057&qty=1&seller=1&sc=1&price=340&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [
+                {
+                  "Name": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+                  "NameComplete": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+                  "MainImage": "https://plazavea.vteximg.com.br/arquivos/ids/34331931/1960354002.jpg",
+                  "BrandName": "CIFRUT",
+                  "CategoryId": 966,
+                  "ProductId": 6323,
+                  "id": "6057",
+                  "seller": "1",
+                  "assemblyOptions": [
+                    {
+                      "id": "Observacion",
+                      "name": "Observacion",
+                      "required": false,
+                      "inputValues": {
+                        "Observacion": {
+                          "maximumNumberOfCharacters": 200,
+                          "domain": []
+                        }
+                      },
+                      "composition": null
+                    }
+                  ]
+                }
+              ],
+              "Price": 3.4,
+              "ListPrice": 3.4,
+              "PriceWithoutDiscount": 3.4,
+              "FullSellingPrice": 3.4,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImZiMjRiNWM2LWU2M2EtNGZjZS1iYzQ3LWRlZjU5ODJlZWU3NyIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjozNDAsInByaWNlV2l0aG91dERpc2NvdW50IjozNDAsInNlbGxlciI6IjEiLCJpZCI6IjYwNTciLCJhY2NvdW50TmFtZSI6InBsYXphdmVhIiwic2FsZXNDaGFubmVsIjoiMSJ9LCJleHAiOjE3OTI2Mjc1OTksImlhdCI6MTc5MjYyNTc5OSwianRpIjoiMDlkOTE2ZjktODg2NC00MzhhLTg3NDQtNzNmNDU5NjY1MDQ0IiwiaXNzIjoic2Vzc2lvbi9kYXRhLXNpZ25lciJ9.hym_vtDiu-Hqq7hM9Ytk9UNPlqmzlrnKTy-g0SsVpOWWY7GTLThMKYz-XEkXcUJ_RgnJ6q5DrvW40qlAHCi7bQ",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T05:00:00Z",
+              "AvailableQuantity": 23,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:24:47.8877136Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:24:47.8877138Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.887714Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877141Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877143Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877144Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877146Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ],
+    "itemMetadata": {
+      "items": [
+        {
+          "Name": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+          "NameComplete": "Refresco CIFRUT Citrus Punch Botella 1.5L",
+          "MainImage": "https://plazavea.vteximg.com.br/arquivos/ids/34331931/1960354002.jpg",
+          "BrandName": "CIFRUT",
+          "CategoryId": 966,
+          "ProductId": 6323,
+          "id": "6057",
+          "seller": "1",
+          "assemblyOptions": [
+            {
+              "id": "Observacion",
+              "name": "Observacion",
+              "required": false,
+              "inputValues": {
+                "Observacion": {
+                  "maximumNumberOfCharacters": 200,
+                  "domain": []
+                }
+              },
+              "composition": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "productId": "101066579",
+    "productName": "Bebida CIFRUT Citrus Punch Botella 350ml",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "bebida-cifrut-citrus-punch-botella-350ml",
+    "productReference": "20356804",
+    "productReferenceCode": "20356804",
+    "categoryId": "965",
+    "productTitle": "Bebida CIFRUT Citrus Punch Botella 350ml | plazaVea",
+    "metaTagDescription": "¡Compra Online Bebida CIFRUT Citrus Punch Botella 350ml desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2024-06-27T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {},
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Jugos y Néctares/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/965/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/bebida-cifrut-citrus-punch-botella-350ml/p",
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 350ml"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "350"
+    ],
+    "Carbohidratos Totales": [
+      "16.8 g"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Alérgenos Declarados": [
+      "CONTIENE TARTRAZINA"
+    ],
+    "Azúcares Por Porción": [
+      "12 g"
+    ],
+    "Calorías Por Porción": [
+      "47 kcal"
+    ],
+    "Carbohidratos Por Porción": [
+      "12 g"
+    ],
+    "Sodio Por Porción": [
+      "50 mg"
+    ],
+    "Tipo De Edulcorante": [
+      "SIN 955, SIN 960a, SIN 950"
+    ],
+    "Calorías Totales": [
+      "65.8 kcal"
+    ],
+    "Azúcares Totales": [
+      "16.8 g"
+    ],
+    "Sodio Total": [
+      "70 mg"
+    ],
+    "Advertencias De Almacenamiento": [
+      "Almacenamiento bajo techo, protegido de la luz solar, aromas agresivos y alejada de cualquier fuente de calor. Después de abierto manténgase refrigerado. Evitar golpes y caídas. Consérvese en lugar fresco."
+    ],
+    "Advertencias De Consumo": [
+      "Consumir antes de la fecha de vencimiento indicada en la parte superior del envase. Agítese antes de consumir."
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Sodio Total",
+      "Advertencias De Almacenamiento",
+      "Advertencias De Consumo"
+    ],
+    "allSpecifications": [
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Sodio Total",
+      "Advertencias De Almacenamiento",
+      "Advertencias De Consumo"
+    ],
+    "allSpecificationsGroups": [
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "11434419",
+        "name": "Bebida CIFRUT Citrus Punch Botella 350ml",
+        "nameComplete": "Bebida CIFRUT Citrus Punch Botella 350ml",
+        "complementName": "",
+        "ean": "7750670017787",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "20356804"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": null,
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34361877",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34361877-#width#-#height#/20356804.jpg?v=639125056515800000\" width=\"#width#\" height=\"#height#\" alt=\"20356804\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34361877/20356804.jpg?v=639125056515800000",
+            "imageText": "20356804",
+            "imageLastModified": "2026-04-23T01:47:31.5800000Z"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=11434419&qty=1&seller=1&sc=1&price=120&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "Price": 1.2,
+              "ListPrice": 1.5,
+              "PriceWithoutDiscount": 1.5,
+              "FullSellingPrice": 1.2,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImZiMDQ3MjljLWI2YjYtNGFlNS04NWRkLTFmMzZlODE5YmU2MCIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjoxMjAsInByaWNlV2l0aG91dERpc2NvdW50IjoxNTAsInNlbGxlciI6IjEiLCJpZCI6IjExNDM0NDE5IiwiYWNjb3VudE5hbWUiOiJwbGF6YXZlYSIsInNhbGVzQ2hhbm5lbCI6IjEifSwiZXhwIjoxNzkyNjI3NTk5LCJpYXQiOjE3OTI2MjU3OTksImp0aSI6ImEwNjJiNGE0LWVhZWUtNDgwZS1iNTYyLTA5ODgzNDRlODgzYyIsImlzcyI6InNlc3Npb24vZGF0YS1zaWduZXIifQ.G_SO7cdK-MSMPTLVz7OAZhSUzFRgU8CYmg7w34ooWDxrtK_IS1ABVDf8s0AmvPyf28fE-FCW6Ad2tHDgj66RqA",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T05:00:00Z",
+              "AvailableQuantity": 32,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:24:47.8877136Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:24:47.8877138Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.887714Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877141Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877143Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877144Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:24:47.8877146Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ]
+  },
+  {
+    "productId": "101066577",
+    "productName": "Bebida CIFRUT Fruit Punch Botella 350ml",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "bebida-cifrut-fruit-punch-botella-350ml",
+    "productReference": "20356799",
+    "productReferenceCode": "20356799",
+    "categoryId": "965",
+    "productTitle": "Bebida CIFRUT Fruit Punch Botella 350ml | plazaVea",
+    "metaTagDescription": "¡Compra Online Bebida CIFRUT Fruit Punch Botella 350ml desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2024-06-27T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {},
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Jugos y Néctares/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/965/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/bebida-cifrut-fruit-punch-botella-350ml/p",
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 350ml"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "350"
+    ],
+    "Carbohidratos Totales": [
+      "16.8 g"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Alérgenos Declarados": [
+      "CONTIENE TARTRAZINA"
+    ],
+    "Azúcares Por Porción": [
+      "12 g"
+    ],
+    "Calorías Por Porción": [
+      "49 kcal"
+    ],
+    "Carbohidratos Por Porción": [
+      "12 g"
+    ],
+    "Sodio Por Porción": [
+      "20 mg"
+    ],
+    "Tipo De Edulcorante": [
+      "SIN 955, SIN 960a, SIN 950"
+    ],
+    "Calorías Totales": [
+      "68.6 kcal"
+    ],
+    "Azúcares Totales": [
+      "12 g"
+    ],
+    "Sodio Total": [
+      "28 mg"
+    ],
+    "Advertencias De Almacenamiento": [
+      "Almacenamiento bajo techo, protegido de la luz solar, aromas agresivos y alejada de cualquier fuente de calor. Después de abierto manténgase refrigerado. Evitar golpes y caídas. Consérvese en lugar fresco."
+    ],
+    "Advertencias De Consumo": [
+      "Consumir antes de la fecha de vencimiento indicada en la parte superior del envase. Agítese antes de consumir."
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Sodio Total",
+      "Advertencias De Almacenamiento",
+      "Advertencias De Consumo"
+    ],
+    "allSpecifications": [
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Sodio Total",
+      "Advertencias De Almacenamiento",
+      "Advertencias De Consumo"
+    ],
+    "allSpecificationsGroups": [
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "11434417",
+        "name": "Bebida CIFRUT Fruit Punch Botella 350ml",
+        "nameComplete": "Bebida CIFRUT Fruit Punch Botella 350ml",
+        "complementName": "",
+        "ean": "7750670017794",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "20356799"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": null,
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34361876",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34361876-#width#-#height#/20356799.jpg?v=639125056507970000\" width=\"#width#\" height=\"#height#\" alt=\"20356799\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34361876/20356799.jpg?v=639125056507970000",
+            "imageText": "20356799",
+            "imageLastModified": "2026-04-23T01:47:30.7970000Z"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=11434417&qty=1&seller=1&sc=1&price=120&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 1.2,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 1.2,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "Price": 1.2,
+              "ListPrice": 1.5,
+              "PriceWithoutDiscount": 1.5,
+              "FullSellingPrice": 1.2,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImUyZTg4ZjVlLTdiZGQtNDYyMS04MjA1LWE4YzU5ODAyMWY1MCIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjoxMjAsInByaWNlV2l0aG91dERpc2NvdW50IjoxNTAsInNlbGxlciI6IjEiLCJpZCI6IjExNDM0NDE3IiwiYWNjb3VudE5hbWUiOiJwbGF6YXZlYSIsInNhbGVzQ2hhbm5lbCI6IjEifSwiZXhwIjoxNzkyNjI3NTk5LCJpYXQiOjE3OTI2MjU3OTksImp0aSI6IjRiZTkwMzk4LTUyZTEtNDEwYi1hOTQwLTY4NWExOTljN2NjNiIsImlzcyI6InNlc3Npb24vZGF0YS1zaWduZXIifQ.VDu5y4fIfrgJ8Jv_QJNO9WVUDaXYmQqacXMrxV523XJ-3FxLl90S5jT6VW_uwbAnwmQ_SAdTzMzMoF3P8yt5vA",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T05:00:00Z",
+              "AvailableQuantity": 44,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 120,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 120,
+                        "total": 120,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 120,
+                            "total": 120
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:34:48.0186474Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:34:48.0186476Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:34:48.0186478Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:34:48.018648Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:34:48.0186483Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:34:48.0186485Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:34:48.0186488Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ]
+  },
+  {
+    "productId": "5824",
+    "productName": "Refresco CIFRUT Fruit Punch Citrus Botella 1.5L",
+    "brand": "CIFRUT",
+    "brandId": 58059,
+    "brandImageUrl": null,
+    "linkText": "refresco-cifrut-fruit-punch-citrus-botella-1-5l",
+    "productReference": "1960354001",
+    "productReferenceCode": "1960354001",
+    "categoryId": "966",
+    "productTitle": "Refresco CIFRUT Fruit Punch Citrus Botella 1.5L | plazaVea",
+    "metaTagDescription": "¡Compra online Refresco CIFRUT Fruit Punch Citrus Botella 1.5L  desde donde estés en plazaVea.com.pe!",
+    "releaseDate": "2025-07-03T00:00:00Z",
+    "clusterHighlights": {},
+    "productClusters": {
+      "7339": "Delivery Express",
+      "8337": "Colección FOOD Express",
+      "16828": "Vive el verano"
+    },
+    "searchableClusters": {},
+    "categories": [
+      "/Bebidas/Jugos y Otras Bebidas/Bebidas Refrescantes/",
+      "/Bebidas/Jugos y Otras Bebidas/",
+      "/Bebidas/"
+    ],
+    "categoriesIds": [
+      "/2/8/966/",
+      "/2/8/",
+      "/2/"
+    ],
+    "link": "https://www.plazavea.com.pe/refresco-cifrut-fruit-punch-citrus-botella-1-5l/p",
+    "Tag Stock Tienda": [
+      "No"
+    ],
+    "Tag Stock CD": [
+      "No"
+    ],
+    "Atributos no visibles": [
+      "Tag Stock Tienda",
+      "Tag Stock CD"
+    ],
+    "Tipo de Producto": [
+      "Supermercado"
+    ],
+    "Vendido por": [
+      "plazaVea"
+    ],
+    "Componentes del Producto": [
+      "Tipo de Producto",
+      "Vendido por"
+    ],
+    "Descuentos exclusivos": [
+      "sin descuentos"
+    ],
+    "Descuentos": [
+      "Descuentos exclusivos"
+    ],
+    "Tipo de envío": [
+      "Despacho a domicilio",
+      "Recojo en tienda"
+    ],
+    "Método de Entrega": [
+      "Tipo de envío"
+    ],
+    "Descripción del producto": [
+      "<!-- Descripción -->\n<!-- Highlights (Importante a destacar - Características) -->\n<div class=\"containerHighlight\">\n    <div class=\"containerHighlight__content\">\n        <center><h5>Importante destacar</h5></center><ul><li>Refresco saborizado </li><li>Marca: CIFRUT </li><li> Contenido 1.5L </li></ul>    </div>\n</div>\n<!-- Highlights (Importante a destacar - Características) -->\n<!-- Descripción -->\n<div class=\"contentProduct\">\n    <center><h6>Descripción del producto</h6></center><div align=\"justify\"><center><p style=\"color:#FF2D00\"><b>JUGOS Y REFRESCOS INSTÁNTANEOS </b></p></center><br>\n<p><a href ='https://www.plazavea.com.pe/' target ='_blank'>plazaVea</a> presenta una gran variedad de <a href ='https://www.plazavea.com.pe/bebidas/jugos/' target ='_blank'>Jugos </a>que permitirán que comiences tu día con mucha energía y sabor. Disfruta de deliciosos <a href ='https://www.plazavea.com.pe/bebidas/jugos/jugos-y-nectares/' target ='_blank'>Jugos y Néctares </a>, elaborados con pulpa o esencia  de frutas que aportarán nutrientes a tu organismo y a la vez te mantendrán hidratado. Encuentra Jugos de Durazno, Manzana, Pera, Piña, Naranja y acompañalos con unos <a href ='https://www.plazavea.com.pe/Bebidas/' target ='_blank'>Snacks</a>, esta será la combinación perfecta para cualquier ocasión.</p><br>\n<p>Incluso si tienes visitas de imprevisto puedes obtar por preparar un <a href ='https://www.plazavea.com.pe/bebidas/jugos/refrescos-instantaneos/' target ='_blank'>Refresco Instántaneo</a> , gracias a su fácil preparación podrás tenerlo listo al instante. En <a href ='https://www.plazavea.com.pe/' target ='_blank'>plazaVea</a> podrás encontrar una gran variedad de sabores, elige el tuyo y engrie a tu familia y amigos.</p><br>\n<center><p><b>¡Conoce la mejor variedad de <strong> Jugos y Néctares</strong> en plazaVea Online!</b></p></center><br>\n\n<center><img src=\" https://plazavea.vteximg.com.br/arquivos/jugos-y-nectares.jpg\" alt=\"jugos\"></center>\n<br>"
+    ],
+    "Descripción": [
+      "Descripción del producto"
+    ],
+    "Presentación unitarios vitrina": [
+      "Botella 1.5L"
+    ],
+    "Contenido Empaque Ecommerce": [
+      "1.5"
+    ],
+    "Carbohidratos Totales": [
+      "87,5 g"
+    ],
+    "Surtido": [
+      "No"
+    ],
+    "Porción Sugerida": [
+      "240 ml"
+    ],
+    "Sabor": [
+      "Granadilla, maracuyá y piña"
+    ],
+    "Formato": [
+      "Líquido"
+    ],
+    "Alérgenos Declarados": [
+      "No"
+    ],
+    "Azúcares Por Porción": [
+      "14g"
+    ],
+    "Calorías Por Porción": [
+      "58 kcal"
+    ],
+    "Carbohidratos Por Porción": [
+      "14g"
+    ],
+    "Descripción Nutricional": [
+      "Vitamina c (30m), vitamina b6 (0. 2mg), vitamina a (120ug), vitamina b12 (0. 36ug)"
+    ],
+    "Grasas Por Porción": [
+      "0 g"
+    ],
+    "Porciones Por Envase": [
+      "6.25"
+    ],
+    "Proteínas Por Porción": [
+      "0 g"
+    ],
+    "Sodio Por Porción": [
+      "16mg"
+    ],
+    "Tipo De Edulcorante": [
+      "Intenso (sin 960)"
+    ],
+    "Calorías Totales": [
+      "362,5 kcal"
+    ],
+    "Azúcares Totales": [
+      "87,5 g"
+    ],
+    "Grasas Totales": [
+      "0 g"
+    ],
+    "Proteínas Totales": [
+      "0 g"
+    ],
+    "Sodio Total": [
+      "100 mg"
+    ],
+    "Volumen Neto": [
+      "1.5L"
+    ],
+    "Advertencias De Consumo": [
+      "Agítese antes de consumir. Consumir antes de la fecha de vencimiento indicada en el envase"
+    ],
+    "Especificaciones": [
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Porción Sugerida",
+      "Sabor",
+      "Formato",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Descripción Nutricional",
+      "Grasas Por Porción",
+      "Porciones Por Envase",
+      "Proteínas Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Grasas Totales",
+      "Proteínas Totales",
+      "Sodio Total",
+      "Volumen Neto",
+      "Advertencias De Consumo"
+    ],
+    "allSpecifications": [
+      "Tag Stock Tienda",
+      "Tag Stock CD",
+      "Tipo de Producto",
+      "Vendido por",
+      "Descuentos exclusivos",
+      "Tipo de envío",
+      "Descripción del producto",
+      "Presentación unitarios vitrina",
+      "Contenido Empaque Ecommerce",
+      "Carbohidratos Totales",
+      "Surtido",
+      "Porción Sugerida",
+      "Sabor",
+      "Formato",
+      "Alérgenos Declarados",
+      "Azúcares Por Porción",
+      "Calorías Por Porción",
+      "Carbohidratos Por Porción",
+      "Descripción Nutricional",
+      "Grasas Por Porción",
+      "Porciones Por Envase",
+      "Proteínas Por Porción",
+      "Sodio Por Porción",
+      "Tipo De Edulcorante",
+      "Calorías Totales",
+      "Azúcares Totales",
+      "Grasas Totales",
+      "Proteínas Totales",
+      "Sodio Total",
+      "Volumen Neto",
+      "Advertencias De Consumo"
+    ],
+    "allSpecificationsGroups": [
+      "Atributos no visibles",
+      "Componentes del Producto",
+      "Descuentos",
+      "Método de Entrega",
+      "Descripción",
+      "Especificaciones"
+    ],
+    "description": "",
+    "items": [
+      {
+        "itemId": "6056",
+        "name": "Refresco CIFRUT Fruit Punch Citrus Botella 1.5L",
+        "nameComplete": "Refresco CIFRUT Fruit Punch Citrus Botella 1.5L",
+        "complementName": "",
+        "ean": "7750670014694",
+        "referenceId": [
+          {
+            "Key": "RefId",
+            "Value": "1960354001"
+          }
+        ],
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "modalType": "LIQUID",
+        "isKit": false,
+        "images": [
+          {
+            "imageId": "34331930",
+            "imageLabel": null,
+            "imageTag": "<img src=\"~/arquivos/ids/34331930-#width#-#height#/1960354001.jpg?v=639124909176930000\" width=\"#width#\" height=\"#height#\" alt=\"1960354001\" id=\"\" />",
+            "imageUrl": "https://plazavea.vteximg.com.br/arquivos/ids/34331930/1960354001.jpg?v=639124909176930000",
+            "imageText": "1960354001",
+            "imageLastModified": "2026-04-22T21:41:57.6930000Z"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Plaza Vea",
+            "addToCartLink": "https://www.plazavea.com.pe/checkout/cart/add?sku=6056&qty=1&seller=1&sc=1&price=340&cv=_&sc=1",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {
+                "0": {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              },
+              "Installments": [
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Safetypay",
+                  "PaymentSystemGroupName": "safetypayPaymentGroup",
+                  "Name": "Safetypay à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Lotérica",
+                  "PaymentSystemGroupName": "lotteryPaymentGroup",
+                  "Name": "Lotérica à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "AGORAWEB",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "AGORAWEB à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Credito-Debito-PROM",
+                  "PaymentSystemGroupName": "custom206PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Credito-Debito-PROM à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Agora-Visa",
+                  "PaymentSystemGroupName": "custom208PaymentGroupPaymentGroup",
+                  "Name": "Agora-Visa à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjetas-Interbank",
+                  "PaymentSystemGroupName": "custom209PaymentGroupPaymentGroup",
+                  "Name": "Tarjetas-Interbank à vista"
+                },
+                {
+                  "Value": 3.4,
+                  "InterestRate": 0.0,
+                  "TotalValuePlusInterestRate": 3.4,
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Tarjeta-Oh-Cuotas",
+                  "PaymentSystemGroupName": "custom210PaymentGroupPaymentGroup",
+                  "Name": "Tarjeta-Oh-Cuotas à vista"
+                }
+              ],
+              "DiscountHighLight": [],
+              "GiftSkuIds": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "Price": 3.4,
+              "ListPrice": 3.4,
+              "PriceWithoutDiscount": 3.4,
+              "FullSellingPrice": 3.4,
+              "PriceToken": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjQ0ZTA2M2MxLWU4NWMtNDMyNy1iYzU0LTRjNjczZDg1Zjc5ZSIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InByaWNlIjozNDAsInByaWNlV2l0aG91dERpc2NvdW50IjozNDAsInNlbGxlciI6IjEiLCJpZCI6IjYwNTYiLCJhY2NvdW50TmFtZSI6InBsYXphdmVhIiwic2FsZXNDaGFubmVsIjoiMSJ9LCJleHAiOjE3OTI2Mjc1OTksImlhdCI6MTc5MjYyNTc5OSwianRpIjoiOGQzZjMxYzEtZTdjNS00NDRjLThlZGMtYmEyN2Q0NDI1Njk4IiwiaXNzIjoic2Vzc2lvbi9kYXRhLXNpZ25lciJ9.8T7H0QjkfQvc-JL0uhn1ZFO_We0FvwRNIca5IaknOfgAM8XLPIN0pcxzyASh61Rp_vfiBXX3CDsMPICNf-TM2Q",
+              "RewardValue": 0.0,
+              "PriceValidUntil": "3000-01-02T00:00:00Z",
+              "AvailableQuantity": 24,
+              "IsAvailable": true,
+              "Tax": 0.0,
+              "DeliverySlaSamples": [
+                {
+                  "DeliverySlaPerTypes": [],
+                  "Region": null
+                }
+              ],
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "_",
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "38",
+                    "bin": null,
+                    "paymentName": "Safetypay",
+                    "paymentGroupName": "safetypayPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "51",
+                    "bin": null,
+                    "paymentName": "Lotérica",
+                    "paymentGroupName": "lotteryPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "202",
+                    "bin": null,
+                    "paymentName": "AGORAWEB",
+                    "paymentGroupName": "custom202PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "206",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Credito-Debito-PROM",
+                    "paymentGroupName": "custom206PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "208",
+                    "bin": null,
+                    "paymentName": "Agora-Visa",
+                    "paymentGroupName": "custom208PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "209",
+                    "bin": null,
+                    "paymentName": "Tarjetas-Interbank",
+                    "paymentGroupName": "custom209PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "210",
+                    "bin": null,
+                    "paymentName": "Tarjeta-Oh-Cuotas",
+                    "paymentGroupName": "custom210PaymentGroupPaymentGroup",
+                    "value": 340,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 340,
+                        "total": 340,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "PLAZAVEA",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 340,
+                            "total": 340
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 51,
+                    "name": "Lotérica",
+                    "groupName": "lotteryPaymentGroup",
+                    "validator": null,
+                    "stringId": "51",
+                    "template": "lotteryPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 38,
+                    "name": "Safetypay",
+                    "groupName": "safetypayPaymentGroup",
+                    "validator": null,
+                    "stringId": "38",
+                    "template": "safetypayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-28T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 202,
+                    "name": "AGORAWEB",
+                    "groupName": "custom202PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "202",
+                    "template": "custom202PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "AGORAWEB",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 206,
+                    "name": "Tarjetas-Credito-Debito-PROM",
+                    "groupName": "custom206PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "206",
+                    "template": "custom206PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Otras tarjetas de Crédito y Débito",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 208,
+                    "name": "Agora-Visa",
+                    "groupName": "custom208PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "208",
+                    "template": "custom208PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Agora Visa",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 209,
+                    "name": "Tarjetas-Interbank",
+                    "groupName": "custom209PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "209",
+                    "template": "custom209PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjetas Interbank",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 210,
+                    "name": "Tarjeta-Oh-Cuotas",
+                    "groupName": "custom210PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "210",
+                    "template": "custom210PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Tarjeta Oh! Visa y Mastercard",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-10-23T23:00:00Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ],
+        "Videos": [],
+        "estimatedDateArrival": null
+      }
+    ]
+  }
+]
