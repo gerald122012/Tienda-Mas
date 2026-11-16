@@ -6,7 +6,14 @@ import '../../main.dart';
 class InicioScreen extends StatelessWidget {
   final ValueChanged<int> onCambiarPestana;
 
-  const InicioScreen({super.key, required this.onCambiarPestana});
+  // El cliente no ve la sección para alquilar locales (solo administración).
+  final bool mostrarAlquiler;
+
+  const InicioScreen({
+    super.key,
+    required this.onCambiarPestana,
+    this.mostrarAlquiler = true,
+  });
 
   void _mostrarPoliticas(BuildContext context) {
     showDialog(
@@ -228,50 +235,52 @@ class InicioScreen extends StatelessWidget {
           ),
 
           // 4. SECCIÓN ALQUILA TU LOCAL & TRABAJA CON NOSOTROS
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: kMassBlue,
-              borderRadius: BorderRadius.circular(28),
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  '¿TIENES UN LOCAL DE MÁS DE 200 m²?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kMassYellow,
-                    fontSize: 19,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  '¡Cada vez quiero estar más cerca de tu hogar y sigo buscando '
-                  'locales! Regístralo aquí para evaluarlo.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kMassYellow,
-                    foregroundColor: kMassBlue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+          if (mostrarAlquiler)
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: kMassBlue,
+                borderRadius: BorderRadius.circular(28),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    '¿TIENES UN LOCAL DE MÁS DE 200 m²?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: kMassYellow,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
-                  onPressed: () => onCambiarPestana(3), // Va a Alquila tu Local
-                  icon: const Icon(Icons.real_estate_agent),
-                  label: const Text(
-                    'ALQUILA TU LOCAL AQUÍ',
-                    style: TextStyle(fontWeight: FontWeight.w900),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '¡Cada vez quiero estar más cerca de tu hogar y sigo buscando '
+                    'locales! Regístralo aquí para evaluarlo.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kMassYellow,
+                      foregroundColor: kMassBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: () =>
+                        onCambiarPestana(3), // Va a Alquila tu Local
+                    icon: const Icon(Icons.real_estate_agent),
+                    label: const Text(
+                      'ALQUILA TU LOCAL AQUÍ',
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
 
           // 5. PIE DE PÁGINA (Horario, Contacto y Políticas como en la web)
           Container(

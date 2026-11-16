@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 
 import '../../main.dart';
 import '../../models/producto.dart';
+import '../../services/carrito_service.dart';
 import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
+import '../../widgets/aparecer.dart';
 import '../../widgets/producto_catalogo_card.dart';
+import '../carrito/carrito_screen.dart';
 import 'producto_form_screen.dart';
 
 class ProductosScreen extends StatefulWidget {
-  const ProductosScreen({super.key});
+  // Administrador: edita el catálogo. Cliente: solo compra.
+  final bool esAdmin;
+
+  const ProductosScreen({super.key, this.esAdmin = false});
 
   @override
   State<ProductosScreen> createState() => _ProductosScreenState();
@@ -22,6 +28,17 @@ class _ProductosScreenState extends State<ProductosScreen> {
   String _categoriaFiltro = 'todas';
   String _busqueda = '';
   bool _importando = false;
+  final _carrito = CarritoService.instance;
+
+  void _agregar(Producto producto) {
+    final ok = _carrito.agregar(producto);
+    mostrarMensaje(
+      context,
+      ok
+          ? '${producto.nombre} agregado al carrito'
+          : 'No hay más stock disponible de este producto.',
+    );
+  }
 
   void _abrirFormulario([Producto? producto]) {
     Navigator.push(
@@ -113,12 +130,39 @@ class _ProductosScreenState extends State<ProductosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kMassCream,
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'productos_mass',
-        onPressed: () => _abrirFormulario(),
-        icon: const Icon(Icons.add),
-        label: const Text('NUEVO PRODUCTO'),
-      ),
+      floatingActionButton: widget.esAdmin
+          ? FloatingActionButton.extended(
+              heroTag: 'productos_mass',
+              onPressed: () => _abrirFormulario(),
+              icon: const Icon(Icons.add),
+              label: const Text('NUEVO PRODUCTO'),
+            )
+          : ListenableBuilder(
+              listenable: _carrito,
+              builder: (context, _) => FloatingActionButton.extended(
+                heroTag: 'carrito_mass',
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CarritoScreen()),
+                ),
+                icon: Badge(
+                  isLabelVisible: _carrito.unidades > 0,
+                  label: Text('${_carrito.unidades}'),
+                  child: const Icon(Icons.shopping_cart),
+                ),
+                label: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  transitionBuilder: (child, anim) =>
+                      FadeTransition(opacity: anim, child: child),
+                  child: Text(
+                    _carrito.vacio
+                        ? 'CARRITO'
+                        : 'CARRITO · S/ ${_carrito.total.toStringAsFixed(2)}',
+                    key: ValueKey(_carrito.total),
+                  ),
+                ),
+              ),
+            ),
       body: Column(
         children: [
           Container(
@@ -217,7 +261,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
                               ),
                             ),
                           ),
-                          if (locales || todos.length < 40)
+                          if (widget.esAdmin && (locales || todos.length < 40))
                             TextButton.icon(
                               onPressed: _importando ? null : _cargarEjemplos,
                               icon: _importando
@@ -287,18 +331,9 @@ class _ProductosScreenState extends State<ProductosScreen> {
                                       ),
                                   itemCount: productos.length,
                                   itemBuilder: (context, i) {
-                                    final producto = productos[i];
-                                    return ProductoCatalogoCard(
-                                      producto: producto,
-                                      onEditar: () => locales
-                                          ? _duplicar(producto)
-                                          : _abrirFormulario(producto),
-                                      onDuplicar: locales
-                                          ? null
-                                          : () => _duplicar(producto),
-                                      onEliminar: locales
-                                          ? null
-                                          : () => _eliminar(producto),
+                                    return Aparecer(
+                                      indice: i,
+                                      child: _tarjeta(productos[i], locales),
                                     );
                                   },
                                 );
@@ -312,6 +347,26 @@ class _ProductosScreenState extends State<ProductosScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _tarjeta(Producto producto, bool locales) {
+    if (!widget.esAdmin) {
+      return ListenableBuilder(
+        listenable: _carrito,
+        builder: (context, _) => ProductoCatalogoCard(
+          producto: producto,
+          enCarrito: _carrito.cantidadDe(producto),
+          onAgregar: () => _agregar(producto),
+        ),
+      );
+    }
+    return ProductoCatalogoCard(
+      producto: producto,
+      onEditar: () =>
+          locales ? _duplicar(producto) : _abrirFormulario(producto),
+      onDuplicar: locales ? null : () => _duplicar(producto),
+      onEliminar: locales ? null : () => _eliminar(producto),
     );
   }
 

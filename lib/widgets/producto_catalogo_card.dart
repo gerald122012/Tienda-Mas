@@ -6,16 +6,21 @@ import 'botones_acciones.dart';
 
 class ProductoCatalogoCard extends StatelessWidget {
   final Producto producto;
-  final VoidCallback onEditar;
+  final VoidCallback? onEditar;
   final VoidCallback? onDuplicar;
   final VoidCallback? onEliminar;
+  // Solo para clientes: reemplaza las acciones de administración.
+  final VoidCallback? onAgregar;
+  final int enCarrito;
 
   const ProductoCatalogoCard({
     super.key,
     required this.producto,
-    required this.onEditar,
+    this.onEditar,
     this.onDuplicar,
     this.onEliminar,
+    this.onAgregar,
+    this.enCarrito = 0,
   });
 
   IconData get _icono => switch (producto.categoria) {
@@ -181,21 +186,40 @@ class ProductoCatalogoCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (onDuplicar != null && onEliminar != null)
+            if (onAgregar != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: FilledButton.icon(
+                  onPressed: disponible ? onAgregar : null,
+                  icon: const Icon(Icons.add_shopping_cart, size: 18),
+                  label: Text(
+                    !disponible
+                        ? 'AGOTADO'
+                        : enCarrito > 0
+                        ? 'AGREGAR ($enCarrito)'
+                        : 'AGREGAR',
+                  ),
+                ),
+              )
+            else if (onDuplicar != null &&
+                onEliminar != null &&
+                onEditar != null)
               Align(
                 alignment: Alignment.centerRight,
                 child: BotonesAcciones(
                   onDuplicar: onDuplicar!,
-                  onEditar: onEditar,
+                  onEditar: onEditar!,
                   onEliminar: onEliminar!,
                 ),
               )
-            else
+            else if (onEditar != null)
               TextButton.icon(
                 onPressed: onEditar,
                 icon: const Icon(Icons.visibility_outlined, size: 16),
                 label: const Text('Ver producto'),
-              ),
+              )
+            else
+              const SizedBox(height: 8),
           ],
         ),
       ),

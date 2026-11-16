@@ -218,7 +218,8 @@ class _LocalFormScreenState extends State<LocalFormScreen> {
                 TextFormField(
                   controller: _areaM2,
                   decoration: const InputDecoration(
-                    labelText: 'Área del local en m² (mínimo 200 m² sugerido) *',
+                    labelText:
+                        'Área del local en m² (mínimo 200 m² sugerido) *',
                   ),
                   keyboardType: TextInputType.number,
                   validator: (valor) => enteroMinimo(valor, 50),

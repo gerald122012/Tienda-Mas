@@ -4,10 +4,24 @@ import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'screens/home_screen.dart';
+import 'services/auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (_) {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp();
+    }
+  }
+  try {
+    AuthService.instance.iniciar();
+  } catch (_) {}
   runApp(const MiApp());
 }
 
@@ -25,7 +39,7 @@ class MiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tiendas Mass | Lleva Mass pagando Menos',
+      title: 'TiendasMass',
       debugShowCheckedModeBanner: false,
       // Permite desplazar las pantallas arrastrando con mouse o touchpad.
       scrollBehavior: const MaterialScrollBehavior().copyWith(
@@ -79,12 +93,20 @@ class MiApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
-      home: const HomeScreen(),
+      home: ListenableBuilder(
+        listenable: AuthService.instance,
+        builder: (context, _) {
+          // Sin sesión se entra como invitado; el login se pide al comprar.
+          final usuario = AuthService.instance.usuario;
+          return HomeScreen(
+            key: ValueKey(usuario?.correo ?? 'invitado'),
+            usuario: usuario,
+          );
+        },
+      ),
     );
   }
 }

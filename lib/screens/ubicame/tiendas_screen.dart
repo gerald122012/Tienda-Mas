@@ -5,11 +5,15 @@ import '../../main.dart';
 import '../../models/tienda.dart';
 import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
+import '../../widgets/aparecer.dart';
 import '../../widgets/botones_acciones.dart';
 import 'tienda_form_screen.dart';
 
 class TiendasScreen extends StatefulWidget {
-  const TiendasScreen({super.key});
+  // Administrador: gestiona las sedes. Cliente: solo las consulta.
+  final bool esAdmin;
+
+  const TiendasScreen({super.key, this.esAdmin = false});
 
   @override
   State<TiendasScreen> createState() => _TiendasScreenState();
@@ -57,15 +61,17 @@ class _TiendasScreenState extends State<TiendasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kMassCream,
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'tiendas_mass',
-        onPressed: () => _abrirFormulario(),
-        icon: const Icon(Icons.add_location_alt),
-        label: const Text(
-          'NUEVA TIENDA',
-          style: TextStyle(fontWeight: FontWeight.w900),
-        ),
-      ),
+      floatingActionButton: widget.esAdmin
+          ? FloatingActionButton.extended(
+              heroTag: 'tiendas_mass',
+              onPressed: () => _abrirFormulario(),
+              icon: const Icon(Icons.add_location_alt),
+              label: const Text(
+                'NUEVA TIENDA',
+                style: TextStyle(fontWeight: FontWeight.w900),
+              ),
+            )
+          : null,
       body: Column(
         children: [
           // Encabezado inspirado en https://www.tiendasmass.com.pe/ubicame/
@@ -151,11 +157,12 @@ class _TiendasScreenState extends State<TiendasScreen> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          FilledButton.icon(
-                            onPressed: _cargarEjemplos,
-                            icon: const Icon(Icons.storefront),
-                            label: const Text('CARGAR TIENDAS DE EJEMPLO'),
-                          ),
+                          if (widget.esAdmin)
+                            FilledButton.icon(
+                              onPressed: _cargarEjemplos,
+                              icon: const Icon(Icons.storefront),
+                              label: const Text('CARGAR TIENDAS DE EJEMPLO'),
+                            ),
                         ],
                       ),
                     ),
@@ -175,7 +182,8 @@ class _TiendasScreenState extends State<TiendasScreen> {
                 return ListView.builder(
                   padding: const EdgeInsets.fromLTRB(12, 12, 12, 85),
                   itemCount: tiendas.length,
-                  itemBuilder: (context, i) => _tarjeta(tiendas[i]),
+                  itemBuilder: (context, i) =>
+                      Aparecer(indice: i, child: _tarjeta(tiendas[i])),
                 );
               },
             ),
@@ -210,16 +218,17 @@ class _TiendasScreenState extends State<TiendasScreen> {
               '${abierta ? 'Abierta ahora' : 'Cerrada'} · ${t.servicios.join(', ')}',
             ),
             isThreeLine: true,
-            onTap: () => _abrirFormulario(t),
+            onTap: widget.esAdmin ? () => _abrirFormulario(t) : null,
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: BotonesAcciones(
-              onDuplicar: () => _duplicar(t),
-              onEditar: () => _abrirFormulario(t),
-              onEliminar: () => _eliminar(t),
+          if (widget.esAdmin)
+            Align(
+              alignment: Alignment.centerRight,
+              child: BotonesAcciones(
+                onDuplicar: () => _duplicar(t),
+                onEditar: () => _abrirFormulario(t),
+                onEliminar: () => _eliminar(t),
+              ),
             ),
-          ),
         ],
       ),
     );
