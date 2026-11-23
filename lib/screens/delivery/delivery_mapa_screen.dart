@@ -404,6 +404,9 @@ class _DeliveryMapaScreenState extends State<DeliveryMapaScreen> {
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.tiendasmass.app',
+                      tileProvider: NetworkTileProvider(
+                        cachingProvider: const DisabledMapCachingProvider(),
+                      ),
                     ),
                     if (_ruta != null)
                       PolylineLayer(
