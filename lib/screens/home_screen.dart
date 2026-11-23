@@ -223,6 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(builder: (_) => const PerfilScreen()),
                   );
+                } else if (accion == 'web') {
+                  abrirPaginaWeb(context);
                 } else if (accion == 'salir') {
                   AuthService.instance.cerrarSesion();
                 }
@@ -259,6 +261,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListTile(
                     leading: Icon(Icons.person_outline),
                     title: Text('Mi perfil y foto'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'web',
+                  child: ListTile(
+                    leading: Icon(Icons.language_rounded),
+                    title: Text('Página web Mass'),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),

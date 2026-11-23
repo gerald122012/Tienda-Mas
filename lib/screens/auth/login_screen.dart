@@ -253,6 +253,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : '¿Eres nuevo? Crea tu cuenta',
                               ),
                             ),
+                          if (!esWebAdmin) ...[
+                            const Divider(height: 24),
+                            OutlinedButton.icon(
+                              onPressed: () => abrirPaginaWeb(context),
+                              icon: const Icon(Icons.language_rounded),
+                              label: const Text('Ir a la página web Mass'),
+                            ),
+                          ],
                         ],
                       ),
                     ),

@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const kAppVersion = '1.0.0';
 const kAppBuild = '1';
+
+const kUrlPaginaWeb = 'https://tiendasmass-abc06.web.app';
+
+Future<void> abrirPaginaWeb(BuildContext context) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final ok = await launchUrl(
+    Uri.parse(kUrlPaginaWeb),
+    mode: LaunchMode.externalApplication,
+  );
+  if (!ok) {
+    messenger.showSnackBar(
+      const SnackBar(content: Text('No se pudo abrir la página web.')),
+    );
+  }
+}
 
 String formatoFecha(DateTime fecha) {
   final dia = fecha.day.toString().padLeft(2, '0');
