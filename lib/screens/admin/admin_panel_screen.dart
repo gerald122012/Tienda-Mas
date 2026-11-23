@@ -33,7 +33,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       mostrarMensaje(
         context,
         nuevos == 0
-            ? 'El catálogo ya tenía los 40 productos.'
+            ? 'El catálogo ya tenía los 50 productos.'
             : '$nuevos productos cargados en Firebase.',
       );
     } catch (_) {
@@ -395,7 +395,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               style: TextStyle(fontWeight: FontWeight.w800),
             ),
             subtitle: const Text(
-              'Sube a Firebase los 40 productos base (no duplica los existentes)',
+              'Sube a Firebase los 50 productos base (no duplica los existentes)',
             ),
             trailing: _cargandoCatalogo
                 ? const SizedBox(

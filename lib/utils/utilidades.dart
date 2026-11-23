@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const kAppVersion = '2.1.0';
-const kAppBuild = '3';
+const kAppVersion = '1.0.0';
+const kAppBuild = '1';
 
 String formatoFecha(DateTime fecha) {
   final dia = fecha.day.toString().padLeft(2, '0');

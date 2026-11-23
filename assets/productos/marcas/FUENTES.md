@@ -44,3 +44,13 @@ En 20 fotografías se retiraron los paneles externos mediante edición de IA; pu
 - catalogo_038: Maíz Pop Corn COSTEÑO Bolsa 500g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/maiz-pop-corn-costeno-bolsa-500g/p
 - catalogo_039: Galletas OREO Original Taco 135g — Foto comercial de plazaVea; fondo y paneles exteriores editados con IA. Fuente: https://www.plazavea.com.pe/galleta-oreo-taco-135g/p
 - catalogo_040: Chocolate SUBLIME Clásico Tableta 100g — Foto comercial de plazaVea; fondo y paneles exteriores editados con IA. Fuente: https://www.plazavea.com.pe/chocolate-sublime-clasico-paquete-100g/p
+- catalogo_041: Trozos de Atún FLORIDA en Aceite Vegetal Lata 140g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/trozos-de-atun-florida-en-aceite-vegetal-lata-170g/p
+- catalogo_042: Mayonesa ALACENA Doypack 475g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/mayonesa-alacena-doypack-475g/p
+- catalogo_043: Café Instantáneo NESCAFÉ Kirma Doypack 230g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/cafe-instantaneo-nescafe-kirma-doypack-230g/p
+- catalogo_044: Gaseosa PEPSI Cola Botella 3L — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/gaseosa-pepsi-cola-botella-3l-20426701/p
+- catalogo_045: Agua sin Gas CIELO Botella 2.5L Paquete 6un — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/agua-sin-gas-cielo-botella-25l-paquete-6un-20237588/p
+- catalogo_046: Leche Condensada NESTLÉ Lata 393g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/leche-condensada-nestle-lata-393g-20281666/p
+- catalogo_047: Papel Higiénico ELITE Clásico Doble Hoja Paquete 40un — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/papel-higienico-elite-clasico-doble-hoja-paquete-40un-20182465/p
+- catalogo_048: Pasta Dental COLGATE Triple Acción 150ml — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/pasta-dental-colgate-triple-accion-x-150ml/p
+- catalogo_049: Tortilla Chips DORITOS Queso Atrevido Bolsa 45g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/tortilla-chips-doritos-queso-atrevido-bolsa-45g-20257362/p
+- catalogo_050: Galletas CASINO Sabor a Menta Bolsa 129g — Imagen comercial publicada por plazaVea. Fuente: https://www.plazavea.com.pe/galletas-casino-sabor-a-menta-bolsa-129g-20506020/p

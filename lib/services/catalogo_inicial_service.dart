@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../models/producto.dart';
 
-// Carga los 40 productos de assets/catalogo/catalogo_inicial.json en
+// Carga los 50 productos de assets/catalogo/catalogo_inicial.json en
 // productos_mass. Solo funciona con un administrador de Firebase (reglas).
 class CatalogoInicialService {
   static Future<List<Map<String, dynamic>>> _filas() async {
