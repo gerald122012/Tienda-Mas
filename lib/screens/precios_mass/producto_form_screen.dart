@@ -8,9 +8,14 @@ import '../../widgets/campo_fecha.dart';
 import '../../widgets/campo_lista.dart';
 
 class ProductoFormScreen extends StatefulWidget {
-  final Producto? producto; // null = nuevo, con datos = editar
+  final Producto? producto;
+  final String? codigoBarrasInicial;
 
-  const ProductoFormScreen({super.key, this.producto});
+  const ProductoFormScreen({
+    super.key,
+    this.producto,
+    this.codigoBarrasInicial,
+  });
 
   @override
   State<ProductoFormScreen> createState() => _ProductoFormScreenState();
@@ -25,6 +30,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
   bool get _esNuevo => (widget.producto?.id ?? '').isEmpty;
 
   final _imagenUrl = TextEditingController();
+  final _codigoBarras = TextEditingController();
   final _nombre = TextEditingController();
   final _descripcion = TextEditingController();
   final _marca = TextEditingController();
@@ -42,6 +48,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
     final p = widget.producto;
     if (p != null) {
       _imagenUrl.text = p.imagenUrl;
+      _codigoBarras.text = p.codigoBarras;
       _nombre.text = p.nombre;
       _descripcion.text = p.descripcion;
       _marca.text = p.marca;
@@ -52,6 +59,8 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
       _disponible = p.disponible;
       _fechaRegistro = p.fechaRegistro;
       _presentaciones = List.of(p.presentaciones);
+    } else if (widget.codigoBarrasInicial != null) {
+      _codigoBarras.text = widget.codigoBarrasInicial!;
     }
   }
 
@@ -59,6 +68,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
   void dispose() {
     _scroll.dispose();
     _imagenUrl.dispose();
+    _codigoBarras.dispose();
     _nombre.dispose();
     _descripcion.dispose();
     _marca.dispose();
@@ -85,6 +95,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
         _imagenUrl.text.trim() == (widget.producto?.imagenUrl ?? '');
     final producto = Producto(
       id: widget.producto?.id ?? '',
+      codigoBarras: _codigoBarras.text.trim(),
       imagenUrl: _imagenUrl.text.trim(),
       imagenAsset: conservarFoto ? (widget.producto?.imagenAsset ?? '') : '',
       imagenAutor: conservarFoto ? (widget.producto?.imagenAutor ?? '') : '',
@@ -92,7 +103,6 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
           ? (widget.producto?.imagenLicencia ?? '')
           : '',
       imagenFuente: conservarFoto ? (widget.producto?.imagenFuente ?? '') : '',
-      esEjemplo: widget.producto?.esEjemplo ?? false,
       nombre: _nombre.text.trim(),
       descripcion: _descripcion.text.trim(),
       marca: _marca.text.trim().isEmpty ? 'Mass' : _marca.text.trim(),
@@ -169,6 +179,13 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
                   controller: _marca,
                   decoration: const InputDecoration(
                     labelText: 'Marca (ej. Coca-Cola, Field, Gloria)',
+                  ),
+                ),
+                TextFormField(
+                  controller: _codigoBarras,
+                  decoration: const InputDecoration(
+                    labelText: 'Código de barras EAN/UPC (opcional)',
+                    prefixIcon: Icon(Icons.barcode_reader),
                   ),
                 ),
                 TextFormField(

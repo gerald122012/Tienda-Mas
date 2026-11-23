@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Botones que aparecen en cada tarjeta de las 3 listas.
 class BotonesAcciones extends StatelessWidget {
   final VoidCallback onDuplicar;
   final VoidCallback onEditar;

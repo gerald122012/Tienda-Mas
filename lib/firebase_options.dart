@@ -1,6 +1,6 @@
-// Datos de conexión al proyecto de Firebase ("fitbooktravel-294a5").
-// Android: mismos valores de android/app/google-services.json.
-// Funciona tanto en modo Debug (DEV) como en Release/APK (PROD).
+// Conexión al proyecto de Firebase "TiendasMass" (tiendasmass-abc06).
+// Android usa los mismos valores de android/app/google-services.json
+// e iOS/macOS los de GoogleService-Info.plist.
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kIsWeb;
@@ -9,37 +9,42 @@ class DefaultFirebaseOptions {
   DefaultFirebaseOptions._();
 
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return android;
-    }
+    if (kIsWeb) return web;
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
         return ios;
-      case TargetPlatform.windows:
-      case TargetPlatform.linux:
-        return android;
       default:
-        return android;
+        return web;
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCG8OSqAJ9cwTEIjBswWKxOpLZPjiEw4Ck',
+    appId: '1:1062532282339:web:59a7c1bd22b7f9d79f92d6',
+    messagingSenderId: '1062532282339',
+    projectId: 'tiendasmass-abc06',
+    authDomain: 'tiendasmass-abc06.firebaseapp.com',
+    storageBucket: 'tiendasmass-abc06.firebasestorage.app',
+    measurementId: 'G-N2QZ4ZWPWX',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA7uANehpAWOcT4m7d_Ixt8A7HZ2OjfvcY',
-    appId: '1:109460273958:android:aadc64b3ca1e2ce8145fe7',
-    messagingSenderId: '109460273958',
-    projectId: 'fitbooktravel-294a5',
-    storageBucket: 'fitbooktravel-294a5.firebasestorage.app',
+    apiKey: 'AIzaSyDX0cUVzpK15ThMFAc8rVAH3FisLwsdT_0',
+    appId: '1:1062532282339:android:0eaae2462b0b0db69f92d6',
+    messagingSenderId: '1062532282339',
+    projectId: 'tiendasmass-abc06',
+    storageBucket: 'tiendasmass-abc06.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA-TzY8gmwhZayNZrktqNeIJizJi4fz6Qk',
-    appId: '1:109460273958:ios:01ab63264590bb39145fe7',
-    messagingSenderId: '109460273958',
-    projectId: 'fitbooktravel-294a5',
-    storageBucket: 'fitbooktravel-294a5.firebasestorage.app',
-    iosBundleId: 'com.renzoq.fitbooktravel',
+    apiKey: 'AIzaSyBicieX2ndPcXKyf-kCIiN6ThexAroQF28',
+    appId: '1:1062532282339:ios:ddbf60fb9015be099f92d6',
+    messagingSenderId: '1062532282339',
+    projectId: 'tiendasmass-abc06',
+    storageBucket: 'tiendasmass-abc06.firebasestorage.app',
+    iosBundleId: 'com.example.flutterApplication1',
   );
 }

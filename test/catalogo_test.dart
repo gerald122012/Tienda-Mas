@@ -1,129 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_application_1/models/cupon.dart';
 import 'package:flutter_application_1/models/producto.dart';
+import 'package:flutter_application_1/services/routing_service.dart';
+import 'package:flutter_application_1/utils/utilidades.dart';
 import 'package:flutter_application_1/widgets/producto_catalogo_card.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:latlong2/latlong.dart';
+
+Producto _crearProducto({
+  String id = 'p_1',
+  String nombre = 'Arroz Extra Bolsa 5Kg',
+  String codigoBarras = '7750123456789',
+  double precio = 20.0,
+  List<String> presentaciones = const ['Bolsa 5Kg'],
+}) {
+  return Producto(
+    id: id,
+    codigoBarras: codigoBarras,
+    nombre: nombre,
+    descripcion: nombre,
+    marca: 'COSTEÑO',
+    precio: precio,
+    stock: 25,
+    categoria: 'abarrotes',
+    disponible: true,
+    fechaRegistro: DateTime(2026, 1, 1),
+    presentaciones: presentaciones,
+    valoracion: 5,
+  );
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  test('40 productos con IDs únicos y ocho por categoría', () {
-    final productos = Producto.ejemplos();
-    expect(productos.length, 40);
+
+  test('Producto serializa código de barras y calcula precio unitario', () {
+    final producto = _crearProducto(precio: 20.0, presentaciones: ['Bolsa 5Kg']);
+    expect(producto.precioUnitarioTexto, 'S/ 4.00 / kg');
+
+    final recuperado = Producto.fromMap(producto.id, producto.toMap());
+    expect(recuperado.codigoBarras, '7750123456789');
+    expect(recuperado.precio, 20.0);
+  });
+
+  test('QR de descuento extrae código desde texto plano, prefijo o URL', () {
+    expect(CuponDescuento.extraerCodigoDesdeQr('mass10'), 'MASS10');
+    expect(CuponDescuento.extraerCodigoDesdeQr('MASS:AHORRO5'), 'AHORRO5');
     expect(
-      productos.every((p) => p.marca.isNotEmpty && p.marca != 'Genérica'),
-      isTrue,
-    );
-    expect(productos.map((p) => p.id).toSet().length, 40);
-    for (final categoria in Producto.categorias) {
-      expect(productos.where((p) => p.categoria == categoria).length, 8);
-    }
-    expect(
-      productos.every((p) => p.precio > 0 && p.stock > 0 && p.esEjemplo),
-      isTrue,
+      CuponDescuento.extraerCodigoDesdeQr(
+        'https://tiendasmass.pe/promo?code=bienvenido20',
+      ),
+      'BIENVENIDO20',
     );
   });
 
-  test('URL y marca de ejemplo sobreviven al guardado y edición', () {
-    final producto = Producto.ejemplos().first
-      ..imagenUrl = 'https://example.com/arroz.jpg';
-    final recuperado = Producto.fromMap(producto.id, producto.toMap());
-    expect(recuperado.imagenUrl, producto.imagenUrl);
-    expect(recuperado.imagenAsset, producto.imagenAsset);
-    expect(recuperado.imagenAutor, producto.imagenAutor);
-    expect(recuperado.imagenLicencia, producto.imagenLicencia);
-    expect(recuperado.imagenFuente, producto.imagenFuente);
-    expect(recuperado.esEjemplo, isTrue);
-    expect(recuperado.precio, producto.precio);
-    final anterior = Map<String, dynamic>.from(producto.toMap())
-      ..remove('imagenUrl')
-      ..remove('esEjemplo');
-    expect(Producto.fromMap('anterior', anterior).imagenUrl, '');
-    expect(Producto.fromMap('anterior', anterior).esEjemplo, isFalse);
+  test('RoutingService construye mensaje compartible y enlace Google Maps', () {
+    const origen = LatLng(-12.065, -75.210);
+    const destino = LatLng(-12.068, -75.205);
+    const ruta = ResultadoRuta(
+      distanciaMetros: 1500,
+      duracionSegundos: 300,
+      puntos: [origen, destino],
+    );
+    final msg = RoutingService.construirMensajeRuta(
+      nombreDestino: 'Tienda Mass Centro',
+      origen: origen,
+      destino: destino,
+      modo: ModoRuta.carro,
+      ruta: ruta,
+    );
+    expect(msg, contains('Tienda Mass Centro'));
+    expect(msg, contains('1.50 km'));
+    expect(msg, contains('https://www.google.com/maps/dir/'));
+    expect(msg.toLowerCase(), isNot(contains('académica')));
   });
 
   for (final width in [156.0, 300.0]) {
-    testWidgets('Tarjeta sin foto legible con ancho $width', (tester) async {
+    testWidgets('Tarjeta legible con precio en una línea en ancho $width', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
               child: SizedBox(
                 width: width,
-                height: 380,
+                height: 365,
                 child: ProductoCatalogoCard(
-                  producto: (Producto.ejemplos()[5]
-                    ..imagenUrl = ''
-                    ..imagenAsset = ''),
-                  onEditar: () {},
-                  onDuplicar: () {},
-                  onEliminar: () {},
+                  producto: _crearProducto(precio: 1250.90),
+                  onAgregar: () {},
                 ),
               ),
             ),
           ),
         ),
       );
-      expect(find.text('Imagen pendiente'), findsOneWidget);
-      expect(find.text('Avena QUAKER Tradicional Bolsa 500g'), findsOneWidget);
+      expect(find.text('Sin imagen'), findsOneWidget);
+      expect(find.text('S/ 1250.90'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
-  test('Los 40 productos incluyen fotos locales y créditos', () async {
-    for (final producto in Producto.ejemplos()) {
-      expect(
-        producto.imagenUrl.isEmpty || producto.imagenUrl.startsWith('https://'),
-        isTrue,
-      );
-      expect(producto.imagenAutor, isNotEmpty);
-      expect(producto.imagenLicencia, isNotEmpty);
-      expect(producto.imagenFuente, startsWith('https://www.'));
-      final bytes = await rootBundle.load(producto.imagenAsset);
-      expect(bytes.lengthInBytes, greaterThan(100));
-    }
-  });
 
-  testWidgets('La foto local se muestra sin red y permite consultar créditos', (
-    tester,
-  ) async {
-    final producto = Producto.ejemplos().first..imagenUrl = '';
+  testWidgets('precioUnaLinea renderiza sin saltos de línea', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: SizedBox(
-            width: 180,
-            height: 380,
-            child: ProductoCatalogoCard(producto: producto, onEditar: () {}),
+            width: 110,
+            child: precioUnaLinea(
+              'Total S/ 12450.99',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+            ),
           ),
         ),
       ),
     );
-    await tester.pumpAndSettle();
-    expect(find.image(AssetImage(producto.imagenAsset)), findsOneWidget);
-    expect(find.text('Imagen pendiente'), findsNothing);
-    await tester.tap(find.byTooltip('Créditos de la foto'));
-    await tester.pumpAndSettle();
-    expect(find.text('Foto del producto'), findsOneWidget);
-    expect(find.textContaining(producto.imagenAutor), findsOneWidget);
+    final textWidget = tester.widget<Text>(find.text('Total S/ 12450.99'));
+    expect(textWidget.maxLines, 1);
+    expect(textWidget.softWrap, isFalse);
     expect(tester.takeException(), isNull);
   });
-  test(
-    'Coca-Cola y ChokoSoda conservan marca, presentación y empaque verificados',
-    () {
-      final productos = Producto.ejemplos();
-      final coca = productos.singleWhere((p) => p.id == 'catalogo_011');
-      expect(coca.marca, 'COCA COLA');
-      expect(coca.nombre, contains('500ml'));
-      expect(coca.presentaciones, ['Botella 500ml']);
-      final choko = productos.singleWhere((p) => p.id == 'catalogo_035');
-      expect(choko.marca, 'FIELD');
-      expect(choko.nombre, contains('ChokoSoda'));
-      expect(choko.presentaciones, ['Paquete 6un']);
-      final lays = productos.singleWhere((p) => p.id == 'catalogo_033');
-      expect(lays.presentaciones, ['Bolsa 140g']);
-      expect(
-        productos.every((p) => p.imagenAsset.contains('/marcas/')),
-        isTrue,
-      );
-    },
-  );
 }

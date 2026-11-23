@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "109460273958",
-    "project_id": "fitbooktravel-294a5",
-    "storage_bucket": "fitbooktravel-294a5.firebasestorage.app"
+    "project_number": "1062532282339",
+    "project_id": "tiendasmass-abc06",
+    "storage_bucket": "tiendasmass-abc06.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:109460273958:android:aadc64b3ca1e2ce8145fe7",
+        "mobilesdk_app_id": "1:1062532282339:android:0eaae2462b0b0db69f92d6",
         "android_client_info": {
           "package_name": "com.example.flutter_application_1"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA7uANehpAWOcT4m7d_Ixt8A7HZ2OjfvcY"
+          "current_key": "AIzaSyDX0cUVzpK15ThMFAc8rVAH3FisLwsdT_0"
         }
       ],
       "services": {

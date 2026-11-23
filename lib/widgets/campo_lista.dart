@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Permite escribir varios valores (tallas, etiquetas) y mostrarlos como chips.
 class CampoLista extends StatefulWidget {
   final String etiqueta;
   final List<String> items;

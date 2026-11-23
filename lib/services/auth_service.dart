@@ -3,23 +3,18 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/usuario.dart';
 import 'carrito_service.dart';
 
-// Cuentas locales de PRUEBA que funcionan sin configurar nada en Firebase.
-// Ponlo en false antes de publicar la app.
-const kPermitirCuentasDemo = true;
+const kPermitirCuentasLocales = true;
 
-// Sesión de la app con Firebase Authentication (correo y contraseña).
-// El rol vive en Firestore: usuarios/{uid}.rol ("cliente" o "administrador").
-// Quien se registra desde la app siempre queda como cliente; para crear un
-// administrador se cambia el campo "rol" a mano en la consola de Firebase.
 class AuthService extends ChangeNotifier {
   AuthService._();
   static final AuthService instance = AuthService._();
 
-  static const _demo = [
+  static const _cuentasLocales = [
     _Cuenta(
       clave: 'Admin123',
       usuario: Usuario(
@@ -39,34 +34,101 @@ class AuthService extends ChangeNotifier {
   ];
 
   Usuario? _usuario;
-  bool _esDemo = false;
+  bool _esLocal = false;
   StreamSubscription<User?>? _suscripcion;
 
-  // null = invitado (anónimo): puede ver todo y armar su carrito.
   Usuario? get usuario => _usuario;
 
-  // Restaura la sesión de Firebase al abrir la app.
+  String _claveFoto(String correo) => 'perfil_foto_${correo.toLowerCase()}';
+
+  Future<String?> _leerFotoLocal(String correo) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_claveFoto(correo));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> actualizarFotoPerfil(String? base64Foto) async {
+    final actual = _usuario;
+    if (actual == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (base64Foto == null || base64Foto.isEmpty) {
+        await prefs.remove(_claveFoto(actual.correo));
+      } else {
+        await prefs.setString(_claveFoto(actual.correo), base64Foto);
+      }
+    } catch (_) {}
+
+    if (!_esLocal) {
+      try {
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+        if (uid != null) {
+          await FirebaseFirestore.instance
+              .collection('usuarios')
+              .doc(uid)
+              .set({
+                'fotoBase64': base64Foto ?? '',
+              }, SetOptions(merge: true));
+        }
+      } catch (_) {}
+    }
+
+    _usuario = base64Foto == null || base64Foto.isEmpty
+        ? actual.copyWith(limpiarFoto: true)
+        : actual.copyWith(fotoBase64: base64Foto);
+    notifyListeners();
+  }
+
   void iniciar() {
     _suscripcion ??= FirebaseAuth.instance.authStateChanges().listen((
       user,
     ) async {
-      if (_esDemo) return;
+      if (_esLocal) return;
       if (user == null) {
         _fijar(null);
       } else {
-        _fijar(await _perfil(user));
+        final perfil = await _perfil(user);
+        if (kIsWeb && !perfil.esAdmin) {
+          await cerrarSesion();
+          return;
+        }
+        if (!kIsWeb && perfil.esAdmin) {
+          await cerrarSesion();
+          return;
+        }
+        _fijar(perfil);
       }
     });
   }
 
-  // Devuelve null si todo salió bien, o el mensaje de error para mostrar.
-  Future<String?> iniciarSesion(String correo, String clave) async {
+  String? _validarRol(Usuario u, Rol? rolRequerido) {
+    if (rolRequerido == null) return null;
+    if (rolRequerido == Rol.administrador && !u.esAdmin) {
+      return 'Acceso restringido: la página web es exclusiva para administradores.';
+    }
+    if (rolRequerido == Rol.cliente && u.esAdmin) {
+      return 'La aplicación móvil es solo para clientes. Usa la página web para administrar.';
+    }
+    return null;
+  }
+
+  Future<String?> iniciarSesion(
+    String correo,
+    String clave, {
+    Rol? rolRequerido,
+  }) async {
     final c = correo.trim().toLowerCase();
-    if (kPermitirCuentasDemo) {
-      for (final cuenta in _demo) {
+    if (kPermitirCuentasLocales) {
+      for (final cuenta in _cuentasLocales) {
         if (cuenta.usuario.correo == c && cuenta.clave == clave) {
-          _esDemo = true;
-          _fijar(cuenta.usuario);
+          final errorRol = _validarRol(cuenta.usuario, rolRequerido);
+          if (errorRol != null) return errorRol;
+          _esLocal = true;
+          final foto = await _leerFotoLocal(c);
+          _fijar(cuenta.usuario.copyWith(fotoBase64: foto));
           return null;
         }
       }
@@ -76,8 +138,16 @@ class AuthService extends ChangeNotifier {
         email: c,
         password: clave,
       );
-      _esDemo = false;
-      _fijar(await _perfil(cred.user!));
+      final perfil = await _perfil(cred.user!);
+      final errorRol = _validarRol(perfil, rolRequerido);
+      if (errorRol != null) {
+        try {
+          await FirebaseAuth.instance.signOut();
+        } catch (_) {}
+        return errorRol;
+      }
+      _esLocal = false;
+      _fijar(perfil);
       return null;
     } on FirebaseAuthException catch (e) {
       return _mensaje(e);
@@ -109,10 +179,8 @@ class AuthService extends ChangeNotifier {
               'rol': 'cliente',
               'fechaRegistro': Timestamp.now(),
             });
-      } catch (_) {
-        // Si Firestore rechaza la escritura, la cuenta igual queda como cliente.
-      }
-      _esDemo = false;
+      } catch (_) {}
+      _esLocal = false;
       _fijar(usuario);
       return null;
     } on FirebaseAuthException catch (e) {
@@ -123,10 +191,10 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> cerrarSesion() async {
-    final eraDemo = _esDemo;
-    _esDemo = false;
+    final eraLocal = _esLocal;
+    _esLocal = false;
     _fijar(null);
-    if (!eraDemo) {
+    if (!eraLocal) {
       try {
         await FirebaseAuth.instance.signOut();
       } catch (_) {}
@@ -135,7 +203,6 @@ class AuthService extends ChangeNotifier {
 
   void _fijar(Usuario? u) {
     _usuario = u;
-    // El carrito de invitado solo aplica a clientes; al salir se descarta.
     if (u == null || u.esAdmin) CarritoService.instance.vaciar();
     notifyListeners();
   }
@@ -143,6 +210,7 @@ class AuthService extends ChangeNotifier {
   Future<Usuario> _perfil(User user) async {
     var rol = Rol.cliente;
     var nombre = user.displayName ?? '';
+    String? foto;
     try {
       final doc = await FirebaseFirestore.instance
           .collection('usuarios')
@@ -152,13 +220,17 @@ class AuthService extends ChangeNotifier {
       if (datos != null) {
         if (datos['rol'] == 'administrador') rol = Rol.administrador;
         nombre = (datos['nombre'] ?? nombre).toString();
+        final fotoDb = (datos['fotoBase64'] ?? '').toString();
+        if (fotoDb.isNotEmpty) foto = fotoDb;
       }
     } catch (_) {}
     final correo = user.email ?? '';
+    foto ??= await _leerFotoLocal(correo);
     return Usuario(
       nombre: nombre.isEmpty ? correo : nombre,
       correo: correo,
       rol: rol,
+      fotoBase64: foto,
     );
   }
 
@@ -169,7 +241,7 @@ class AuthService extends ChangeNotifier {
     'invalid-email' => 'El correo no es válido.',
     'email-already-in-use' => 'Ya existe una cuenta con ese correo.',
     'weak-password' => 'La contraseña debe tener al menos 6 caracteres.',
-    'too-many-requests' => 'Demasiados intentos. Prueba más tarde.',
+    'too-many-requests' => 'Demasiados intentos. Intenta más tarde.',
     'network-request-failed' => 'Sin conexión. Revisa tu internet.',
     'operation-not-allowed' =>
       'El acceso con correo no está activado en Firebase.',

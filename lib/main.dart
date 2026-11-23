@@ -1,10 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'screens/admin/admin_web_shell.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
+import 'services/pedidos_local_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +26,10 @@ Future<void> main() async {
   try {
     AuthService.instance.iniciar();
   } catch (_) {}
+  await PedidosLocalService.instance.cargar();
   runApp(const MiApp());
 }
 
-// Colores oficiales de la web de Tiendas Mass (https://www.tiendasmass.com.pe)
 const kMassYellow = Color(0xFFFFD100);
 const kMassBlue = Color(0xFF082EB7);
 const kMassMint = Color(0xFFD6F8F4);
@@ -39,9 +43,8 @@ class MiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TiendasMass',
+      title: kIsWeb ? 'TiendasMass · Administrador' : 'TiendasMass',
       debugShowCheckedModeBanner: false,
-      // Permite desplazar las pantallas arrastrando con mouse o touchpad.
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.touch,
@@ -57,15 +60,15 @@ class MiApp extends StatelessWidget {
           secondary: kMassYellow,
         ),
         scaffoldBackgroundColor: kMassCream,
-        // Barra superior amarilla con letras azules como el navbar de la web Mass.
         appBarTheme: const AppBarTheme(
           backgroundColor: kMassYellow,
           foregroundColor: kMassBlue,
           centerTitle: false,
-          elevation: 2,
+          elevation: 0,
+          scrolledUnderElevation: 2,
           titleTextStyle: TextStyle(
             color: kMassBlue,
-            fontSize: 20,
+            fontSize: 19,
             fontWeight: FontWeight.w900,
           ),
         ),
@@ -75,7 +78,7 @@ class MiApp extends StatelessWidget {
             foregroundColor: kMassYellow,
             textStyle: const TextStyle(fontWeight: FontWeight.w900),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(18),
             ),
           ),
         ),
@@ -85,25 +88,42 @@ class MiApp extends StatelessWidget {
         ),
         cardTheme: CardThemeData(
           color: Colors.white,
-          elevation: 2,
+          elevation: 1.5,
+          shadowColor: kMassBlue.withValues(alpha: 0.12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: kMassBlue.withValues(alpha: 0.08)),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: kMassBlue.withValues(alpha: 0.18)),
+          ),
         ),
       ),
       home: ListenableBuilder(
         listenable: AuthService.instance,
         builder: (context, _) {
-          // Sin sesión se entra como invitado; el login se pide al comprar.
           final usuario = AuthService.instance.usuario;
+          if (kIsWeb) {
+            if (usuario == null || !usuario.esAdmin) {
+              return const LoginScreen(soloAdmin: true);
+            }
+            return AdminWebShell(
+              key: ValueKey('admin_${usuario.correo}'),
+              usuario: usuario,
+            );
+          }
+          final cliente = (usuario != null && !usuario.esAdmin)
+              ? usuario
+              : null;
           return HomeScreen(
-            key: ValueKey(usuario?.correo ?? 'invitado'),
-            usuario: usuario,
+            key: ValueKey(cliente?.correo ?? 'invitado'),
+            usuario: cliente,
           );
         },
       ),

@@ -1,14 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../models/usuario.dart';
 import '../services/auth_service.dart';
-import 'alquila_local/locales_screen.dart';
+import '../services/carrito_service.dart';
+import '../utils/utilidades.dart';
 import 'auth/login_screen.dart';
+import 'carrito/carrito_screen.dart';
 import 'delivery/delivery_mapa_screen.dart';
+import 'escaner/escaner_herramientas_screen.dart';
 import 'inicio/inicio_screen.dart';
-import 'pedidos/pedidos_screen.dart';
+import 'pedidos/historial_compras_screen.dart';
+import 'perfil/perfil_screen.dart';
 import 'precios_mass/productos_screen.dart';
+import 'sensores/sensores_screen.dart';
 import 'ubicame/tiendas_screen.dart';
 
 class _Pestana {
@@ -20,7 +27,6 @@ class _Pestana {
 }
 
 class HomeScreen extends StatefulWidget {
-  // null = invitado (cliente anónimo).
   final Usuario? usuario;
 
   const HomeScreen({super.key, this.usuario});
@@ -30,165 +36,243 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final List<_Pestana> _pestanas = _armarPestanas();
-  late int _indice;
+  late final List<_Pestana> _pestanas = [
+    _Pestana(
+      'Inicio',
+      'Inicio',
+      Icons.storefront_rounded,
+      InicioScreen(onCambiarPestana: _cambiarPestana, mostrarAlquiler: false),
+    ),
+    const _Pestana(
+      'Productos',
+      'Productos',
+      Icons.local_offer_rounded,
+      ProductosScreen(),
+    ),
+    const _Pestana(
+      'Ubícame',
+      'Ubícame',
+      Icons.location_on_rounded,
+      TiendasScreen(),
+    ),
+    const _Pestana(
+      'Mis Compras',
+      'Compras',
+      Icons.history_rounded,
+      HistorialComprasScreen(),
+    ),
+    const _Pestana(
+      'Sensores',
+      'Sensores',
+      Icons.sensors_rounded,
+      SensoresScreen(),
+    ),
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    _indice = 1; // Catálogo / Productos; Conóceme es la 0
-  }
-
-  // El cliente solo compra y ubica tiendas; el administrador gestiona todo.
-  List<_Pestana> _armarPestanas() {
-    if (widget.usuario?.esAdmin == true) {
-      return [
-        _Pestana(
-          'Conóceme',
-          'Conóceme',
-          Icons.storefront,
-          InicioScreen(onCambiarPestana: _cambiarPestana),
-        ),
-        const _Pestana(
-          'Catálogo',
-          'Catálogo',
-          Icons.local_offer,
-          ProductosScreen(esAdmin: true),
-        ),
-        const _Pestana(
-          'Ubícame',
-          'Ubícame',
-          Icons.location_on,
-          TiendasScreen(esAdmin: true),
-        ),
-        const _Pestana(
-          'Alquila tu Local',
-          'Alquila Local',
-          Icons.real_estate_agent,
-          LocalesScreen(),
-        ),
-        const _Pestana(
-          'Pedidos',
-          'Pedidos',
-          Icons.receipt_long,
-          PedidosScreen(),
-        ),
-      ];
-    }
-    return [
-      _Pestana(
-        'Conóceme',
-        'Conóceme',
-        Icons.storefront,
-        InicioScreen(onCambiarPestana: _cambiarPestana, mostrarAlquiler: false),
-      ),
-      const _Pestana(
-        'Productos',
-        'Productos',
-        Icons.local_offer,
-        ProductosScreen(),
-      ),
-      const _Pestana('Ubícame', 'Ubícame', Icons.location_on, TiendasScreen()),
-    ];
-  }
+  int _indice = 0;
 
   void _cambiarPestana(int nuevoIndice) {
+    if (nuevoIndice < 0 || nuevoIndice >= _pestanas.length) return;
     setState(() => _indice = nuevoIndice);
+  }
+
+  Widget _botonCarritoAppBar() {
+    final carrito = CarritoService.instance;
+    return ListenableBuilder(
+      listenable: carrito,
+      builder: (context, _) {
+        final tieneItems = carrito.unidades > 0;
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const CarritoScreen()),
+            ),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              padding: EdgeInsets.symmetric(
+                horizontal: tieneItems ? 10 : 8,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                color: tieneItems
+                    ? kMassBlue
+                    : kMassBlue.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Badge(
+                    isLabelVisible: tieneItems,
+                    backgroundColor: kMassYellow,
+                    textColor: kMassBlue,
+                    label: Text(
+                      '${carrito.unidades}',
+                      style: const TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                    child: Icon(
+                      Icons.shopping_cart_rounded,
+                      size: 20,
+                      color: tieneItems ? kMassYellow : kMassBlue,
+                    ),
+                  ),
+                  if (tieneItems) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      formatoPrecio(carrito.total),
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                        fontFeatures: [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final usuario = widget.usuario;
-    final esAdmin = usuario?.esAdmin == true;
+    final tieneFoto =
+        usuario?.fotoBase64 != null && usuario!.fotoBase64!.isNotEmpty;
+
     return Scaffold(
-      // AppBar amarillo estilo .navbar-principal de https://www.tiendasmass.com.pe
       appBar: AppBar(
+        titleSpacing: 12,
         title: Row(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
               decoration: BoxDecoration(
                 color: kMassBlue,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: const Text(
                 'Mass',
                 style: TextStyle(
                   color: kMassYellow,
                   fontWeight: FontWeight.w900,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 _pestanas[_indice].titulo,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
         actions: [
-          // Delivery es una función de compra: solo para clientes e invitados.
-          if (!esAdmin)
-            IconButton(
-              tooltip: 'Delivery y mapa',
-              icon: const Icon(Icons.delivery_dining),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const DeliveryMapaScreen()),
+          IconButton(
+            tooltip: 'Escáner QR, Barras y Archivos',
+            icon: const Icon(Icons.qr_code_scanner_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const EscanerHerramientasScreen(),
               ),
             ),
-          // Botón rápido "ALQUILA TU LOCAL" como en el menú de la web Mass
-          if (esAdmin && _indice != 3)
-            Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: FilledButton(
-                onPressed: () => _cambiarPestana(3),
-                style: FilledButton.styleFrom(
-                  backgroundColor: kMassBlue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  visualDensity: VisualDensity.compact,
-                ),
-                child: const Text(
-                  'ALQUILA TU LOCAL',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900),
-                ),
-              ),
+          ),
+          IconButton(
+            tooltip: 'Delivery y rutas GPS',
+            icon: const Icon(Icons.delivery_dining_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const DeliveryMapaScreen()),
             ),
+          ),
+          _botonCarritoAppBar(),
           if (usuario == null)
-            TextButton.icon(
+            TextButton(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const LoginScreen()),
               ),
-              icon: const Icon(Icons.login),
-              label: const Text('INGRESAR'),
+              style: TextButton.styleFrom(
+                foregroundColor: kMassBlue,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+              ),
+              child: const Text(
+                'INGRESAR',
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12),
+              ),
             )
           else
             PopupMenuButton<String>(
-              tooltip: 'Cuenta',
-              icon: const Icon(Icons.account_circle),
-              onSelected: (_) => AuthService.instance.cerrarSesion(),
+              tooltip: 'Cuenta y perfil',
+              onSelected: (accion) {
+                if (accion == 'perfil') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PerfilScreen()),
+                  );
+                } else if (accion == 'salir') {
+                  AuthService.instance.cerrarSesion();
+                }
+              },
+              icon: CircleAvatar(
+                radius: 15,
+                backgroundColor: kMassBlue,
+                foregroundColor: kMassYellow,
+                backgroundImage: tieneFoto
+                    ? MemoryImage(base64Decode(usuario.fotoBase64!))
+                    : null,
+                child: !tieneFoto
+                    ? Text(
+                        usuario.nombre.isNotEmpty
+                            ? usuario.nombre[0].toUpperCase()
+                            : 'U',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      )
+                    : null,
+              ),
               itemBuilder: (_) => [
                 PopupMenuItem(
                   enabled: false,
                   child: Text(
-                    '${usuario.nombre}\n${esAdmin ? 'Administrador' : 'Cliente'}',
+                    '${usuario.nombre}\nCliente Mass',
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'perfil',
+                  child: ListTile(
+                    leading: Icon(Icons.person_outline),
+                    title: Text('Mi perfil y foto'),
+                    contentPadding: EdgeInsets.zero,
                   ),
                 ),
                 const PopupMenuItem(
                   value: 'salir',
                   child: ListTile(
-                    leading: Icon(Icons.logout),
+                    leading: Icon(Icons.logout, color: Colors.red),
                     title: Text('Cerrar sesión'),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
               ],
             ),
+          const SizedBox(width: 4),
         ],
       ),
       body: IndexedStack(
@@ -201,7 +285,11 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: kMassYellow,
         selectedItemColor: kMassBlue,
         unselectedItemColor: kMassDark.withValues(alpha: 0.65),
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w900),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w900,
+          fontSize: 11.5,
+        ),
+        unselectedLabelStyle: const TextStyle(fontSize: 11),
         onTap: _cambiarPestana,
         items: [
           for (final p in _pestanas)

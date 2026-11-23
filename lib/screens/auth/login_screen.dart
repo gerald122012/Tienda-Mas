@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
+import '../../models/usuario.dart';
 import '../../services/auth_service.dart';
+import '../../utils/utilidades.dart';
 import '../../widgets/aparecer.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool soloAdmin;
+
+  const LoginScreen({super.key, this.soloAdmin = false});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -36,9 +40,13 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
     final auth = AuthService.instance;
-    final error = _registro
+    final error = (!widget.soloAdmin && _registro)
         ? await auth.registrar(_nombre.text, _correo.text, _clave.text)
-        : await auth.iniciarSesion(_correo.text, _clave.text);
+        : await auth.iniciarSesion(
+            _correo.text,
+            _clave.text,
+            rolRequerido: widget.soloAdmin ? Rol.administrador : Rol.cliente,
+          );
     if (!mounted) return;
     if (error != null) {
       setState(() {
@@ -52,24 +60,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final esWebAdmin = widget.soloAdmin;
     return Scaffold(
       backgroundColor: kMassBlue,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        title: const Text('', style: TextStyle(fontSize: 1)),
-      ),
+      appBar: esWebAdmin
+          ? null
+          : AppBar(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              title: const Text('', style: TextStyle(fontSize: 1)),
+            ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
+              constraints: const BoxConstraints(maxWidth: 430),
               child: Aparecer(
                 child: Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(26),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -97,44 +108,65 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          const Text(
-                            'Lleva Mass pagando Menos',
+                          Text(
+                            esWebAdmin
+                                ? 'Panel Web de Administrador'
+                                : 'Acceso Clientes · Lleva Mass pagando Menos',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kMassBlue,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 15,
                             ),
                           ),
+                          if (esWebAdmin) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              'Gestión exclusiva de catálogo, tiendas, locales, pedidos y cupones · v$kAppVersion',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.grey.shade700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 20),
-                          AnimatedSize(
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeOut,
-                            child: _registro
-                                ? Padding(
-                                    padding: const EdgeInsets.only(bottom: 12),
-                                    child: TextFormField(
-                                      controller: _nombre,
-                                      textCapitalization:
-                                          TextCapitalization.words,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Nombre completo',
-                                        prefixIcon: Icon(Icons.person_outline),
+                          if (!esWebAdmin)
+                            AnimatedSize(
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
+                              child: _registro
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 12,
                                       ),
-                                      validator: (v) =>
-                                          (v == null || v.trim().length < 2)
-                                          ? 'Ingresa tu nombre'
-                                          : null,
-                                    ),
-                                  )
-                                : const SizedBox(width: double.infinity),
-                          ),
+                                      child: TextFormField(
+                                        controller: _nombre,
+                                        textCapitalization:
+                                            TextCapitalization.words,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Nombre completo',
+                                          prefixIcon: Icon(
+                                            Icons.person_outline,
+                                          ),
+                                        ),
+                                        validator: (v) =>
+                                            (v == null || v.trim().length < 2)
+                                            ? 'Ingresa tu nombre'
+                                            : null,
+                                      ),
+                                    )
+                                  : const SizedBox(width: double.infinity),
+                            ),
                           TextFormField(
                             controller: _correo,
                             keyboardType: TextInputType.emailAddress,
                             autofillHints: const [AutofillHints.email],
-                            decoration: const InputDecoration(
-                              labelText: 'Correo',
-                              prefixIcon: Icon(Icons.email_outlined),
+                            decoration: InputDecoration(
+                              labelText: esWebAdmin
+                                  ? 'Correo de administrador'
+                                  : 'Correo',
+                              prefixIcon: const Icon(Icons.email_outlined),
                             ),
                             validator: (v) => (v == null || v.trim().isEmpty)
                                 ? 'Ingresa tu correo'
@@ -161,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             validator: (v) => (v == null || v.isEmpty)
                                 ? 'Ingresa tu contraseña'
-                                : (_registro && v.length < 6)
+                                : (!esWebAdmin && _registro && v.length < 6)
                                 ? 'Mínimo 6 caracteres'
                                 : null,
                           ),
@@ -177,39 +209,50 @@ class _LoginScreenState extends State<LoginScreen> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.red.shade800,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
                           ),
                           const SizedBox(height: 20),
-                          FilledButton(
+                          FilledButton.icon(
                             onPressed: _cargando ? null : _ingresar,
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                             ),
-                            child: _cargando
+                            icon: _cargando
                                 ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
+                                    width: 18,
+                                    height: 18,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : Text(_registro ? 'CREAR CUENTA' : 'INGRESAR'),
-                          ),
-                          TextButton(
-                            onPressed: _cargando
-                                ? null
-                                : () => setState(() {
-                                    _registro = !_registro;
-                                    _error = null;
-                                  }),
-                            child: Text(
-                              _registro
-                                  ? 'Ya tengo cuenta · Ingresar'
-                                  : '¿Eres nuevo? Crea tu cuenta',
+                                : Icon(
+                                    esWebAdmin
+                                        ? Icons.admin_panel_settings_rounded
+                                        : Icons.login_rounded,
+                                  ),
+                            label: Text(
+                              esWebAdmin
+                                  ? 'INGRESAR AL PANEL ADMIN'
+                                  : (_registro ? 'CREAR CUENTA' : 'INGRESAR'),
                             ),
                           ),
+                          if (!esWebAdmin)
+                            TextButton(
+                              onPressed: _cargando
+                                  ? null
+                                  : () => setState(() {
+                                      _registro = !_registro;
+                                      _error = null;
+                                    }),
+                              child: Text(
+                                _registro
+                                    ? 'Ya tengo cuenta · Ingresar'
+                                    : '¿Eres nuevo? Crea tu cuenta',
+                              ),
+                            ),
                         ],
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../main.dart';
 import '../../models/tienda.dart';
@@ -7,10 +8,10 @@ import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
 import '../../widgets/aparecer.dart';
 import '../../widgets/botones_acciones.dart';
+import '../delivery/delivery_mapa_screen.dart';
 import 'tienda_form_screen.dart';
 
 class TiendasScreen extends StatefulWidget {
-  // Administrador: gestiona las sedes. Cliente: solo las consulta.
   final bool esAdmin;
 
   const TiendasScreen({super.key, this.esAdmin = false});
@@ -48,13 +49,19 @@ class _TiendasScreenState extends State<TiendasScreen> {
     );
   }
 
-  Future<void> _cargarEjemplos() async {
-    for (final t in Tienda.ejemplos()) {
-      await _servicio.guardar('', t.toMap());
-    }
-    if (mounted) {
-      mostrarMensaje(context, 'Tiendas Mass de ejemplo cargadas');
-    }
+  void _abrirRutaTienda(Tienda t) {
+    final destino = (t.latitud != null && t.longitud != null)
+        ? LatLng(t.latitud!, t.longitud!)
+        : null;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DeliveryMapaScreen(
+          nombreDestinoInicial: '${t.nombre} (${t.distrito})',
+          destinoInicial: destino,
+        ),
+      ),
+    );
   }
 
   @override
@@ -74,7 +81,6 @@ class _TiendasScreenState extends State<TiendasScreen> {
           : null,
       body: Column(
         children: [
-          // Encabezado inspirado en https://www.tiendasmass.com.pe/ubicame/
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
@@ -94,7 +100,6 @@ class _TiendasScreenState extends State<TiendasScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Selector de ciudad como en la web Ubícame
                 DropdownButtonFormField<String>(
                   initialValue: _ciudadFiltro,
                   decoration: const InputDecoration(
@@ -150,19 +155,21 @@ class _TiendasScreenState extends State<TiendasScreen> {
                           const SizedBox(height: 12),
                           const Text(
                             'No hay sedes registradas en Ubícame',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: kMassBlue,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          if (widget.esAdmin)
+                          if (widget.esAdmin) ...[
+                            const SizedBox(height: 12),
                             FilledButton.icon(
-                              onPressed: _cargarEjemplos,
-                              icon: const Icon(Icons.storefront),
-                              label: const Text('CARGAR TIENDAS DE EJEMPLO'),
+                              onPressed: () => _abrirFormulario(),
+                              icon: const Icon(Icons.add_location_alt),
+                              label: const Text('REGISTRAR PRIMERA TIENDA'),
                             ),
+                          ],
                         ],
                       ),
                     ),
@@ -220,15 +227,25 @@ class _TiendasScreenState extends State<TiendasScreen> {
             isThreeLine: true,
             onTap: widget.esAdmin ? () => _abrirFormulario(t) : null,
           ),
-          if (widget.esAdmin)
-            Align(
-              alignment: Alignment.centerRight,
-              child: BotonesAcciones(
-                onDuplicar: () => _duplicar(t),
-                onEditar: () => _abrirFormulario(t),
-                onEliminar: () => _eliminar(t),
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 8, 6),
+            child: Row(
+              children: [
+                TextButton.icon(
+                  onPressed: () => _abrirRutaTienda(t),
+                  icon: const Icon(Icons.directions, size: 18),
+                  label: const Text('Ver ruta GPS'),
+                ),
+                const Spacer(),
+                if (widget.esAdmin)
+                  BotonesAcciones(
+                    onDuplicar: () => _duplicar(t),
+                    onEditar: () => _abrirFormulario(t),
+                    onEliminar: () => _eliminar(t),
+                  ),
+              ],
             ),
+          ),
         ],
       ),
     );

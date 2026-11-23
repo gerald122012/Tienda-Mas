@@ -83,7 +83,6 @@ class _LocalesScreenState extends State<LocalesScreen> {
       ),
       body: Column(
         children: [
-          // Encabezado inspirado en la sección "Ofrece tu local" de Tiendas Mass
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),

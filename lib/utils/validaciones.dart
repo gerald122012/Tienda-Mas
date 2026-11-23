@@ -11,7 +11,6 @@ String? minimoCaracteres(String? valor, int minimo) {
   return null;
 }
 
-// Para precios: número mayor a 0.
 String? mayorACero(String? valor) {
   if (valor == null || valor.trim().isEmpty) return 'Campo obligatorio';
   final numero = double.tryParse(valor.trim().replaceAll(',', '.'));
@@ -19,7 +18,6 @@ String? mayorACero(String? valor) {
   return null;
 }
 
-// Para stock, cantidad y personas: número entero desde un mínimo.
 String? enteroMinimo(String? valor, int minimo) {
   if (valor == null || valor.trim().isEmpty) return 'Campo obligatorio';
   final numero = int.tryParse(valor.trim());
@@ -29,7 +27,6 @@ String? enteroMinimo(String? valor, int minimo) {
   return null;
 }
 
-// Para valoración (0 a 5) y descuento (0 a 100).
 String? numeroEnRango(String? valor, double minimo, double maximo) {
   if (valor == null || valor.trim().isEmpty) return 'Campo obligatorio';
   final numero = double.tryParse(valor.trim().replaceAll(',', '.'));

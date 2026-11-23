@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../utils/utilidades.dart';
 
-// Campo que muestra una fecha y abre el DatePicker al tocarlo.
 class CampoFecha extends StatelessWidget {
   final String etiqueta;
   final DateTime fecha;

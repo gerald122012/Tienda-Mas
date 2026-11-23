@@ -29,6 +29,8 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
   final _direccion = TextEditingController();
   final _horario = TextEditingController(text: '7:00 AM - 10:00 PM');
   final _cantidadProductos = TextEditingController(text: '800');
+  final _latitud = TextEditingController();
+  final _longitud = TextEditingController();
   String? _ciudad;
   bool _abierta = true;
   DateTime _fechaApertura = DateTime.now();
@@ -45,6 +47,8 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
       _direccion.text = t.direccion;
       _horario.text = t.horario;
       _cantidadProductos.text = t.cantidadProductos.toString();
+      if (t.latitud != null) _latitud.text = t.latitud.toString();
+      if (t.longitud != null) _longitud.text = t.longitud.toString();
       _abierta = t.abierta;
       _fechaApertura = t.fechaApertura;
       _servicios = List.of(t.servicios);
@@ -59,6 +63,8 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
     _direccion.dispose();
     _horario.dispose();
     _cantidadProductos.dispose();
+    _latitud.dispose();
+    _longitud.dispose();
     super.dispose();
   }
 
@@ -79,6 +85,13 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
     }
 
     final cantidad = leerEntero(_cantidadProductos.text);
+    final lat = _latitud.text.trim().isEmpty
+        ? null
+        : double.tryParse(_latitud.text.trim().replaceAll(',', '.'));
+    final lng = _longitud.text.trim().isEmpty
+        ? null
+        : double.tryParse(_longitud.text.trim().replaceAll(',', '.'));
+
     final tienda = Tienda(
       id: widget.tienda?.id ?? '',
       nombre: _nombre.text.trim(),
@@ -90,6 +103,8 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
       fechaApertura: _fechaApertura,
       abierta: _abierta && cantidad > 0,
       servicios: _servicios,
+      latitud: lat,
+      longitud: lng,
     );
 
     setState(() => _guardando = true);
@@ -166,6 +181,37 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
                   controller: _direccion,
                   decoration: const InputDecoration(labelText: 'Dirección *'),
                   validator: obligatorio,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _latitud,
+                        decoration: const InputDecoration(
+                          labelText: 'Latitud GPS (opcional)',
+                          hintText: '-12.0681',
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _longitud,
+                        decoration: const InputDecoration(
+                          labelText: 'Longitud GPS (opcional)',
+                          hintText: '-75.2103',
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: true,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   controller: _horario,

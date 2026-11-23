@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../models/producto.dart';
+import '../utils/utilidades.dart';
 import 'botones_acciones.dart';
 
 class ProductoCatalogoCard extends StatelessWidget {
@@ -9,7 +10,6 @@ class ProductoCatalogoCard extends StatelessWidget {
   final VoidCallback? onEditar;
   final VoidCallback? onDuplicar;
   final VoidCallback? onEliminar;
-  // Solo para clientes: reemplaza las acciones de administración.
   final VoidCallback? onAgregar;
   final int enCarrito;
 
@@ -37,10 +37,10 @@ class ProductoCatalogoCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(_icono, size: 44, color: kMassBlue),
+          Icon(_icono, size: 42, color: kMassBlue),
           const SizedBox(height: 4),
           const Text(
-            'Imagen pendiente',
+            'Sin imagen',
             style: TextStyle(fontSize: 11, color: kMassBlue),
           ),
         ],
@@ -54,12 +54,14 @@ class ProductoCatalogoCard extends StatelessWidget {
           producto.imagenAsset,
           fit: BoxFit.contain,
           semanticLabel: producto.nombre,
-          errorBuilder: (context, error, stack) => _sinImagen(),
+          errorBuilder: (_, _, _) => _sinImagen(),
         );
 
   @override
   Widget build(BuildContext context) {
     final disponible = producto.disponible && producto.stock > 0;
+    final unitario = producto.precioUnitarioTexto;
+
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -69,7 +71,7 @@ class ProductoCatalogoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: 144,
+              height: 138,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
@@ -85,41 +87,34 @@ class ProductoCatalogoCard extends StatelessWidget {
                               semanticLabel: producto.nombre,
                               loadingBuilder: (context, child, progress) =>
                                   progress == null ? child : _fotoLocal(),
-                              errorBuilder: (context, error, stack) =>
-                                  _fotoLocal(),
+                              errorBuilder: (_, _, _) => _fotoLocal(),
                             ),
                     ),
                   ),
-                  if (producto.imagenFuente.isNotEmpty)
+                  if (unitario != null)
                     Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: IconButton(
-                        tooltip: 'Créditos de la foto',
-                        iconSize: 16,
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withValues(alpha: 0.9),
+                      left: 6,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 3,
                         ),
-                        onPressed: () => showDialog<void>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Foto del producto'),
-                            content: SingleChildScrollView(
-                              child: SelectableText(
-                                '${producto.nombre}\n${producto.presentaciones.join(' · ')}\n\n'
-                                'Autor: ${producto.imagenAutor}\nLicencia: ${producto.imagenLicencia}\n\n'
-                                'Fuente y condiciones de uso:\n${producto.imagenFuente}',
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('Cerrar'),
-                              ),
-                            ],
+                        decoration: BoxDecoration(
+                          color: kMassMint.withValues(alpha: 0.95),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          unitario,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: const TextStyle(
+                            color: kMassBlue,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            fontFeatures: [FontFeature.tabularFigures()],
                           ),
                         ),
-                        icon: const Icon(Icons.info_outline, color: kMassBlue),
                       ),
                     ),
                 ],
@@ -127,7 +122,7 @@ class ProductoCatalogoCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -136,12 +131,12 @@ class ProductoCatalogoCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 11,
+                        fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                         color: kMassBlue,
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     Text(
                       producto.nombre,
                       maxLines: 2,
@@ -149,21 +144,25 @@ class ProductoCatalogoCard extends StatelessWidget {
                       style: const TextStyle(
                         color: kMassBlue,
                         fontWeight: FontWeight.w800,
-                        fontSize: 14,
+                        fontSize: 13.5,
+                        height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       producto.presentaciones.join(' · '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                     const Spacer(),
-                    Text(
-                      'S/ ${producto.precio.toStringAsFixed(2)}',
+                    precioUnaLinea(
+                      formatoPrecio(producto.precio),
                       style: const TextStyle(
-                        fontSize: 21,
+                        fontSize: 20,
                         color: kMassBlue,
                         fontWeight: FontWeight.w900,
                       ),
@@ -191,13 +190,15 @@ class ProductoCatalogoCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                 child: FilledButton.icon(
                   onPressed: disponible ? onAgregar : null,
-                  icon: const Icon(Icons.add_shopping_cart, size: 18),
+                  icon: const Icon(Icons.add_shopping_cart, size: 17),
                   label: Text(
                     !disponible
                         ? 'AGOTADO'
                         : enCarrito > 0
                         ? 'AGREGAR ($enCarrito)'
                         : 'AGREGAR',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               )

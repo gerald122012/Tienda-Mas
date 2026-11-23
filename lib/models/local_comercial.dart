@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Módulo 3 - Alquila tu Local (Ofrece tu local de +200 m² a Tiendas Mass)
 class LocalComercial {
   String id;
   String propietario;

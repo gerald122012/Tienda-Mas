@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Animación ligera de entrada: aparece con fundido y un pequeño desplazamiento.
-// [indice] escalona un poco las tarjetas de una lista (máx. 8 pasos).
 class Aparecer extends StatelessWidget {
   final Widget child;
   final int indice;

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "TiendasMass Web Admin (localhost:8000)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome",
+      "args": [
+        "--web-hostname=localhost",
+        "--web-port=8000"
+      ]
+    },
+    {
+      "name": "TiendasMass Web Server Admin (localhost:8000)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "web-server",
+      "args": [
+        "--web-hostname=localhost",
+        "--web-port=8000"
+      ]
+    },
+    {
+      "name": "TiendasMass iOS (Cliente)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "ios"
+    }
+  ]
+}
