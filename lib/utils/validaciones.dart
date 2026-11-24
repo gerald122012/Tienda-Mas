@@ -75,3 +75,13 @@ bool puedeCambiarEstado(String actual, String nuevo) {
   if (actual == 'cancelado' && nuevo == 'confirmado') return false;
   return true;
 }
+
+String? nombreCompleto(String? valor) {
+  final texto = (valor ?? '').trim().replaceAll(RegExp(r'\s+'), ' ');
+  if (texto.isEmpty) return 'Escribe tu nombre completo';
+  if (!RegExp(r"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' ]+$").hasMatch(texto)) {
+    return 'Usa solo letras';
+  }
+  if (texto.split(' ').length < 2) return 'Incluye nombre y apellido';
+  return null;
+}

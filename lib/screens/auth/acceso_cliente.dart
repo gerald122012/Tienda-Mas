@@ -26,6 +26,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
   final _correo = TextEditingController();
   final _clave = TextEditingController();
   final _dni = TextEditingController();
+  final _nombreManual = TextEditingController();
   late final DniService _servicioDni;
   bool _ocultar = true;
   bool _registro = false;
@@ -35,6 +36,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
   String? _dniResuelto;
   String? _nombre;
   bool _simulado = false;
+  bool _manual = false;
   String? _error;
   String? _errorDni;
 
@@ -44,6 +46,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
     _servicioDni = widget.servicioDni ?? DniService();
     _correo.addListener(_refrescar);
     _clave.addListener(_refrescar);
+    _nombreManual.addListener(_refrescar);
   }
 
   @override
@@ -53,6 +56,8 @@ class _AccesoClienteState extends State<AccesoCliente> {
     _correo.dispose();
     _clave.dispose();
     _dni.dispose();
+    _nombreManual.removeListener(_refrescar);
+    _nombreManual.dispose();
     if (widget.servicioDni == null) _servicioDni.close();
     super.dispose();
   }
@@ -68,6 +73,10 @@ class _AccesoClienteState extends State<AccesoCliente> {
     return nombre.length >= 2 && !_simulado && _dniResuelto == _dni.text.trim();
   }
 
+  // Sin servicio de DNI el cliente escribe su nombre como figura en su DNI.
+  bool get _manualListo =>
+      _manual && _dniActualValido && nombreCompleto(_nombreManual.text) == null;
+
   bool get _puedeConsultar {
     return _dniActualValido &&
         !_consultando &&
@@ -76,7 +85,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
   }
 
   bool get _puedeCrear {
-    return _consultaVigente &&
+    return (_consultaVigente || _manualListo) &&
         correoCliente(_correo.text) == null &&
         claveCliente(_clave.text, registro: true) == null &&
         !_consultando &&
@@ -87,6 +96,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
     _consultaId++;
     setState(() {
       _registro = !_registro;
+      _manual = false;
       _consultando = false;
       _error = null;
       _errorDni = null;
@@ -148,7 +158,7 @@ class _AccesoClienteState extends State<AccesoCliente> {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_cargando) return;
     if (_registro) {
-      if (!_puedeCrear || _nombre == null) return;
+      if (!_puedeCrear) return;
     } else if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -158,7 +168,12 @@ class _AccesoClienteState extends State<AccesoCliente> {
     });
     final auth = AuthService.instance;
     final error = _registro
-        ? await auth.registrar(_nombre!.trim(), _correo.text, _clave.text)
+        ? await auth.registrar(
+            (_manualListo && !_consultaVigente ? _nombreManual.text : _nombre!)
+                .trim(),
+            _correo.text,
+            _clave.text,
+          )
         : await auth.iniciarSesion(
             _correo.text,
             _clave.text,
@@ -300,6 +315,18 @@ class _AccesoClienteState extends State<AccesoCliente> {
           alPresionar: _puedeConsultar ? _consultar : null,
         ),
         _resultadoDni(duracion),
+        if (_manual && !_consultaVigente) ...[
+          const SizedBox(height: 12),
+          CampoAcceso(
+            key: const Key('nombre-manual'),
+            controller: _nombreManual,
+            etiqueta: 'Nombre completo',
+            icono: Icons.person_outline_rounded,
+            validador: nombreCompleto,
+            validacion: AutovalidateMode.onUserInteraction,
+            ayuda: 'Escríbelo como figura en tu DNI.',
+          ),
+        ],
         const SizedBox(height: 20),
         _seccion('Datos de acceso'),
       ],
@@ -473,10 +500,21 @@ class _AccesoClienteState extends State<AccesoCliente> {
                 ),
               ],
             ),
-            TextButton.icon(
-              onPressed: _consultando ? null : _consultar,
-              icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('Reintentar'),
+            Wrap(
+              spacing: 4,
+              children: [
+                TextButton.icon(
+                  onPressed: _consultando ? null : _consultar,
+                  icon: const Icon(Icons.refresh, size: 18),
+                  label: const Text('Reintentar'),
+                ),
+                if (!_manual)
+                  TextButton.icon(
+                    onPressed: () => setState(() => _manual = true),
+                    icon: const Icon(Icons.edit_outlined, size: 18),
+                    label: const Text('Escribir mi nombre a mano'),
+                  ),
+              ],
             ),
           ],
         ),

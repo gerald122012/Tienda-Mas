@@ -22,7 +22,7 @@ class DniService {
   DniService({
     http.Client? cliente,
     String? urlBase,
-    this.tiempoLimite = const Duration(seconds: 10),
+    this.tiempoLimite = const Duration(seconds: 6),
   }) : _cliente = cliente ?? http.Client(),
        _cerrarCliente = cliente == null,
        urlBase = _normalizar(urlBase ?? urlBasePredeterminada);

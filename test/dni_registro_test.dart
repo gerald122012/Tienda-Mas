@@ -367,6 +367,42 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('CONSULTAR DNI'), findsOneWidget);
   });
+
+  testWidgets('sin servicio de DNI se puede crear la cuenta con el nombre a mano', (
+    tester,
+  ) async {
+    final servicio = DniService(
+      cliente: MockClient((_) async => throw http.ClientException('sin red')),
+    );
+    await _abrirRegistro(tester, servicio);
+    await tester.enterText(find.byType(TextFormField).at(0), '12345678');
+    await tester.pump();
+    await tester.tap(find.text('CONSULTAR DNI'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('no está disponible'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Escribir mi nombre a mano'));
+    await tester.tap(find.text('Escribir mi nombre a mano'));
+    await tester.pumpAndSettle();
+    final nombre = find.byKey(const Key('nombre-manual'));
+    expect(nombre, findsOneWidget);
+
+    await tester.enterText(
+      find.descendant(of: nombre, matching: find.byType(TextFormField)),
+      'Ana',
+    );
+    await tester.enterText(find.byType(TextFormField).at(2), 'ana@ejemplo.com');
+    await tester.enterText(find.byType(TextFormField).at(3), 'clave123');
+    await tester.pump();
+    expect(_botonCrear(tester).onPressed, isNull);
+
+    await tester.enterText(
+      find.descendant(of: nombre, matching: find.byType(TextFormField)),
+      'Ana Torres Ruiz',
+    );
+    await tester.pump();
+    expect(_botonCrear(tester).onPressed, isNotNull);
+  });
 }
 
 OutlinedButton _botonConsultar(WidgetTester tester) {
