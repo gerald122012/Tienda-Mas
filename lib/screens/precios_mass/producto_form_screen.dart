@@ -154,12 +154,13 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
   bool get _puedeQuitarBase64 =>
       _nuevaImagen != null || (!_quitarBase64 && _base64Inicial != null);
 
-  Future<void> _elegirImagen() async {
+  Future<void> _elegirImagen([ImageSource origen = ImageSource.gallery]) async {
     if (_cargandoImagen || _guardando) return;
     setState(() => _cargandoImagen = true);
     try {
       final archivo = await _picker.pickImage(
-        source: ImageSource.gallery,
+        source: origen,
+        preferredCameraDevice: CameraDevice.rear,
         maxWidth: 600,
         maxHeight: 600,
         imageQuality: 70,
@@ -297,6 +298,13 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
               onPressed: _cargandoImagen || _guardando ? null : _elegirImagen,
               icon: const Icon(Icons.photo_library_outlined),
               label: Text(bytes == null ? 'ELEGIR IMAGEN' : 'CAMBIAR IMAGEN'),
+            ),
+            OutlinedButton.icon(
+              onPressed: _cargandoImagen || _guardando
+                  ? null
+                  : () => _elegirImagen(ImageSource.camera),
+              icon: const Icon(Icons.photo_camera_outlined),
+              label: const Text('TOMAR FOTO'),
             ),
             TextButton.icon(
               onPressed: !_puedeQuitarBase64 || _cargandoImagen || _guardando
