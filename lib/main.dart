@@ -9,6 +9,8 @@ import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
 import 'services/pedidos_local_service.dart';
+import 'tema/tema_gestion.dart';
+import 'tema/tema_mass.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,8 @@ const kMassCream = Color(0xFFFFF8D9);
 const kMassTurquoise = Color(0xFF33DDC8);
 const kMassDark = Color(0xFF1E1E1E);
 
+ThemeData temaPanelAdministracion() => temaGestionEmpresarial();
+
 class MiApp extends StatelessWidget {
   const MiApp({super.key});
 
@@ -52,59 +56,8 @@ class MiApp extends StatelessWidget {
           PointerDeviceKind.trackpad,
         },
       ),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: kMassBlue,
-          primary: kMassBlue,
-          secondary: kMassYellow,
-        ),
-        scaffoldBackgroundColor: kMassCream,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: kMassYellow,
-          foregroundColor: kMassBlue,
-          centerTitle: false,
-          elevation: 0,
-          scrolledUnderElevation: 2,
-          titleTextStyle: TextStyle(
-            color: kMassBlue,
-            fontSize: 19,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            backgroundColor: kMassBlue,
-            foregroundColor: kMassYellow,
-            textStyle: const TextStyle(fontWeight: FontWeight.w900),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-          ),
-        ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: kMassBlue,
-          foregroundColor: kMassYellow,
-        ),
-        cardTheme: CardThemeData(
-          color: Colors.white,
-          elevation: 1.5,
-          shadowColor: kMassBlue.withValues(alpha: 0.12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: kMassBlue.withValues(alpha: 0.08)),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: kMassBlue.withValues(alpha: 0.18)),
-          ),
-        ),
-      ),
+      navigatorObservers: [observadorRutasMass],
+      theme: kIsWeb ? temaPanelAdministracion() : temaClienteMovil(),
       home: ListenableBuilder(
         listenable: AuthService.instance,
         builder: (context, _) {

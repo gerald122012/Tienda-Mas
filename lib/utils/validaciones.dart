@@ -44,6 +44,26 @@ String? documentoValido(String? valor) {
   return null;
 }
 
+String? dniOpcional(String? valor) {
+  if (valor == null || valor.trim().isEmpty) return null;
+  return documentoValido(valor);
+}
+
+String? correoCliente(String? valor) {
+  final texto = valor?.trim() ?? '';
+  if (texto.isEmpty) return 'Ingresa tu correo';
+  if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(texto)) {
+    return 'Ingresa un correo válido';
+  }
+  return null;
+}
+
+String? claveCliente(String? valor, {required bool registro}) {
+  if (valor == null || valor.isEmpty) return 'Ingresa tu contraseña';
+  if (registro && valor.length < 6) return 'Mínimo 6 caracteres';
+  return null;
+}
+
 String? fechaNoFutura(DateTime fecha) {
   if (fecha.isAfter(DateTime.now())) return 'La fecha no puede ser futura';
   return null;

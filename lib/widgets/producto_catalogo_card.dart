@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../models/producto.dart';
+import '../services/catalogo_visual.dart';
 import '../utils/utilidades.dart';
 import 'botones_acciones.dart';
 
@@ -31,32 +34,6 @@ class ProductoCatalogoCard extends StatelessWidget {
     _ => Icons.shopping_bag_outlined,
   };
 
-  Widget _sinImagen() => ColoredBox(
-    color: kMassMint,
-    child: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(_icono, size: 42, color: kMassBlue),
-          const SizedBox(height: 4),
-          const Text(
-            'Sin imagen',
-            style: TextStyle(fontSize: 11, color: kMassBlue),
-          ),
-        ],
-      ),
-    ),
-  );
-
-  Widget _fotoLocal() => producto.imagenAsset.isEmpty
-      ? _sinImagen()
-      : Image.asset(
-          producto.imagenAsset,
-          fit: BoxFit.contain,
-          semanticLabel: producto.nombre,
-          errorBuilder: (_, _, _) => _sinImagen(),
-        );
-
   @override
   Widget build(BuildContext context) {
     final disponible = producto.disponible && producto.stock > 0;
@@ -79,16 +56,7 @@ class ProductoCatalogoCard extends StatelessWidget {
                     color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(6),
-                      child: producto.imagenUrl.isEmpty
-                          ? _fotoLocal()
-                          : Image.network(
-                              producto.imagenUrl,
-                              fit: BoxFit.contain,
-                              semanticLabel: producto.nombre,
-                              loadingBuilder: (context, child, progress) =>
-                                  progress == null ? child : _fotoLocal(),
-                              errorBuilder: (_, _, _) => _fotoLocal(),
-                            ),
+                      child: _ImagenCatalogo(producto: producto, icono: _icono),
                     ),
                   ),
                   if (unitario != null)
@@ -224,6 +192,88 @@ class ProductoCatalogoCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ImagenCatalogo extends StatefulWidget {
+  final Producto producto;
+  final IconData icono;
+
+  const _ImagenCatalogo({required this.producto, required this.icono});
+
+  @override
+  State<_ImagenCatalogo> createState() => _ImagenCatalogoState();
+}
+
+class _ImagenCatalogoState extends State<_ImagenCatalogo> {
+  Uint8List? _bytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _bytes = bytesImagenProductoEnCache(widget.producto);
+  }
+
+  @override
+  void didUpdateWidget(covariant _ImagenCatalogo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.producto.imagenBase64 != widget.producto.imagenBase64) {
+      _bytes = bytesImagenProductoEnCache(widget.producto);
+    }
+  }
+
+  Widget _sinImagen() => ColoredBox(
+    color: kMassMint,
+    child: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(widget.icono, size: 42, color: kMassBlue),
+          const SizedBox(height: 4),
+          const Text(
+            'Sin imagen',
+            style: TextStyle(fontSize: 11, color: kMassBlue),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _fotoLocal() {
+    final asset = widget.producto.imagenAsset.trim();
+    if (asset.isEmpty) return _sinImagen();
+    return Image.asset(
+      asset,
+      fit: BoxFit.contain,
+      semanticLabel: widget.producto.nombre,
+      errorBuilder: (_, _, _) => _sinImagen(),
+    );
+  }
+
+  Widget _porUrlOAsset() {
+    final url = widget.producto.imagenUrl.trim();
+    if (url.isEmpty) return _fotoLocal();
+    return Image.network(
+      url,
+      fit: BoxFit.contain,
+      semanticLabel: widget.producto.nombre,
+      loadingBuilder: (context, child, progress) =>
+          progress == null ? child : _fotoLocal(),
+      errorBuilder: (_, _, _) => _fotoLocal(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bytes = _bytes;
+    if (bytes == null) return _porUrlOAsset();
+    return Image.memory(
+      bytes,
+      fit: BoxFit.contain,
+      gaplessPlayback: true,
+      semanticLabel: widget.producto.nombre,
+      errorBuilder: (_, _, _) => _porUrlOAsset(),
     );
   }
 }

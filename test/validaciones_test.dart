@@ -22,7 +22,25 @@ void main() {
 
   test('documento de 8 dígitos', () {
     expect(documentoValido('12345678'), isNull);
+    expect(documentoValido('00000001'), isNull);
     expect(documentoValido('1234'), isNotNull);
+  });
+
+  test('el DNI del registro es opcional y conserva ceros iniciales', () {
+    expect(dniOpcional(''), isNull);
+    expect(dniOpcional('00000001'), isNull);
+    expect(dniOpcional('123'), isNotNull);
+    expect(dniOpcional('1234567A'), isNotNull);
+  });
+
+  test('el correo y la contraseña del cliente se validan', () {
+    expect(correoCliente('ana@mass.pe'), isNull);
+    expect(correoCliente('ana'), isNotNull);
+    expect(correoCliente(''), isNotNull);
+    expect(claveCliente('123456', registro: true), isNull);
+    expect(claveCliente('123', registro: true), isNotNull);
+    expect(claveCliente('123', registro: false), isNull);
+    expect(claveCliente('', registro: false), isNotNull);
   });
 
   test('fecha futura no es válida', () {

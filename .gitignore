@@ -58,3 +58,6 @@ app.*.map.json
 __pycache__/
 tools/**/firestore_antes*.json
 tools/**/respaldo*/
+
+# Firebase CLI local cache. Logs are already covered by *.log.
+.firebase/

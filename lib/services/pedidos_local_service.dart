@@ -32,12 +32,17 @@ class PedidosLocalService extends ChangeNotifier {
     } catch (_) {}
   }
 
-  Future<void> guardarPedido(Pedido pedido) async {
+  Future<bool> guardarPedido(Pedido pedido) async {
     await cargar();
     _pedidos.removeWhere((p) => p.id == pedido.id);
     _pedidos.insert(0, pedido);
     notifyListeners();
-    await _persistir();
+    final guardado = await _persistir();
+    if (!guardado) {
+      _pedidos.removeWhere((p) => p.id == pedido.id);
+      notifyListeners();
+    }
+    return guardado;
   }
 
   Future<void> eliminarPedido(String id) async {
@@ -54,11 +59,14 @@ class PedidosLocalService extends ChangeNotifier {
         .toList();
   }
 
-  Future<void> _persistir() async {
+  Future<bool> _persistir() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final encoded = jsonEncode(_pedidos.map((p) => p.toLocalJson()).toList());
       await prefs.setString(_key, encoded);
-    } catch (_) {}
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }

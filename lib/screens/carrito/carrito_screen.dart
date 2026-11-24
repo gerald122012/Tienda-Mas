@@ -5,20 +5,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../main.dart';
+import '../../models/cupon.dart';
 import '../../models/pedido.dart';
 import '../../services/auth_service.dart';
 import '../../services/carrito_service.dart';
-import '../../services/pedidos_local_service.dart';
 import '../../services/permisos_service.dart';
+import '../../services/registro_pedidos.dart';
+import '../../tema/tema_mass.dart';
 import '../../utils/utilidades.dart';
-import '../../widgets/aparecer.dart';
 import '../auth/login_screen.dart';
 import '../delivery/delivery_mapa_screen.dart';
 import '../escaner/escaner_herramientas_screen.dart';
+import 'carrito_vacio.dart';
+import 'opciones_entrega.dart';
+import 'resumen_compra.dart';
+import 'seccion_ahorro.dart';
+import 'tarjeta_producto_carrito.dart';
 
 class CarritoScreen extends StatefulWidget {
-  const CarritoScreen({super.key});
+  final VoidCallback? alVerProductos;
+  final RegistroPedidos? registro;
+  final String uidCliente;
+  final Future<CuponDescuento?> Function(String codigo)? buscarCupon;
+  final WidgetBuilder? pantallaRuta;
+
+  const CarritoScreen({
+    super.key,
+    this.alVerProductos,
+    this.registro,
+    this.uidCliente = '',
+    this.buscarCupon,
+    this.pantallaRuta,
+  });
 
   @override
   State<CarritoScreen> createState() => _CarritoScreenState();
@@ -28,11 +46,17 @@ class _CarritoScreenState extends State<CarritoScreen> {
   final _carrito = CarritoService.instance;
   final _picker = ImagePicker();
   final _personaRecojoCtrl = TextEditingController();
+  final _codigoCuponCtrl = TextEditingController();
 
   String _tipoEntrega = 'recojo';
   String? _fotoRecojoBase64;
   bool _capturandoFoto = false;
   bool _enviando = false;
+  bool _aplicandoCupon = false;
+  bool _confirmacionPendiente = false;
+  String? _avisoCupon;
+  String? _avisoPedido;
+  IntentoRegistro? _intento;
 
   @override
   void initState() {
@@ -41,11 +65,39 @@ class _CarritoScreenState extends State<CarritoScreen> {
     if (usuario != null) {
       _personaRecojoCtrl.text = usuario.nombre;
     }
+    _restaurarIntento();
+  }
+
+  String _uidActual() {
+    if (widget.registro != null) return widget.uidCliente;
+    try {
+      return FirebaseAuth.instance.currentUser?.uid ?? '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String get _correoActual => AuthService.instance.usuario?.correo ?? '';
+
+  Future<void> _restaurarIntento() async {
+    final intento = await IntentoRegistroPedido.leer(
+      uid: _uidActual(),
+      correo: _correoActual,
+    );
+    if (!mounted || intento == null) return;
+    setState(() {
+      _intento = intento;
+      if (intento.escrituraEnviada) {
+        _confirmacionPendiente = true;
+        _avisoPedido = _mensajeSinConfirmar;
+      }
+    });
   }
 
   @override
   void dispose() {
     _personaRecojoCtrl.dispose();
+    _codigoCuponCtrl.dispose();
     super.dispose();
   }
 
@@ -84,6 +136,115 @@ class _CarritoScreenState extends State<CarritoScreen> {
     }
   }
 
+  Future<CuponDescuento?> _buscarCupon(String codigo) async {
+    if (widget.buscarCupon != null) return widget.buscarCupon!(codigo);
+    final local = CuponDescuento.predeterminados
+        .where((c) => c.codigo == codigo)
+        .firstOrNull;
+    if (local != null) return local;
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection('cupones_mass')
+          .where('codigo', isEqualTo: codigo)
+          .limit(1)
+          .get();
+      if (snap.docs.isNotEmpty) {
+        return CuponDescuento.fromMap(
+          snap.docs.first.id,
+          snap.docs.first.data(),
+        );
+      }
+    } catch (_) {
+      return null;
+    }
+    return null;
+  }
+
+  Future<void> _aplicarCodigo() async {
+    if (_aplicandoCupon) return;
+    final codigo = CuponDescuento.extraerCodigoDesdeQr(_codigoCuponCtrl.text);
+    if (codigo.isEmpty) {
+      setState(() => _avisoCupon = 'Escribe el código del cupón.');
+      return;
+    }
+    setState(() {
+      _aplicandoCupon = true;
+      _avisoCupon = null;
+    });
+    try {
+      final cupon = await _buscarCupon(codigo);
+      if (!mounted) return;
+      if (cupon == null) {
+        setState(
+          () => _avisoCupon = 'El código "$codigo" no corresponde a un cupón válido.',
+        );
+        return;
+      }
+      if (!cupon.activo) {
+        setState(() => _avisoCupon = 'Este cupón ya no está activo.');
+        return;
+      }
+      final error = _carrito.aplicarCupon(cupon);
+      setState(() {
+        _avisoCupon = error;
+        if (error == null) _codigoCuponCtrl.clear();
+      });
+    } finally {
+      if (mounted) setState(() => _aplicandoCupon = false);
+    }
+  }
+
+  Future<void> _eliminarProducto(ItemCarrito item) async {
+    final confirmar = await confirmarEliminar(context, item.producto.nombre);
+    if (!confirmar || !mounted) return;
+    _carrito.eliminar(item.producto);
+  }
+
+  Future<void> _vaciar() async {
+    final respuesta = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Vaciar carrito'),
+        content: const Text(
+          'Se quitarán los productos y el cupón aplicado.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: TokensMass.de(context).error,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Vaciar'),
+          ),
+        ],
+      ),
+    );
+    if (respuesta == true) _carrito.vaciar();
+  }
+
+  void _verProductos() {
+    final accion = widget.alVerProductos;
+    if (accion != null) {
+      accion();
+      return;
+    }
+    Navigator.maybePop(context);
+  }
+
+  static const _mensajeRechazo =
+      'No se pudo registrar tu pedido. Tus productos siguen en el carrito. Inténtalo nuevamente.';
+  static const _mensajeSinConfirmar =
+      'Todavía no pudimos confirmar el registro de tu pedido.';
+  static const _mensajeConfirmado =
+      '¡Pedido registrado! Puedes consultarlo en Mis Compras.';
+  static const _mensajeCopiaLocal =
+      'Tu pedido quedó registrado. No pudimos guardar la copia en este dispositivo; consúltalo en Mis compras.';
+
   Future<void> _finalizar() async {
     if (_enviando || _carrito.vacio) return;
     if (AuthService.instance.usuario == null) {
@@ -114,7 +275,10 @@ class _CarritoScreenState extends State<CarritoScreen> {
     }
 
     final usuario = AuthService.instance.usuario!;
-    final ahora = DateTime.now();
+    final registro = widget.registro ?? RegistroPedidos.firestore();
+    final uid = _uidActual();
+    final intento = _intento ??
+        IntentoRegistro(id: crearIdIntento(uid), escrituraEnviada: false);
     final items = [
       for (final i in _carrito.items)
         ItemPedido(
@@ -125,13 +289,12 @@ class _CarritoScreenState extends State<CarritoScreen> {
           cantidad: i.cantidad,
         ),
     ];
-
     final pedidoBorrador = Pedido(
-      id: 'local_${ahora.millisecondsSinceEpoch}',
-      clienteUid: FirebaseAuth.instance.currentUser?.uid ?? '',
+      id: intento.id,
+      clienteUid: uid,
       clienteNombre: usuario.nombre,
       clienteCorreo: usuario.correo,
-      fecha: ahora,
+      fecha: DateTime.now(),
       estado: 'pendiente',
       subtotal: _carrito.subtotal,
       descuento: _carrito.descuento,
@@ -148,461 +311,220 @@ class _CarritoScreenState extends State<CarritoScreen> {
       items: items,
     );
 
-    setState(() => _enviando = true);
-    try {
-      String idFinal = pedidoBorrador.id;
+    setState(() {
+      _enviando = true;
+      _avisoPedido = null;
+    });
+    final resultado = await registro.registrar(
+      pedidoBorrador,
+      escrituraEnviada: intento.escrituraEnviada,
+    );
+    if (!mounted) return;
+
+    if (resultado.confirmado) {
       try {
-        final ref = await FirebaseFirestore.instance
-            .collection('pedidos')
-            .add(pedidoBorrador.toFirestoreMap());
-        idFinal = ref.id;
-      } catch (_) {}
-
-      final pedidoGuardado = Pedido(
-        id: idFinal,
-        clienteUid: pedidoBorrador.clienteUid,
-        clienteNombre: pedidoBorrador.clienteNombre,
-        clienteCorreo: pedidoBorrador.clienteCorreo,
-        fecha: pedidoBorrador.fecha,
-        estado: pedidoBorrador.estado,
-        subtotal: pedidoBorrador.subtotal,
-        descuento: pedidoBorrador.descuento,
-        total: pedidoBorrador.total,
-        cuponCodigo: pedidoBorrador.cuponCodigo,
-        tipoEntrega: pedidoBorrador.tipoEntrega,
-        personaRecojo: pedidoBorrador.personaRecojo,
-        fotoRecojoBase64: pedidoBorrador.fotoRecojoBase64,
-        rutaResumen: pedidoBorrador.rutaResumen,
-        items: pedidoBorrador.items,
-      );
-      await PedidosLocalService.instance.guardarPedido(pedidoGuardado);
-
+        await IntentoRegistroPedido.limpiar(uid: uid, correo: usuario.correo);
+      } catch (_) {
+        // El pedido ya fue confirmado. Perder la marca local no lo deshace.
+      }
       _carrito.vaciar();
       if (!mounted) return;
       Navigator.pop(context);
       mostrarMensaje(
         context,
-        '¡Pedido registrado! Puedes consultarlo en Mis Compras.',
+        resultado.copiaLocalGuardada ? _mensajeConfirmado : _mensajeCopiaLocal,
+      );
+      return;
+    }
+
+    final pendiente = resultado.tipo == TipoResultadoRegistro.sinConfirmar;
+    final conservado = IntentoRegistro(
+      id: resultado.id,
+      escrituraEnviada: resultado.escrituraEnviada,
+    );
+    try {
+      await IntentoRegistroPedido.guardar(
+        conservado,
+        uid: uid,
+        correo: usuario.correo,
       );
     } catch (_) {
-      if (mounted) {
-        mostrarMensaje(
-          context,
-          'No se pudo registrar el pedido. Inténtalo de nuevo.',
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _enviando = false);
+      // La marca del intento no cambia el resultado del servidor.
     }
+    if (!mounted) return;
+    setState(() {
+      _enviando = false;
+      _intento = conservado;
+      _confirmacionPendiente = pendiente;
+      _avisoPedido = pendiente ? _mensajeSinConfirmar : _mensajeRechazo;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Mi carrito')),
+      backgroundColor: tokens.fondo,
+      appBar: AppBar(
+        backgroundColor: tokens.superficie,
+        foregroundColor: tokens.profundo,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        title: ListenableBuilder(
+          listenable: _carrito,
+          builder: (context, _) {
+            final n = _carrito.unidades;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Mi carrito',
+                  style: textoMass(
+                    tamano: 18,
+                    peso: FontWeight.w800,
+                    color: tokens.profundo,
+                  ),
+                ),
+                Text(
+                  n == 0
+                      ? 'Sin productos'
+                      : '$n ${n == 1 ? 'unidad' : 'unidades'}',
+                  style: textoMass(tamano: 12, color: tokens.tintaSuave),
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          ListenableBuilder(
+            listenable: _carrito,
+            builder: (context, _) {
+              if (_carrito.vacio) return const SizedBox(width: 8);
+              return TextButton(
+                onPressed: _vaciar,
+                child: const Text('Vaciar'),
+              );
+            },
+          ),
+        ],
+      ),
       body: ListenableBuilder(
         listenable: _carrito,
         builder: (context, _) {
           if (_carrito.vacio) {
-            return const Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 58,
-                    color: kMassBlue,
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Tu carrito está vacío',
-                    style: TextStyle(
-                      color: kMassBlue,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 17,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text('Agrega productos del catálogo para empezar.'),
-                ],
-              ),
-            );
+            return CarritoVacio(alVerProductos: _verProductos);
           }
-
           final items = _carrito.items;
+          final cupon = _carrito.cuponAplicado;
+          final avisoCondicion = cupon != null ? null : _avisoCupon;
           return Column(
             children: [
               Expanded(
                 child: ListView(
-                  padding: const EdgeInsets.all(12),
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
                   children: [
-                    for (var i = 0; i < items.length; i++)
-                      _tarjetaItem(items[i]),
-                    const SizedBox(height: 6),
-                    _tarjetaCuponQr(),
+                    for (final item in items) ...[
+                      TarjetaProductoCarrito(
+                        key: ValueKey(item.producto.id),
+                        item: item,
+                        alAgregar: () => _carrito.agregar(item.producto),
+                        alQuitar: () => _carrito.quitarUna(item.producto),
+                        alEliminar: () => _eliminarProducto(item),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                    SeccionAhorro(
+                      cupon: cupon,
+                      descuento: _carrito.descuento,
+                      aviso: avisoCondicion,
+                      aplicando: _aplicandoCupon,
+                      codigo: _codigoCuponCtrl,
+                      alAplicar: _aplicarCodigo,
+                      alQuitar: () {
+                        _carrito.quitarCupon();
+                        setState(() => _avisoCupon = null);
+                      },
+                      alEscanear: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              const EscanerHerramientasScreen(
+                                tabInicial: 0,
+                                volverAlCarrito: true,
+                              ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                    _tarjetaEntregaYVerificacion(),
+                    OpcionesEntrega(
+                      tipo: _tipoEntrega,
+                      alCambiar: (valor) => setState(() => _tipoEntrega = valor),
+                      persona: _personaRecojoCtrl,
+                      fotoBase64: _fotoRecojoBase64,
+                      capturando: _capturandoFoto,
+                      alTomarFoto: () =>
+                          _capturarFotoRecojo(ImageSource.camera),
+                      alAdjuntarFoto: () =>
+                          _capturarFotoRecojo(ImageSource.gallery),
+                      alQuitarFoto: () =>
+                          setState(() => _fotoRecojoBase64 = null),
+                      ruta: _carrito.rutaSeleccionada,
+                      alAbrirRuta: () async {
+                        final adjunto = await Navigator.push<bool>(
+                          context,
+                          MaterialPageRoute(
+                            builder: widget.pantallaRuta ??
+                                (_) => const DeliveryMapaScreen(
+                                  volverAlCarrito: true,
+                                ),
+                          ),
+                        );
+                        if (!context.mounted || adjunto != true) return;
+                        mostrarMensaje(
+                          context,
+                          'Ruta adjunta a tu carrito. No incluye un costo de entrega.',
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ResumenCompra(
+                      subtotal: _carrito.subtotal,
+                      descuento: _carrito.descuento,
+                      codigoCupon: cupon?.codigo,
+                      total: _carrito.total,
+                      delivery: _tipoEntrega == 'delivery',
+                    ),
                   ],
                 ),
               ),
-              _barraResumenInferior(),
+              if (_avisoPedido != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: Text(
+                    _avisoPedido!,
+                    style: textoMass(
+                      tamano: 13,
+                      peso: FontWeight.w700,
+                      color: _confirmacionPendiente
+                          ? tokens.profundo
+                          : tokens.error,
+                      alto: 1.35,
+                    ),
+                  ),
+                ),
+              BarraConfirmacionCarrito(
+                unidades: _carrito.unidades,
+                total: _carrito.total,
+                descuento: _carrito.descuento,
+                enviando: _enviando,
+                invitado: AuthService.instance.usuario == null,
+                alConfirmar: _finalizar,
+              ),
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _tarjetaItem(ItemCarrito item) {
-    final p = item.producto;
-    return Aparecer(
-      key: ValueKey(p.id),
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 10),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      p.nombre,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: kMassBlue,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    precioUnaLinea(
-                      '${formatoPrecio(p.precio)} c/u · Subtotal ${formatoPrecio(item.subtotal)}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                tooltip: 'Quitar uno',
-                icon: const Icon(Icons.remove_circle_outline),
-                onPressed: () => _carrito.quitarUna(p),
-              ),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                transitionBuilder: (child, anim) =>
-                    ScaleTransition(scale: anim, child: child),
-                child: Text(
-                  '${item.cantidad}',
-                  key: ValueKey(item.cantidad),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16,
-                    fontFeatures: [FontFeature.tabularFigures()],
-                  ),
-                ),
-              ),
-              IconButton(
-                tooltip: 'Agregar uno',
-                icon: const Icon(Icons.add_circle_outline),
-                onPressed: item.cantidad >= p.stock
-                    ? null
-                    : () => _carrito.agregar(p),
-              ),
-              IconButton(
-                tooltip: 'Eliminar',
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
-                onPressed: () => _carrito.eliminar(p),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _tarjetaCuponQr() {
-    final cupon = _carrito.cuponAplicado;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: kMassMint,
-              foregroundColor: kMassBlue,
-              child: const Icon(Icons.qr_code_2),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: cupon == null
-                  ? const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '¿Tienes un QR de descuento?',
-                          style: TextStyle(
-                            color: kMassBlue,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Text(
-                          'Escanéalo para ahorrar en esta compra',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Cupón ${cupon.codigo} activo',
-                          style: TextStyle(
-                            color: Colors.green.shade800,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        Text(
-                          'Ahorras ${formatoPrecio(_carrito.descuento)} (${cupon.etiquetaDescuento})',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-            ),
-            if (cupon != null)
-              IconButton(
-                tooltip: 'Quitar cupón',
-                icon: const Icon(Icons.close, color: Colors.red),
-                onPressed: _carrito.quitarCupon,
-              )
-            else
-              OutlinedButton.icon(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        const EscanerHerramientasScreen(tabInicial: 0),
-                  ),
-                ),
-                icon: const Icon(Icons.qr_code_scanner, size: 17),
-                label: const Text('Escanear'),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _tarjetaEntregaYVerificacion() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Entrega y verificación de recojo',
-              style: TextStyle(
-                color: kMassBlue,
-                fontWeight: FontWeight.w900,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 10),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(
-                  value: 'recojo',
-                  icon: Icon(Icons.storefront),
-                  label: Text('Recojo en tienda'),
-                ),
-                ButtonSegment(
-                  value: 'delivery',
-                  icon: Icon(Icons.delivery_dining),
-                  label: Text('Delivery'),
-                ),
-              ],
-              selected: {_tipoEntrega},
-              onSelectionChanged: (v) => setState(() => _tipoEntrega = v.first),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _personaRecojoCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nombre de quien recoge o recibe el pedido',
-                prefixIcon: Icon(Icons.person_outline),
-                isDense: true,
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Foto de verificación de quien recoge (opcional)',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 12.5,
-                color: kMassBlue,
-              ),
-            ),
-            const SizedBox(height: 8),
-            if (_fotoRecojoBase64 != null && _fotoRecojoBase64!.isNotEmpty) ...[
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: Image.memory(
-                      base64Decode(_fotoRecojoBase64!),
-                      height: 150,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 6,
-                    right: 6,
-                    child: IconButton.filled(
-                      tooltip: 'Quitar foto',
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.red.shade700,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () => setState(() => _fotoRecojoBase64 = null),
-                      icon: const Icon(Icons.delete_outline, size: 18),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-            ],
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: _capturandoFoto
-                        ? null
-                        : () => _capturarFotoRecojo(ImageSource.camera),
-                    icon: const Icon(Icons.camera_alt_outlined, size: 18),
-                    label: const Text('Tomar foto'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: _capturandoFoto
-                        ? null
-                        : () => _capturarFotoRecojo(ImageSource.gallery),
-                    icon: const Icon(Icons.photo_library_outlined, size: 18),
-                    label: const Text('Adjuntar'),
-                  ),
-                ),
-              ],
-            ),
-            if (_tipoEntrega == 'delivery') ...[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: kMassMint,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.route, color: kMassBlue, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        _carrito.rutaSeleccionada ??
-                            'Aún no has calculado una ruta de entrega.',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const DeliveryMapaScreen(),
-                        ),
-                      ),
-                      child: const Text('Mapa'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _barraResumenInferior() {
-    final usuario = AuthService.instance.usuario;
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(blurRadius: 8, color: Colors.black12)],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _carrito.descuento > 0
-                        ? '${_carrito.unidades} unid. · Ahorro ${formatoPrecio(_carrito.descuento)}'
-                        : '${_carrito.unidades} unidades',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: _carrito.descuento > 0
-                          ? Colors.green.shade800
-                          : Colors.grey.shade700,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(end: _carrito.total),
-                    duration: const Duration(milliseconds: 280),
-                    builder: (context, v, _) => precioUnaLinea(
-                      'Total ${formatoPrecio(v)}',
-                      style: const TextStyle(
-                        color: kMassBlue,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            FilledButton.icon(
-              onPressed: _enviando ? null : _finalizar,
-              icon: _enviando
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.check_rounded),
-              label: Text(
-                usuario == null ? 'INGRESAR Y COMPRAR' : 'FINALIZAR COMPRA',
-                maxLines: 1,
-                softWrap: false,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

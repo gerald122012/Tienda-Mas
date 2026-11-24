@@ -72,6 +72,13 @@ flutter:
   assets:
     - assets/productos/marcas/
     - assets/catalogo/
+    - assets/branding/mass_logo.jpg
+    - assets/branding/mass_logo_transparente.png
+
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Variable.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

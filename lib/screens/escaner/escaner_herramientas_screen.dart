@@ -1,47 +1,73 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../main.dart';
 import '../../models/cupon.dart';
 import '../../models/producto.dart';
 import '../../services/auth_service.dart';
 import '../../services/carrito_service.dart';
+import '../../services/catalogo_sesion.dart';
+import '../../services/lectura_escaner.dart';
 import '../../services/permisos_service.dart';
+import '../../tema/tema_mass.dart';
 import '../../utils/utilidades.dart';
 import '../precios_mass/producto_form_screen.dart';
+import 'controles_camara.dart';
+import 'estado_permiso_camara.dart';
+import 'marco_escaner_mass.dart';
+import 'resultado_cupon.dart';
+import 'resultado_producto.dart';
+import 'selector_archivos_mass.dart';
+import 'selector_modo_escaner.dart';
 
-class _ArchivoSubido {
-  final String id;
-  final String nombre;
-  final String extension;
-  final int tamanoBytes;
-  final DateTime fecha;
-  final String categoria;
-
-  const _ArchivoSubido({
-    required this.id,
-    required this.nombre,
-    required this.extension,
-    required this.tamanoBytes,
-    required this.fecha,
-    required this.categoria,
-  });
-
-  String get tamanoTexto {
-    if (tamanoBytes < 1024) return '$tamanoBytes B';
-    if (tamanoBytes < 1024 * 1024) {
-      return '${(tamanoBytes / 1024).toStringAsFixed(1)} KB';
-    }
-    return '${(tamanoBytes / (1024 * 1024)).toStringAsFixed(2)} MB';
-  }
-}
+typedef SolicitudCamara =
+    Future<SituacionCamara> Function(BuildContext context, String motivo);
+typedef BuscarCupon = Future<CuponDescuento?> Function(String codigo);
+typedef BuscarProducto =
+    Future<Producto?> Function(String codigo, bool manual);
+typedef ElegirArchivo = Future<ArchivoElegido?> Function();
+typedef RegistrarArchivo =
+    Future<ResultadoRegistroArchivo> Function(
+      ArchivoElegido archivo,
+      String categoria,
+    );
 
 class EscanerHerramientasScreen extends StatefulWidget {
   final int tabInicial;
+  final bool volverAlCarrito;
+  final bool? esAdmin;
+  final SolicitudCamara? solicitarCamara;
+  final BuscarCupon? buscarCupon;
+  final BuscarProducto? buscarProducto;
+  final ElegirArchivo? elegirArchivo;
+  final RegistrarArchivo? registrarArchivo;
+  final Widget Function(ValueChanged<String> alLeer)? vistaCamara;
+  final Future<void> Function()? alIniciarCamara;
+  final Future<void> Function()? alLiberarCamara;
+  final Future<void> Function()? alPausarCamara;
+  final Future<bool> Function()? alternarLinterna;
+  final Future<bool> Function()? cambiarCamara;
 
-  const EscanerHerramientasScreen({super.key, this.tabInicial = 0});
+  const EscanerHerramientasScreen({
+    super.key,
+    this.tabInicial = 0,
+    this.volverAlCarrito = false,
+    this.esAdmin,
+    this.solicitarCamara,
+    this.buscarCupon,
+    this.buscarProducto,
+    this.elegirArchivo,
+    this.registrarArchivo,
+    this.vistaCamara,
+    this.alIniciarCamara,
+    this.alLiberarCamara,
+    this.alPausarCamara,
+    this.alternarLinterna,
+    this.cambiarCamara,
+  });
 
   @override
   State<EscanerHerramientasScreen> createState() =>
@@ -49,705 +75,769 @@ class EscanerHerramientasScreen extends StatefulWidget {
 }
 
 class _EscanerHerramientasScreenState extends State<EscanerHerramientasScreen>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-  final _codigoManualCtrl = TextEditingController();
-  final _barcodeManualCtrl = TextEditingController();
+    with WidgetsBindingObserver {
+  final _codigoManual = TextEditingController();
+  final _codigoBarras = TextEditingController();
+  final _compuerta = CompuertaLectura();
 
-  bool _camaraActivaQr = false;
-  bool _camaraActivaBarras = false;
-  bool _procesandoCodigo = false;
-  String? _ultimoQrLeido;
-  String? _ultimoBarcodeLeido;
-  Producto? _productoEncontrado;
-  bool _buscandoProducto = false;
+  late int _modo = widget.tabInicial.clamp(0, 2);
+  bool _camaraActiva = false;
+  bool _abriendo = false;
+  bool _procesando = false;
+  bool _sesionCamara = false;
+  bool _linternaReal = false;
+  bool _cambiarReal = false;
+  SituacionCamara? _permiso;
+  MobileScannerController? _control;
 
-  String _categoriaArchivo = 'Comprobante de pago';
-  bool _subiendoArchivo = false;
-  final List<_ArchivoSubido> _archivosLocales = [];
+  CuponDescuento? _cupon;
+  EstadoCuponVisual? _estadoCupon;
+  String _mensajeCupon = '';
+  Producto? _producto;
+  String? _codigoLeido;
+  bool _noEncontrado = false;
+  String? _errorProducto;
+
+  String _categoria = SelectorArchivosMass.categorias.first;
+  String? _errorArchivo;
+  final List<ArchivoSesion> _archivos = [];
+
+  bool get _esAdmin =>
+      widget.esAdmin ?? AuthService.instance.usuario?.esAdmin == true;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-      length: 3,
-      vsync: this,
-      initialIndex: widget.tabInicial.clamp(0, 2),
-    );
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {
-          _camaraActivaQr = false;
-          _camaraActivaBarras = false;
-        });
-      }
-    });
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed || !_sesionCamara) return;
+    final control = _control;
+    if (control != null) unawaited(control.stop());
+    final pausar = widget.alPausarCamara;
+    if (pausar != null) unawaited(pausar());
+  }
+
+  bool get _mostrarLinterna =>
+      widget.alternarLinterna != null || _linternaReal;
+
+  bool get _mostrarCambio => widget.cambiarCamara != null || _cambiarReal;
+
+  @override
   void dispose() {
-    _tabController.dispose();
-    _codigoManualCtrl.dispose();
-    _barcodeManualCtrl.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _codigoManual.dispose();
+    _codigoBarras.dispose();
+    final control = _control;
+    _control = null;
+    control?.removeListener(_alEstadoCamara);
+    control?.dispose();
+    if (_sesionCamara) {
+      _sesionCamara = false;
+      widget.alLiberarCamara?.call();
+    }
     super.dispose();
   }
 
-  Future<void> _activarCamaraQr() async {
-    final ok = await PermisosService.solicitarPermisoCamara(
-      context,
-      motivo: 'escanear códigos QR de descuento Tiendas Mass',
-    );
-    if (!ok || !mounted) return;
+  Future<void> _cambiarModo(int modo) async {
+    if (_modo == modo) return;
+    await _cerrarCamara();
+    if (!mounted) return;
     setState(() {
-      _camaraActivaQr = true;
-      _camaraActivaBarras = false;
+      _modo = modo;
+      _limpiarLectura();
     });
   }
 
-  Future<void> _activarCamaraBarras() async {
-    final ok = await PermisosService.solicitarPermisoCamara(
-      context,
-      motivo: 'escanear códigos de barras de productos',
-    );
-    if (!ok || !mounted) return;
-    setState(() {
-      _camaraActivaBarras = true;
-      _camaraActivaQr = false;
-    });
+  void _limpiarLectura() {
+    _compuerta.reanudar();
+    _cupon = null;
+    _estadoCupon = null;
+    _mensajeCupon = '';
+    _producto = null;
+    _codigoLeido = null;
+    _noEncontrado = false;
+    _errorProducto = null;
+    _procesando = false;
   }
 
-  Future<void> _procesarQrDescuento(String raw) async {
-    if (_procesandoCodigo) return;
-    final codigo = CuponDescuento.extraerCodigoDesdeQr(raw);
-    if (codigo.isEmpty) return;
-
-    setState(() {
-      _procesandoCodigo = true;
-      _ultimoQrLeido = codigo;
-      _camaraActivaQr = false;
-    });
-
-    try {
-      CuponDescuento? cupon;
-      try {
-        final snap = await FirebaseFirestore.instance
-            .collection('cupones_mass')
-            .where('codigo', isEqualTo: codigo)
-            .limit(1)
-            .get();
-        if (snap.docs.isNotEmpty) {
-          cupon = CuponDescuento.fromMap(
-            snap.docs.first.id,
-            snap.docs.first.data(),
-          );
-        }
-      } catch (_) {}
-
-      cupon ??= CuponDescuento.predeterminados
-          .where((c) => c.codigo == codigo)
-          .firstOrNull;
-
-      if (!mounted) return;
-      if (cupon == null) {
-        mostrarMensaje(
-          context,
-          'El código "$codigo" no corresponde a un cupón válido.',
-        );
-        return;
-      }
-
-      final carrito = CarritoService.instance;
-      if (carrito.vacio) {
-        mostrarMensaje(
-          context,
-          'Cupón ${cupon.codigo} (${cupon.etiquetaDescuento}) válido. Agrega productos al carrito para aplicarlo.',
-        );
-        return;
-      }
-      final err = carrito.aplicarCupon(cupon);
-      mostrarMensaje(
-        context,
-        err ??
-            '¡Cupón ${cupon.codigo} aplicado! (${cupon.etiquetaDescuento})',
+  Future<void> _activarCamara() async {
+    if (_abriendo || _modo == 2) return;
+    _abriendo = true;
+    final pedir = widget.solicitarCamara ??
+        (context, motivo) =>
+            PermisosService.situacionCamara(context, motivo: motivo);
+    final motivo = _modo == 0
+        ? 'leer códigos QR de cupones'
+        : 'leer códigos de barras de productos';
+    final situacion = await pedir(context, motivo);
+    if (!mounted) return;
+    if (situacion != SituacionCamara.concedida) {
+      setState(() => _permiso = situacion);
+      _abriendo = false;
+      return;
+    }
+    await widget.alIniciarCamara?.call();
+    if (!mounted) return;
+    _sesionCamara = true;
+    if (widget.vistaCamara == null) {
+      final control = MobileScannerController(
+        detectionSpeed: DetectionSpeed.normal,
+        facing: CameraFacing.back,
+        torchEnabled: false,
       );
-    } finally {
-      if (mounted) setState(() => _procesandoCodigo = false);
+      control.addListener(_alEstadoCamara);
+      _control = control;
+    }
+    setState(() {
+      _camaraActiva = true;
+      _permiso = SituacionCamara.concedida;
+    });
+    _abriendo = false;
+  }
+
+  void _alEstadoCamara() {
+    final estado = _control?.value;
+    if (estado == null || !mounted) return;
+    final linterna = estado.torchState != TorchState.unavailable;
+    final camaras = estado.availableCameras;
+    final cambiar = camaras == null || camaras >= 2;
+    if (linterna == _linternaReal && cambiar == _cambiarReal) return;
+    setState(() {
+      _linternaReal = linterna;
+      _cambiarReal = cambiar;
+    });
+  }
+
+  Future<void> _cerrarCamara() async {
+    final control = _control;
+    _control = null;
+    control?.removeListener(_alEstadoCamara);
+    _linternaReal = false;
+    _cambiarReal = false;
+    if (_camaraActiva && mounted) {
+      setState(() => _camaraActiva = false);
+    } else {
+      _camaraActiva = false;
+    }
+    if (_sesionCamara) {
+      _sesionCamara = false;
+      await widget.alLiberarCamara?.call();
+    }
+    try {
+      await control?.dispose();
+    } catch (_) {}
+  }
+
+  Future<void> _linterna() async {
+    if (widget.alternarLinterna != null) {
+      final ok = await widget.alternarLinterna!.call();
+      if (!ok && mounted) setState(() {});
+      return;
+    }
+    try {
+      await _control?.toggleTorch();
+    } catch (_) {
+      if (mounted) setState(() => _linternaReal = false);
     }
   }
 
-  Future<void> _buscarPorCodigoBarras(String codigo) async {
-    final limpio = codigo.trim();
-    if (limpio.isEmpty || _buscandoProducto) return;
+  Future<void> _cambiarCamara() async {
+    if (widget.cambiarCamara != null) {
+      await widget.cambiarCamara!.call();
+      return;
+    }
+    try {
+      await _control?.switchCamera();
+    } catch (_) {
+      if (mounted) setState(() => _cambiarReal = false);
+    }
+  }
 
-    setState(() {
-      _buscandoProducto = true;
-      _ultimoBarcodeLeido = limpio;
-      _productoEncontrado = null;
-      _camaraActivaBarras = false;
-    });
+  Future<void> _reanudar() async {
+    setState(_limpiarLectura);
+    try {
+      await _control?.start();
+    } catch (_) {}
+  }
 
+  Future<void> _alLeer(String raw) async {
+    if (_compuerta.ocupada || _procesando) return;
+    if (_modo == 0) {
+      await _procesarQr(raw);
+    } else if (_modo == 1) {
+      await _procesarBarras(raw, manual: false);
+    }
+  }
+
+  Future<CuponDescuento?> _resolverCupon(String codigo) {
+    if (widget.buscarCupon != null) return widget.buscarCupon!(codigo);
+    return _buscarCuponRegistrado(codigo);
+  }
+
+  Future<CuponDescuento?> _buscarCuponRegistrado(String codigo) async {
     try {
       final snap = await FirebaseFirestore.instance
-          .collection('productos_mass')
+          .collection('cupones_mass')
+          .where('codigo', isEqualTo: codigo)
+          .limit(1)
           .get();
-      final productos = snap.docs
-          .map((d) => Producto.fromMap(d.id, d.data()))
-          .toList();
-      final match = productos.where((p) {
-        return p.codigoBarras.trim() == limpio ||
-            p.id == limpio ||
-            p.nombre.toLowerCase().contains(limpio.toLowerCase());
-      }).firstOrNull;
+      if (snap.docs.isNotEmpty) {
+        final doc = snap.docs.first;
+        return CuponDescuento.fromMap(doc.id, doc.data());
+      }
+    } catch (_) {}
+    return CuponDescuento.predeterminados
+        .where((cupon) => cupon.codigo == codigo)
+        .firstOrNull;
+  }
 
+  Future<void> _procesarQr(String raw) async {
+    final previo = CuponDescuento.extraerCodigoDesdeQr(raw);
+    if (previo.isEmpty) {
+      setState(() {
+        _cupon = null;
+        _estadoCupon = EstadoCuponVisual.inexistente;
+        _mensajeCupon = 'El código no tiene un cupón reconocible.';
+      });
+      return;
+    }
+    if (!_compuerta.aceptar(previo)) return;
+    setState(() => _procesando = true);
+    try {
+      final cupon = await _resolverCupon(previo);
       if (!mounted) return;
-      setState(() => _productoEncontrado = match);
-      if (match == null) {
-        mostrarMensaje(
-          context,
-          'No se encontró ningún producto con el código "$limpio".',
-        );
+      final carrito = CarritoService.instance;
+      final decision = decidirCupon(
+        raw: raw,
+        cupon: cupon,
+        carritoVacio: carrito.vacio,
+        subtotal: carrito.subtotal,
+      );
+      var estado = decision.estado;
+      var mensaje = decision.mensaje;
+      if (decision.aplicar && cupon != null) {
+        final error = carrito.aplicarCupon(cupon);
+        if (error == null) {
+          estado = EstadoCuponVisual.aplicado;
+          mensaje = 'Cupón ${cupon.codigo} aplicado al carrito.';
+        } else {
+          estado = error.contains('activo')
+              ? EstadoCuponVisual.inactivo
+              : EstadoCuponVisual.condiciones;
+          mensaje = error;
+        }
       }
+      setState(() {
+        _cupon = cupon;
+        _estadoCupon = estado;
+        _mensajeCupon = mensaje;
+      });
+      await _control?.pause();
     } catch (_) {
-      if (mounted) {
-        mostrarMensaje(
-          context,
-          'No se pudo consultar el catálogo en este momento.',
-        );
-      }
+      if (!mounted) return;
+      setState(() {
+        _cupon = null;
+        _estadoCupon = EstadoCuponVisual.error;
+        _mensajeCupon = 'No se pudo validar el cupón.';
+      });
     } finally {
-      if (mounted) setState(() => _buscandoProducto = false);
+      if (mounted) setState(() => _procesando = false);
     }
   }
 
-  Future<void> _seleccionarYSubirArchivo() async {
-    if (_subiendoArchivo) return;
-    setState(() => _subiendoArchivo = true);
-    try {
-      final resultado = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'txt'],
-        withData: false,
+  Future<Producto?> _resolverProducto(String codigo, bool manual) {
+    if (widget.buscarProducto != null) {
+      return widget.buscarProducto!(codigo, manual);
+    }
+    return _buscarProductoRegistrado(codigo, manual);
+  }
+
+  Future<Producto?> _buscarProductoRegistrado(String codigo, bool manual) async {
+    final sesion = CatalogoSesion.instancia;
+    if (sesion.productos.isNotEmpty) {
+      return productoPorCodigo(
+        sesion.productos,
+        codigo,
+        permitirNombre: manual,
       );
-      if (resultado == null || resultado.files.isEmpty) return;
-      final f = resultado.files.first;
-      final ahora = DateTime.now();
-      final idLocal = 'file_${ahora.millisecondsSinceEpoch}';
-      final usuario = AuthService.instance.usuario;
+    }
+    final snap = await FirebaseFirestore.instance
+        .collection('productos_mass')
+        .get();
+    final productos = [
+      for (final doc in snap.docs) Producto.fromMap(doc.id, doc.data()),
+    ];
+    return productoPorCodigo(productos, codigo, permitirNombre: manual);
+  }
 
-      String idGuardado = idLocal;
-      try {
-        final docRef = await FirebaseFirestore.instance
-            .collection('archivos_subidos')
-            .add({
-              'nombre': f.name,
-              'extension': (f.extension ?? '').toLowerCase(),
-              'tamanoBytes': f.size,
-              'categoria': _categoriaArchivo,
-              'usuarioCorreo': usuario?.correo ?? 'invitado',
-              'fecha': Timestamp.fromDate(ahora),
-            });
-        idGuardado = docRef.id;
-      } catch (_) {}
-
+  Future<void> _procesarBarras(String raw, {required bool manual}) async {
+    final limpio = raw.trim();
+    if (limpio.isEmpty || !_compuerta.aceptar(limpio)) return;
+    setState(() {
+      _procesando = true;
+      _producto = null;
+      _noEncontrado = false;
+      _errorProducto = null;
+      _codigoLeido = limpio;
+    });
+    try {
+      final producto = await _resolverProducto(limpio, manual);
       if (!mounted) return;
       setState(() {
-        _archivosLocales.insert(
+        _producto = producto;
+        _noEncontrado = producto == null;
+      });
+      await _control?.pause();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _errorProducto = 'No se pudo consultar el catálogo en este momento.';
+      });
+    } finally {
+      if (mounted) setState(() => _procesando = false);
+    }
+  }
+
+  void _agregarProducto() {
+    final producto = _producto;
+    if (producto == null || !mounted) return;
+    final ok = CarritoService.instance.agregar(producto);
+    mostrarMensaje(
+      context,
+      ok
+          ? '${producto.nombre} agregado al carrito.'
+          : 'Producto sin stock disponible.',
+    );
+  }
+
+  Future<void> _seleccionarArchivo() async {
+    if (_procesando) return;
+    setState(() {
+      _procesando = true;
+      _errorArchivo = null;
+    });
+    try {
+      final archivo = await (widget.elegirArchivo ?? _elegirArchivo)();
+      if (archivo == null || !mounted) return;
+      final validez = validarArchivoElegido(archivo);
+      if (validez != EstadoArchivoLectura.valido) {
+        setState(() => _errorArchivo = mensajeArchivoInvalido(validez));
+        return;
+      }
+      final registro = await (widget.registrarArchivo ?? _registrarArchivo)(
+        archivo,
+        _categoria,
+      );
+      if (!mounted) return;
+      if (registro.error != null) {
+        setState(() => _errorArchivo = registro.error);
+        return;
+      }
+      setState(() {
+        _archivos.insert(
           0,
-          _ArchivoSubido(
-            id: idGuardado,
-            nombre: f.name,
-            extension: (f.extension ?? 'archivo').toUpperCase(),
-            tamanoBytes: f.size,
-            fecha: ahora,
-            categoria: _categoriaArchivo,
+          ArchivoSesion(
+            nombre: archivo.nombre,
+            extension: archivo.extension,
+            tamanoBytes: archivo.tamanoBytes,
+            categoria: _categoria,
+            resultado: registro.enNube
+                ? 'Metadatos registrados. El archivo no se almacenó.'
+                : 'Solo en esta sesión. No se registró en la nube.',
           ),
         );
       });
-      mostrarMensaje(context, 'Archivo "${f.name}" adjuntado correctamente.');
     } catch (_) {
       if (mounted) {
-        mostrarMensaje(context, 'No se pudo seleccionar el archivo.');
+        setState(() => _errorArchivo = 'No se pudo procesar el archivo.');
       }
     } finally {
-      if (mounted) setState(() => _subiendoArchivo = false);
+      if (mounted) setState(() => _procesando = false);
+    }
+  }
+
+  Future<ArchivoElegido?> _elegirArchivo() async {
+    final resultado = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: extensionesArchivoPermitidas.toList(),
+      withData: false,
+    );
+    if (resultado == null || resultado.files.isEmpty) return null;
+    final archivo = resultado.files.first;
+    return ArchivoElegido(
+      nombre: archivo.name,
+      extension: (archivo.extension ?? '').toLowerCase(),
+      tamanoBytes: archivo.size,
+    );
+  }
+
+  Future<ResultadoRegistroArchivo> _registrarArchivo(
+    ArchivoElegido archivo,
+    String categoria,
+  ) async {
+    try {
+      await FirebaseFirestore.instance.collection('archivos_subidos').add({
+        'nombre': archivo.nombre,
+        'extension': archivo.extension.toLowerCase(),
+        'tamanoBytes': archivo.tamanoBytes,
+        'categoria': categoria,
+        'usuarioCorreo': AuthService.instance.usuario?.correo ?? 'invitado',
+        'fecha': Timestamp.fromDate(DateTime.now()),
+      });
+      return const ResultadoRegistroArchivo(enNube: true);
+    } catch (_) {
+      return const ResultadoRegistroArchivo(enNube: false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final esAdmin = AuthService.instance.usuario?.esAdmin == true;
+    final tokens = TokensMass.de(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Escáner y Archivos'),
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: kMassBlue,
-          unselectedLabelColor: kMassBlue.withValues(alpha: 0.65),
-          indicatorColor: kMassBlue,
-          tabs: const [
-            Tab(icon: Icon(Icons.qr_code_2), text: 'QR Descuento'),
-            Tab(icon: Icon(Icons.barcode_reader), text: 'Cód. Barras'),
-            Tab(icon: Icon(Icons.upload_file), text: 'Archivos'),
+      backgroundColor: tokens.fondo,
+      appBar: AppBar(title: const Text('Escáner Mass')),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+            child: Text(
+              'QR, códigos de barras y archivos',
+              style: textoMass(tamano: 13, color: tokens.tintaSuave),
+            ),
+          ),
+          SelectorModoEscaner(indice: _modo, alElegir: _cambiarModo),
+          Expanded(child: _cuerpo()),
+        ],
+      ),
+    );
+  }
+
+  Widget _cuerpo() {
+    if (_modo == 2) return _archivosVista();
+    if (_camaraActiva) return _visor();
+    return _preparacion();
+  }
+
+  Widget _visor() {
+    final tokens = TokensMass.de(context);
+    final instrucciones = _modo == 0
+        ? 'Apunta el código QR. La guía es solo visual.'
+        : 'Alinea el código de barras. La guía es solo visual.';
+    return Stack(
+      children: [
+        Positioned.fill(child: _superficieCamara()),
+        Positioned.fill(child: MarcoEscanerMass(barras: _modo == 1)),
+        Positioned(
+          top: 12,
+          left: 16,
+          right: 16,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: tokens.superficie.withValues(alpha: 0.92),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text(
+                instrucciones,
+                textAlign: TextAlign.center,
+                style: textoMass(tamano: 12, color: tokens.profundo),
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ControlesCamara(
+                linterna: _mostrarLinterna,
+                cambiarCamara: _mostrarCambio,
+                alLinterna: _linterna,
+                alCambiarCamara: _cambiarCamara,
+                alReiniciar: _reanudar,
+                alCerrar: _cerrarCamara,
+              ),
+              if (_resultado != null)
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.sizeOf(context).height * 0.46,
+                  ),
+                  child: SingleChildScrollView(child: _resultado),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _superficieCamara() {
+    final vista = widget.vistaCamara;
+    if (vista != null) {
+      return ColoredBox(
+        color: TokensMass.de(context).profundo,
+        child: vista(_alLeer),
+      );
+    }
+    final control = _control;
+    if (control == null) return const SizedBox.shrink();
+    return MobileScanner(
+      controller: control,
+      onDetect: (capture) {
+        final raw = capture.barcodes.firstOrNull?.rawValue;
+        if (raw != null && raw.isNotEmpty) _alLeer(raw);
+      },
+      placeholderBuilder: (context) => ColoredBox(
+        color: TokensMass.de(context).profundo,
+        child: Center(
+          child: Text(
+            'Preparando cámara',
+            style: textoMass(color: Colors.white),
+          ),
+        ),
+      ),
+      errorBuilder: (context, error) => const ColoredBox(
+        color: Color(0xFF06206A),
+        child: Center(
+          child: EstadoPermisoCamara(
+            situacion: SituacionCamara.noDisponible,
+            alReintentar: null,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _preparacion() {
+    final tokens = TokensMass.de(context);
+    final qr = _modo == 0;
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: tokens.profundo,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: SizedBox(
+            height: 168,
+            child: Stack(
+              children: [
+                Positioned.fill(child: MarcoEscanerMass(barras: !qr)),
+                Center(
+                  child: Icon(
+                    qr ? Icons.qr_code_2_rounded : Icons.barcode_reader,
+                    color: tokens.sello,
+                    size: qr ? 36 : 28,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          qr ? 'Cupón por código QR' : 'Producto por código de barras',
+          style: textoMass(
+            tamano: 16,
+            peso: FontWeight.w700,
+            color: tokens.profundo,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          qr
+              ? 'La cámara lee el código y valida el cupón. No abre enlaces.'
+              : 'Si el código existe en el catálogo, verás el producto antes de agregarlo.',
+          style: textoMass(tamano: 13, color: tokens.tintaSuave),
+        ),
+        if (_permiso != null && _permiso != SituacionCamara.concedida) ...[
+          const SizedBox(height: 8),
+          EstadoPermisoCamara(
+            situacion: _permiso!,
+            alReintentar: _activarCamara,
+          ),
+        ],
+        const SizedBox(height: 12),
+        FilledButton.icon(
+          key: const Key('activar-camara'),
+          onPressed: _activarCamara,
+          style: FilledButton.styleFrom(
+            foregroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(48),
+            textStyle: textoMass(peso: FontWeight.w700, color: Colors.white),
+          ),
+          icon: const Icon(Icons.photo_camera_rounded, color: Colors.white),
+          label: const Text('Activar cámara'),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          qr ? 'Escribir el código' : 'Escribir el código o el nombre exacto',
+          style: textoMass(tamano: 14, peso: FontWeight.w700),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                key: Key(qr ? 'codigo-manual' : 'codigo-barras'),
+                controller: qr ? _codigoManual : _codigoBarras,
+                textCapitalization: qr
+                    ? TextCapitalization.characters
+                    : TextCapitalization.none,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: qr ? 'MASS10' : 'Código de barras',
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            FilledButton(
+              key: Key(qr ? 'aplicar-codigo' : 'buscar-barras'),
+              onPressed: _procesando
+                  ? null
+                  : () => qr
+                        ? _procesarQr(_codigoManual.text)
+                        : _procesarBarras(_codigoBarras.text, manual: true),
+              style: FilledButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(48, 48),
+                textStyle: textoMass(peso: FontWeight.w700, color: Colors.white),
+              ),
+              child: Text(qr ? 'Validar' : 'Buscar'),
+            ),
+          ],
+        ),
+        if (_resultado != null) ...[
+          const SizedBox(height: 12),
+          _resultado!,
+        ],
+        if (qr) ...[
+          const SizedBox(height: 16),
+          Text(
+            'Cupones de la aplicación',
+            style: textoMass(
+              tamano: 14,
+              peso: FontWeight.w700,
+              color: tokens.profundo,
+            ),
+          ),
+          const SizedBox(height: 8),
+          for (final cupon in CuponDescuento.predeterminados)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: tokens.superficie,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: tokens.linea),
+                ),
+                child: ListTile(
+                  title: Text(
+                    '${cupon.codigo} · ${cupon.etiquetaDescuento}',
+                    style: textoMass(tamano: 14, peso: FontWeight.w700),
+                  ),
+                  subtitle: Text(
+                    cupon.descripcion,
+                    style: textoMass(tamano: 12, color: tokens.tintaSuave),
+                  ),
+                  trailing: TextButton(
+                    key: Key('usar-${cupon.codigo}'),
+                    onPressed: _procesando ? null : () => _procesarQr(cupon.codigo),
+                    child: const Text('Usar'),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ],
+    );
+  }
+
+  Widget? get _resultado {
+    if (_errorProducto != null) {
+      return _aviso(_errorProducto!);
+    }
+    if (_estadoCupon != null) {
+      return ResultadoCupon(
+        cupon: _cupon,
+        estado: _estadoCupon!,
+        mensaje: _mensajeCupon,
+        alEscanearDeNuevo: _reanudar,
+        alVolverAlCarrito: widget.volverAlCarrito
+            ? () => Navigator.maybePop(context)
+            : null,
+      );
+    }
+    if (_producto != null) {
+      return ResultadoProducto(
+        producto: _producto!,
+        alAgregar: _agregarProducto,
+        alEscanearDeNuevo: _reanudar,
+      );
+    }
+    if (_noEncontrado && _codigoLeido != null) {
+      return ProductoNoEncontrado(
+        codigo: _codigoLeido!,
+        alEscanearDeNuevo: _reanudar,
+        alRegistrar: _esAdmin
+            ? () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductoFormScreen(
+                    codigoBarrasInicial: _codigoLeido,
+                  ),
+                ),
+              )
+            : null,
+      );
+    }
+    return null;
+  }
+
+  Widget _aviso(String texto) {
+    final tokens = TokensMass.de(context);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: tokens.superficie,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: tokens.linea),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              texto,
+              style: textoMass(tamano: 13, color: tokens.error),
+            ),
+            TextButton(
+              key: const Key('escanear-de-nuevo'),
+              onPressed: _reanudar,
+              child: const Text('Escanear de nuevo'),
+            ),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _tabQrDescuento(),
-          _tabCodigoBarras(esAdmin),
-          _tabSubidaArchivos(),
-        ],
-      ),
     );
   }
 
-  Widget _tabQrDescuento() {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Card(
-          clipBehavior: Clip.antiAlias,
-          child: _camaraActivaQr
-              ? SizedBox(
-                  height: 260,
-                  child: Stack(
-                    children: [
-                      MobileScanner(
-                        onDetect: (capture) {
-                          final raw = capture.barcodes.firstOrNull?.rawValue;
-                          if (raw != null && raw.isNotEmpty) {
-                            _procesarQrDescuento(raw);
-                          }
-                        },
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: IconButton.filled(
-                          onPressed: () =>
-                              setState(() => _camaraActivaQr = false),
-                          icon: const Icon(Icons.close),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.qr_code_scanner_rounded,
-                        size: 56,
-                        color: kMassBlue,
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Escanea un QR de descuento Mass',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: kMassBlue,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Apunta a un código QR promocional para aplicar el descuento directo en tu carrito.',
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 14),
-                      FilledButton.icon(
-                        onPressed: _activarCamaraQr,
-                        icon: const Icon(Icons.camera_alt),
-                        label: const Text('ACTIVAR CÁMARA QR'),
-                      ),
-                    ],
-                  ),
-                ),
-        ),
-        const SizedBox(height: 12),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Ingresar código manualmente',
-                  style: TextStyle(
-                    color: kMassBlue,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _codigoManualCtrl,
-                        textCapitalization: TextCapitalization.characters,
-                        decoration: const InputDecoration(
-                          hintText: 'Ej. MASS10',
-                          isDense: true,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    FilledButton(
-                      onPressed: () =>
-                          _procesarQrDescuento(_codigoManualCtrl.text),
-                      child: const Text('APLICAR'),
-                    ),
-                  ],
-                ),
-                if (_ultimoQrLeido != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Último código leído: $_ultimoQrLeido',
-                    style: const TextStyle(fontSize: 12, color: kMassBlue),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        const Text(
-          'Cupones vigentes disponibles',
-          style: TextStyle(
-            color: kMassBlue,
-            fontWeight: FontWeight.w900,
-            fontSize: 15,
-          ),
-        ),
-        const SizedBox(height: 8),
-        for (final c in CuponDescuento.predeterminados)
-          Card(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: kMassYellow,
-                foregroundColor: kMassBlue,
-                child: const Icon(Icons.local_offer),
-              ),
-              title: Text(
-                '${c.codigo} · ${c.etiquetaDescuento}',
-                style: const TextStyle(
-                  color: kMassBlue,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              subtitle: Text(c.descripcion),
-              trailing: TextButton(
-                onPressed: () => _procesarQrDescuento(c.codigo),
-                child: const Text('USAR'),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _tabCodigoBarras(bool esAdmin) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Card(
-          clipBehavior: Clip.antiAlias,
-          child: _camaraActivaBarras
-              ? SizedBox(
-                  height: 260,
-                  child: Stack(
-                    children: [
-                      MobileScanner(
-                        onDetect: (capture) {
-                          final raw = capture.barcodes.firstOrNull?.rawValue;
-                          if (raw != null && raw.isNotEmpty) {
-                            _buscarPorCodigoBarras(raw);
-                          }
-                        },
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: IconButton.filled(
-                          onPressed: () =>
-                              setState(() => _camaraActivaBarras = false),
-                          icon: const Icon(Icons.close),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.barcode_reader,
-                        size: 56,
-                        color: kMassBlue,
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Escáner de códigos de barras',
-                        style: TextStyle(
-                          color: kMassBlue,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Escanea el código de barras EAN/UPC de un producto para consultar su precio o agregarlo al carrito.',
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 14),
-                      FilledButton.icon(
-                        onPressed: _activarCamaraBarras,
-                        icon: const Icon(Icons.camera_alt),
-                        label: const Text('ESCANEAR CÓDIGO DE BARRAS'),
-                      ),
-                    ],
-                  ),
-                ),
-        ),
-        const SizedBox(height: 12),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _barcodeManualCtrl,
-                    decoration: const InputDecoration(
-                      hintText: 'Ingresar código de barras o nombre',
-                      isDense: true,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: _buscandoProducto
-                      ? null
-                      : () => _buscarPorCodigoBarras(_barcodeManualCtrl.text),
-                  child: const Text('BUSCAR'),
-                ),
-              ],
-            ),
-          ),
-        ),
-        if (_buscandoProducto)
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-        if (_productoEncontrado != null) ...[
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: kMassMint,
-                foregroundColor: kMassBlue,
-                child: Icon(Icons.inventory_2_outlined),
-              ),
-              title: Text(
-                _productoEncontrado!.nombre,
-                style: const TextStyle(
-                  color: kMassBlue,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              subtitle: Text(
-                '${_productoEncontrado!.marca} · ${formatoPrecio(_productoEncontrado!.precio)} · Stock: ${_productoEncontrado!.stock}',
-              ),
-              trailing: esAdmin
-                  ? IconButton(
-                      icon: const Icon(Icons.edit, color: kMassBlue),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ProductoFormScreen(
-                            producto: _productoEncontrado,
-                          ),
-                        ),
-                      ),
-                    )
-                  : FilledButton(
-                      onPressed: () {
-                        final ok = CarritoService.instance.agregar(
-                          _productoEncontrado!,
-                        );
-                        mostrarMensaje(
-                          context,
-                          ok
-                              ? '${_productoEncontrado!.nombre} agregado al carrito.'
-                              : 'Producto sin stock disponible.',
-                        );
-                      },
-                      child: const Text('AGREGAR'),
-                    ),
-            ),
-          ),
-        ] else if (_ultimoBarcodeLeido != null && !_buscandoProducto && esAdmin) ...[
-          const SizedBox(height: 12),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Código $_ultimoBarcodeLeido no registrado',
-                    style: const TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 8),
-                  FilledButton.icon(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductoFormScreen(
-                          codigoBarrasInicial: _ultimoBarcodeLeido,
-                        ),
-                      ),
-                    ),
-                    icon: const Icon(Icons.add),
-                    label: const Text('REGISTRAR PRODUCTO CON ESTE CÓDIGO'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _tabSubidaArchivos() {
-    const categorias = [
-      'Comprobante de pago',
-      'Boleta / Factura',
-      'Documento de local',
-      'Otro documento',
-    ];
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Icon(
-                  Icons.cloud_upload_outlined,
-                  size: 48,
-                  color: kMassBlue,
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Subir comprobantes o archivos',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kMassBlue,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'Adjunta vouchers de Yape/Plin, PDFs o documentos de soporte (JPG, PNG, PDF, DOC).',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13),
-                ),
-                const SizedBox(height: 14),
-                DropdownButtonFormField<String>(
-                  initialValue: _categoriaArchivo,
-                  decoration: const InputDecoration(
-                    labelText: 'Tipo de documento',
-                    isDense: true,
-                  ),
-                  items: categorias
-                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                      .toList(),
-                  onChanged: (v) {
-                    if (v != null) setState(() => _categoriaArchivo = v);
-                  },
-                ),
-                const SizedBox(height: 12),
-                FilledButton.icon(
-                  onPressed: _subiendoArchivo ? null : _seleccionarYSubirArchivo,
-                  icon: _subiendoArchivo
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.attach_file),
-                  label: Text(
-                    _subiendoArchivo ? 'ADJUNTANDO…' : 'SELECCIONAR ARCHIVO',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        const Text(
-          'Archivos adjuntados en esta sesión',
-          style: TextStyle(
-            color: kMassBlue,
-            fontWeight: FontWeight.w900,
-            fontSize: 15,
-          ),
-        ),
-        const SizedBox(height: 8),
-        if (_archivosLocales.isEmpty)
-          const Card(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Aún no has subido archivos.',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-        else
-          for (final a in _archivosLocales)
-            Card(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: kMassMint,
-                  foregroundColor: kMassBlue,
-                  child: Icon(
-                    a.extension == 'PDF'
-                        ? Icons.picture_as_pdf
-                        : Icons.insert_drive_file_outlined,
-                  ),
-                ),
-                title: Text(
-                  a.nombre,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
-                subtitle: Text(
-                  '${a.categoria} · ${a.extension} · ${a.tamanoTexto} · ${formatoFechaHora(a.fecha)}',
-                ),
-                trailing: IconButton(
-                  tooltip: 'Quitar',
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  onPressed: () {
-                    setState(() => _archivosLocales.remove(a));
-                  },
-                ),
-              ),
-            ),
-      ],
+  Widget _archivosVista() {
+    return SelectorArchivosMass(
+      categoria: _categoria,
+      alElegirCategoria: (valor) => setState(() => _categoria = valor),
+      alSeleccionar: _seleccionarArchivo,
+      procesando: _procesando,
+      error: _errorArchivo,
+      archivos: _archivos,
+      alQuitar: (archivo) => setState(() => _archivos.remove(archivo)),
     );
   }
 }

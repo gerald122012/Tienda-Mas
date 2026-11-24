@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../main.dart';
 import '../../models/producto.dart';
 import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
@@ -24,7 +28,13 @@ class ProductoFormScreen extends StatefulWidget {
 class _ProductoFormScreenState extends State<ProductoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scroll = ScrollController();
+  final _picker = ImagePicker();
   bool _guardando = false;
+  bool _cargandoImagen = false;
+  bool _quitarBase64 = false;
+  Uint8List? _nuevaImagen;
+  Uint8List? _base64Inicial;
+  String _nombreArchivo = '';
   final _servicio = FirebaseService('productos_mass');
 
   bool get _esNuevo => (widget.producto?.id ?? '').isEmpty;
@@ -59,6 +69,8 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
       _disponible = p.disponible;
       _fechaRegistro = p.fechaRegistro;
       _presentaciones = List.of(p.presentaciones);
+      _base64Inicial = decodificarImagenProducto(p.imagenBase64);
+      if (_base64Inicial != null) _nombreArchivo = 'Imagen actual';
     } else if (widget.codigoBarrasInicial != null) {
       _codigoBarras.text = widget.codigoBarrasInicial!;
     }
@@ -103,6 +115,11 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
           ? (widget.producto?.imagenLicencia ?? '')
           : '',
       imagenFuente: conservarFoto ? (widget.producto?.imagenFuente ?? '') : '',
+      imagenBase64: imagenBase64ParaGuardar(
+        anterior: widget.producto?.imagenBase64 ?? '',
+        nueva: _nuevaImagen,
+        quitar: _quitarBase64,
+      ),
       nombre: _nombre.text.trim(),
       descripcion: _descripcion.text.trim(),
       marca: _marca.text.trim().isEmpty ? 'Mass' : _marca.text.trim(),
@@ -126,6 +143,172 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
       setState(() => _guardando = false);
       mostrarMensaje(context, 'Error al guardar: $e');
     }
+  }
+
+  Uint8List? get _bytesVistaPrevia {
+    if (_nuevaImagen != null) return _nuevaImagen;
+    if (_quitarBase64) return null;
+    return _base64Inicial;
+  }
+
+  bool get _puedeQuitarBase64 =>
+      _nuevaImagen != null || (!_quitarBase64 && _base64Inicial != null);
+
+  Future<void> _elegirImagen() async {
+    if (_cargandoImagen || _guardando) return;
+    setState(() => _cargandoImagen = true);
+    try {
+      final archivo = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 600,
+        maxHeight: 600,
+        imageQuality: 70,
+        requestFullMetadata: false,
+      );
+      if (!mounted || archivo == null) return;
+      final bytes = await archivo.readAsBytes();
+      if (!mounted) return;
+      final error = await validarImagenProducto(bytes);
+      if (!mounted) return;
+      if (error != null) {
+        mostrarMensaje(context, error);
+        return;
+      }
+      setState(() {
+        _nuevaImagen = bytes;
+        _nombreArchivo = archivo.name.trim().isEmpty
+            ? 'imagen'
+            : archivo.name.trim();
+        _quitarBase64 = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      mostrarMensaje(
+        context,
+        'No se pudo leer la imagen seleccionada. Se conservó la imagen anterior.',
+      );
+    } finally {
+      if (mounted) setState(() => _cargandoImagen = false);
+    }
+  }
+
+  void _quitarImagen() {
+    setState(() {
+      _nuevaImagen = null;
+      _nombreArchivo = '';
+      _quitarBase64 = true;
+    });
+  }
+
+  Widget _vistaRespaldo() {
+    final url = _imagenUrl.text.trim();
+    final uri = Uri.tryParse(url);
+    if (uri != null && uri.scheme == 'https' && uri.host.isNotEmpty) {
+      return Image.network(
+        url,
+        fit: BoxFit.contain,
+        errorBuilder: (_, _, _) => _vistaAssetOVacio(),
+      );
+    }
+    return _vistaAssetOVacio();
+  }
+
+  Widget _vistaAssetOVacio() {
+    final asset = widget.producto?.imagenAsset.trim() ?? '';
+    if (asset.isNotEmpty) {
+      return Image.asset(
+        asset,
+        fit: BoxFit.contain,
+        errorBuilder: (_, _, _) => _vistaVacia(),
+      );
+    }
+    return _vistaVacia();
+  }
+
+  Widget _vistaVacia() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.image_outlined, color: kMassBlue, size: 36),
+        SizedBox(height: 6),
+        Text(
+          'Sin imagen cargada',
+          style: TextStyle(color: kMassBlue, fontWeight: FontWeight.w700),
+        ),
+      ],
+    );
+  }
+
+  Widget _seccionImagen() {
+    final bytes = _bytesVistaPrevia;
+    final detalle = bytes != null
+        ? '${_nombreArchivo.isEmpty ? 'Imagen actual' : _nombreArchivo} · ${textoPesoImagen(bytes.length)}'
+        : _quitarBase64
+        ? 'Imagen cargada quitada. Se aplicará al guardar.'
+        : 'JPG o PNG · máximo 600 × 600 px y 150 KB';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          'Imagen del producto',
+          style: TextStyle(
+            color: kMassBlue,
+            fontWeight: FontWeight.w900,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(height: 4),
+        const Text(
+          'La imagen cargada tiene prioridad sobre la URL y se guarda al confirmar el producto.',
+          style: TextStyle(fontSize: 12.5),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 180,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: kMassBlue.withValues(alpha: 0.18)),
+          ),
+          child: _cargandoImagen
+              ? const Center(child: CircularProgressIndicator())
+              : bytes != null
+              ? Image.memory(
+                  bytes,
+                  fit: BoxFit.contain,
+                  gaplessPlayback: true,
+                  semanticLabel: 'Vista previa del producto',
+                  errorBuilder: (_, _, _) => _vistaRespaldo(),
+                )
+              : _vistaRespaldo(),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          detalle,
+          style: TextStyle(color: Colors.grey.shade800, fontSize: 12.5),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            OutlinedButton.icon(
+              onPressed: _cargandoImagen || _guardando ? null : _elegirImagen,
+              icon: const Icon(Icons.photo_library_outlined),
+              label: Text(bytes == null ? 'ELEGIR IMAGEN' : 'CAMBIAR IMAGEN'),
+            ),
+            TextButton.icon(
+              onPressed: !_puedeQuitarBase64 || _cargandoImagen || _guardando
+                  ? null
+                  : _quitarImagen,
+              icon: const Icon(Icons.hide_image_outlined),
+              label: const Text('QUITAR IMAGEN'),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   @override
@@ -188,11 +371,14 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
                     prefixIcon: Icon(Icons.barcode_reader),
                   ),
                 ),
+                _seccionImagen(),
                 TextFormField(
                   controller: _imagenUrl,
+                  onChanged: (_) => setState(() {}),
                   decoration: const InputDecoration(
                     labelText: 'URL de la imagen (opcional)',
-                    helperText: 'Puedes agregar la foto más adelante.',
+                    helperText:
+                        'Opcional. Se usa cuando no hay una imagen cargada.',
                   ),
                   keyboardType: TextInputType.url,
                   validator: (valor) {

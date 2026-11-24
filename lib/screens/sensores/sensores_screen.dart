@@ -3,631 +3,491 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 
-import '../../main.dart';
 import '../../models/cupon.dart';
 import '../../services/carrito_service.dart';
+import '../../services/telemetria_sensores.dart';
+import '../../tema/tema_mass.dart';
 import '../../utils/utilidades.dart';
+import 'brujula_mass.dart';
+import 'instrumento_acelerometro.dart';
+import 'instrumento_giroscopio.dart';
+import 'nivel_mass.dart';
+import 'tarjeta_cupon_movimiento.dart';
 
 class SensoresScreen extends StatefulWidget {
-  const SensoresScreen({super.key});
+  final bool visible;
+  final FuenteSensores? fuente;
+  final DateTime Function()? ahora;
+
+  const SensoresScreen({
+    super.key,
+    this.visible = true,
+    this.fuente,
+    this.ahora,
+  });
 
   @override
   State<SensoresScreen> createState() => _SensoresScreenState();
 }
 
-class _SensoresScreenState extends State<SensoresScreen> {
-  StreamSubscription<AccelerometerEvent>? _accSub;
-  StreamSubscription<UserAccelerometerEvent>? _userAccSub;
-  StreamSubscription<GyroscopeEvent>? _gyroSub;
-  StreamSubscription<MagnetometerEvent>? _magSub;
+class _SensoresScreenState extends State<SensoresScreen>
+    with WidgetsBindingObserver {
+  final _acc = ValueNotifier<VistaAcelerometro>(VistaAcelerometro.vacia);
+  final _gyro = ValueNotifier<VistaGiroscopio>(VistaGiroscopio.vacia);
+  final _brujula = ValueNotifier<VistaBrujula>(VistaBrujula.vacia);
+  final _nivel = ValueNotifier<VistaNivel>(VistaNivel.vacia);
 
-  double _ax = 0, _ay = 0, _az = 9.81;
-  double _uax = 0, _uay = 0, _uaz = 0;
-  double _gx = 0, _gy = 0, _gz = 0;
-  double _mx = 0, _my = 0, _mz = 0;
+  final _serieAcc = SerieLecturas();
+  final _serieLineal = SerieLecturas();
+  final _serieGyro = SerieLecturas();
+  final _detector = DetectorSacudida();
 
-  double _picoAceleracion = 0;
-  int _sacudidas = 0;
-  DateTime? _ultimaSacudida;
-  bool _pausado = false;
-  bool _sensorRealDetectado = false;
-  bool _modoSimulacion = false;
-  Timer? _simTimer;
-  double _faseSim = 0;
+  StreamSubscription<LecturaEjes>? _subAcc;
+  StreamSubscription<LecturaEjes>? _subLineal;
+  StreamSubscription<LecturaEjes>? _subGyro;
+  StreamSubscription<LecturaEjes>? _subMag;
+
+  SituacionSensor _sitAcc = SituacionSensor.esperando;
+  SituacionSensor _sitLineal = SituacionSensor.esperando;
+  SituacionSensor _sitGyro = SituacionSensor.esperando;
+  SituacionSensor _sitMag = SituacionSensor.esperando;
+
+  LecturaEjes? _gravedad;
+  LecturaEjes? _lineal;
+  LecturaEjes? _giro;
+  double _pico = 0;
+  double? _rumboMostrado;
+  double? _rumboLectura;
+
+  bool _escuchando = false;
+  bool _primerPlano = true;
+  bool _pausaManual = false;
+  bool _simulacion = false;
+  Timer? _simulador;
+  Timer? _pintura;
+  bool _pinturaPendiente = false;
+  double _fase = 0;
+  int _sacudidasSimuladas = 0;
+  String _avisoSimulacion = '';
+
+  CuponDescuento? _cuponOfrecido;
+  String _mensajeCupon =
+      'Esperando un movimiento real del dispositivo.';
+  bool _cuponAplicado = false;
+
+  DateTime get _ahora => widget.ahora?.call() ?? DateTime.now();
+
+  bool get _puedeLeer =>
+      widget.visible && _primerPlano && !_pausaManual && !_simulacion;
 
   @override
   void initState() {
     super.initState();
-    _iniciarSensores();
+    WidgetsBinding.instance.addObserver(this);
+    _sincronizar();
   }
 
-  void _iniciarSensores() {
+  @override
+  void didUpdateWidget(covariant SensoresScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.fuente != widget.fuente) _cancelar();
+    if (oldWidget.visible != widget.visible ||
+        oldWidget.fuente != widget.fuente) {
+      _sincronizar();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final activo = state == AppLifecycleState.resumed;
+    if (activo == _primerPlano) return;
+    _primerPlano = activo;
+    _sincronizar();
+  }
+
+  void _sincronizar() {
+    if (_puedeLeer) {
+      _suscribir();
+    } else {
+      _cancelar();
+    }
+    final simular =
+        widget.visible && _primerPlano && !_pausaManual && _simulacion;
+    if (simular) {
+      _iniciarSimulacion();
+    } else {
+      _simulador?.cancel();
+      _simulador = null;
+    }
+    _publicar(forzar: true);
+  }
+
+  void _suscribir() {
+    if (_escuchando) return;
+    final fuente = widget.fuente ?? FuenteSensores.dispositivo();
+    _escuchando = true;
+    _subAcc = _escuchar(fuente.acelerometro, _onGravedad, _falloAcc);
+    _subLineal = _escuchar(fuente.lineal, _onLineal, _falloLineal);
+    _subGyro = _escuchar(fuente.giroscopio, _onGiro, _falloGiro);
+    _subMag = _escuchar(fuente.magnetometro, _onMag, _falloMag);
+  }
+
+  StreamSubscription<LecturaEjes>? _escuchar(
+    Stream<LecturaEjes> Function() abrir,
+    void Function(LecturaEjes) onData,
+    void Function() onError,
+  ) {
     try {
-      _accSub = accelerometerEventStream().listen(
-        (e) {
-          if (_pausado || _modoSimulacion || !mounted) return;
-          _procesarAcelerometro(e.x, e.y, e.z, real: true);
-        },
-        onError: (_) {},
-      );
-      _userAccSub = userAccelerometerEventStream().listen(
-        (e) {
-          if (_pausado || _modoSimulacion || !mounted) return;
-          final mag = math.sqrt(e.x * e.x + e.y * e.y + e.z * e.z);
-          if (mag > 12.5) _registrarSacudida();
-          setState(() {
-            _sensorRealDetectado = true;
-            _uax = e.x;
-            _uay = e.y;
-            _uaz = e.z;
-          });
-        },
-        onError: (_) {},
-      );
-      _gyroSub = gyroscopeEventStream().listen(
-        (e) {
-          if (_pausado || _modoSimulacion || !mounted) return;
-          setState(() {
-            _sensorRealDetectado = true;
-            _gx = e.x;
-            _gy = e.y;
-            _gz = e.z;
-          });
-        },
-        onError: (_) {},
-      );
-      _magSub = magnetometerEventStream().listen(
-        (e) {
-          if (_pausado || _modoSimulacion || !mounted) return;
-          setState(() {
-            _sensorRealDetectado = true;
-            _mx = e.x;
-            _my = e.y;
-            _mz = e.z;
-          });
-        },
-        onError: (_) {},
-      );
-    } catch (_) {}
+      return abrir().listen(onData, onError: (_) => onError());
+    } catch (_) {
+      onError();
+      return null;
+    }
   }
 
-  void _procesarAcelerometro(
-    double x,
-    double y,
-    double z, {
-    required bool real,
-  }) {
-    final mag = math.sqrt(x * x + y * y + z * z);
-    final pico = mag > _picoAceleracion ? mag : _picoAceleracion;
-    if (mag > 22.0) _registrarSacudida();
-    setState(() {
-      if (real) _sensorRealDetectado = true;
-      _ax = x;
-      _ay = y;
-      _az = z;
-      _picoAceleracion = pico;
-    });
+  void _cancelar() {
+    _subAcc?.cancel();
+    _subLineal?.cancel();
+    _subGyro?.cancel();
+    _subMag?.cancel();
+    _subAcc = null;
+    _subLineal = null;
+    _subGyro = null;
+    _subMag = null;
+    _escuchando = false;
+    _pintura?.cancel();
+    _pinturaPendiente = false;
   }
 
-  void _registrarSacudida() {
-    final ahora = DateTime.now();
-    if (_ultimaSacudida != null &&
-        ahora.difference(_ultimaSacudida!) < const Duration(seconds: 2)) {
+  SituacionSensor _estado(SituacionSensor actual) {
+    if (_simulacion && widget.visible && _primerPlano && !_pausaManual) {
+      return SituacionSensor.simulado;
+    }
+    if (!widget.visible || !_primerPlano || _pausaManual) {
+      if (actual == SituacionSensor.noDisponible ||
+          actual == SituacionSensor.error) {
+        return actual;
+      }
+      if (actual == SituacionSensor.esperando) return actual;
+      return SituacionSensor.enPausa;
+    }
+    return actual == SituacionSensor.simulado ? SituacionSensor.esperando : actual;
+  }
+
+  void _onGravedad(LecturaEjes lectura) => _recibirGravedad(lectura, real: true);
+
+  void _recibirGravedad(LecturaEjes lectura, {required bool real}) {
+    if (!mounted || (_simulacion && real) || _pausaManual) return;
+    if (!widget.visible || !_primerPlano) return;
+    if (!lectura.valida) {
+      _sitAcc = SituacionSensor.error;
+      _programarPintura();
       return;
     }
-    _ultimaSacudida = ahora;
-    HapticFeedback.heavyImpact();
-    setState(() => _sacudidas++);
-    if (!mounted) return;
-    _mostrarRecompensaSacudida();
+    _gravedad = lectura;
+    _sitAcc = real ? SituacionSensor.activo : SituacionSensor.simulado;
+    _serieAcc.agregar(lectura);
+    if (lectura.magnitud > _pico) _pico = lectura.magnitud;
+    if (real) _ofrecerSiSacude(lineal: 0, total: lectura.magnitud);
+    _programarPintura();
   }
 
-  void _mostrarRecompensaSacudida() {
-    final cupon = _sacudidas.isOdd
-        ? CuponDescuento.predeterminados.first
-        : CuponDescuento.predeterminados[2];
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: kMassBlue,
-          content: Text(
-            '¡Sacudida detectada! Desbloqueaste ${cupon.codigo} (${cupon.etiquetaDescuento})',
-            style: const TextStyle(
-              color: kMassYellow,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          action: SnackBarAction(
-            label: 'APLICAR',
-            textColor: Colors.white,
-            onPressed: () {
-              final err = CarritoService.instance.aplicarCupon(cupon);
-              if (mounted) {
-                mostrarMensaje(
-                  context,
-                  err ?? 'Cupón ${cupon.codigo} aplicado a tu carrito.',
-                );
-              }
-            },
-          ),
-        ),
-      );
+  void _onLineal(LecturaEjes lectura) {
+    if (!mounted || _simulacion || _pausaManual) return;
+    if (!widget.visible || !_primerPlano) return;
+    if (!lectura.valida) {
+      _sitLineal = SituacionSensor.error;
+      _programarPintura();
+      return;
+    }
+    _lineal = lectura;
+    _sitLineal = SituacionSensor.activo;
+    _serieLineal.agregar(lectura);
+    _ofrecerSiSacude(lineal: lectura.magnitud, total: 0);
+    _programarPintura();
   }
 
-  void _alternarSimulacion(bool activo) {
-    _simTimer?.cancel();
-    setState(() => _modoSimulacion = activo);
-    if (!activo) return;
-    _simTimer = Timer.periodic(const Duration(milliseconds: 120), (_) {
-      if (_pausado || !mounted) return;
-      _faseSim += 0.16;
-      setState(() {
-        _ax = math.sin(_faseSim) * 3.8;
-        _ay = math.cos(_faseSim * 0.7) * 2.9;
-        _az = 9.81 + math.sin(_faseSim * 1.4) * 0.4;
-        _uax = math.cos(_faseSim * 1.3) * 1.2;
-        _uay = math.sin(_faseSim * 1.1) * 0.9;
-        _uaz = math.sin(_faseSim * 0.6) * 0.5;
-        _gx = math.sin(_faseSim * 0.9) * 0.8;
-        _gy = math.cos(_faseSim * 1.2) * 0.7;
-        _gz = math.sin(_faseSim * 0.5) * 0.4;
-        _mx = math.cos(_faseSim * 0.25) * 42.0;
-        _my = math.sin(_faseSim * 0.25) * 42.0;
-        _mz = -18.5;
-        final mag = math.sqrt(_ax * _ax + _ay * _ay + _az * _az);
-        if (mag > _picoAceleracion) _picoAceleracion = mag;
-      });
+  void _onGiro(LecturaEjes lectura) => _recibirGiro(lectura, real: true);
+
+  void _recibirGiro(LecturaEjes lectura, {required bool real}) {
+    if (!mounted || (_simulacion && real) || _pausaManual) return;
+    if (!widget.visible || !_primerPlano) return;
+    if (!lectura.valida) {
+      _sitGyro = SituacionSensor.error;
+      _programarPintura();
+      return;
+    }
+    _giro = lectura;
+    _sitGyro = real ? SituacionSensor.activo : SituacionSensor.simulado;
+    _serieGyro.agregar(lectura);
+    _programarPintura();
+  }
+
+  void _onMag(LecturaEjes lectura) => _recibirMag(lectura, real: true);
+
+  void _recibirMag(LecturaEjes lectura, {required bool real}) {
+    if (!mounted || (_simulacion && real) || _pausaManual) return;
+    if (!widget.visible || !_primerPlano) return;
+    final rumbo = rumboGrados(lectura.x, lectura.y);
+    if (!lectura.valida || rumbo == null) {
+      _sitMag = SituacionSensor.error;
+      _programarPintura();
+      return;
+    }
+    final saltar = MediaQuery.disableAnimationsOf(context);
+    _rumboMostrado = _rumboMostrado == null
+        ? rumbo
+        : suavizarRumbo(_rumboMostrado!, rumbo, saltar: saltar);
+    _rumboLectura = rumbo;
+    _sitMag = real ? SituacionSensor.activo : SituacionSensor.simulado;
+    _programarPintura();
+  }
+
+  void _falloAcc() {
+    _sitAcc = SituacionSensor.noDisponible;
+    _programarPintura();
+  }
+
+  void _falloLineal() {
+    _sitLineal = SituacionSensor.noDisponible;
+    _programarPintura();
+  }
+
+  void _falloGiro() {
+    _sitGyro = SituacionSensor.noDisponible;
+    _programarPintura();
+  }
+
+  void _falloMag() {
+    _sitMag = SituacionSensor.noDisponible;
+    _programarPintura();
+  }
+
+  void _ofrecerSiSacude({required double lineal, required double total}) {
+    final resultado = _detector.evaluar(
+      magnitudLineal: lineal,
+      magnitudConGravedad: total,
+      ahora: _ahora,
+    );
+    if (!resultado.detectada || resultado.cupon == null) return;
+    try {
+      HapticFeedback.heavyImpact();
+    } catch (_) {}
+    final cupon = resultado.cupon!;
+    setState(() {
+      _cuponOfrecido = cupon;
+      _cuponAplicado = false;
+      _mensajeCupon = 'Sacudida detectada. Puedes usar ${cupon.codigo}.';
     });
+    mostrarMensaje(context, _mensajeCupon);
+  }
+
+  void _usarCupon() {
+    final cupon = _cuponOfrecido;
+    if (cupon == null || !mounted) return;
+    final error = CarritoService.instance.aplicarCupon(cupon);
+    setState(() {
+      _cuponAplicado = error == null;
+      _mensajeCupon = error ?? 'Cupón ${cupon.codigo} aplicado al carrito.';
+    });
+    mostrarMensaje(context, _mensajeCupon);
+  }
+
+  void _programarPintura() {
+    if (_pinturaPendiente) return;
+    _pinturaPendiente = true;
+    _pintura = Timer(const Duration(milliseconds: 100), () {
+      _pinturaPendiente = false;
+      _publicar();
+    });
+  }
+
+  void _publicar({bool forzar = false}) {
+    if (!mounted) return;
+    if (!forzar && _pinturaPendiente) return;
+    final sitAcc = _estado(
+      _sitAcc == SituacionSensor.esperando &&
+              _sitLineal != SituacionSensor.esperando
+          ? _sitLineal
+          : _sitAcc,
+    );
+    _acc.value = VistaAcelerometro(
+      gravedad: _gravedad,
+      lineal: _lineal,
+      serieGravedad: _serieAcc.muestras,
+      serieLineal: _serieLineal.muestras,
+      situacion: sitAcc,
+      pico: _pico,
+    );
+    _gyro.value = VistaGiroscopio(
+      lectura: _giro,
+      serie: _serieGyro.muestras,
+      situacion: _estado(_sitGyro),
+    );
+    _brujula.value = VistaBrujula(
+      gradosMostrados: _rumboMostrado,
+      gradosLectura: _rumboLectura,
+      situacion: _estado(_sitMag),
+    );
+    _nivel.value = VistaNivel(
+      burbuja: _gravedad == null ? null : burbujaDesdeAcelerometro(_gravedad!),
+      lectura: _gravedad,
+      situacion: _estado(_sitAcc),
+    );
+  }
+
+  void _iniciarSimulacion() {
+    _simulador ??= Timer.periodic(const Duration(milliseconds: 120), (_) {
+      if (!mounted) return;
+      _fase += 0.16;
+      _recibirGravedad(
+        LecturaEjes(
+          math.sin(_fase) * 3.8,
+          math.cos(_fase * 0.7) * 2.9,
+          9.81 + math.sin(_fase * 1.4) * 0.4,
+        ),
+        real: false,
+      );
+      _lineal = LecturaEjes(
+        math.cos(_fase * 1.3) * 1.2,
+        math.sin(_fase * 1.1) * 0.9,
+        math.sin(_fase * 0.6) * 0.5,
+      );
+      _sitLineal = SituacionSensor.simulado;
+      _serieLineal.agregar(_lineal!);
+      _recibirGiro(
+        LecturaEjes(
+          math.sin(_fase * 0.9) * 0.8,
+          math.cos(_fase * 1.2) * 0.7,
+          math.sin(_fase * 0.5) * 0.4,
+        ),
+        real: false,
+      );
+      _recibirMag(
+        LecturaEjes(
+          math.cos(_fase * 0.25) * 42,
+          math.sin(_fase * 0.25) * 42,
+          -18.5,
+        ),
+        real: false,
+      );
+    });
+  }
+
+  void _alternarSimulacion(bool activa) {
+    _serieAcc.limpiar();
+    _serieLineal.limpiar();
+    _serieGyro.limpiar();
+    _gravedad = null;
+    _lineal = null;
+    _giro = null;
+    _rumboMostrado = null;
+    _rumboLectura = null;
+    _pico = 0;
+    _sitAcc = SituacionSensor.esperando;
+    _sitLineal = SituacionSensor.esperando;
+    _sitGyro = SituacionSensor.esperando;
+    _sitMag = SituacionSensor.esperando;
+    setState(() => _simulacion = activa);
+    _sincronizar();
+  }
+
+  void _simularSacudida() {
+    setState(() {
+      _sacudidasSimuladas++;
+      _avisoSimulacion = 'Sacudida simulada. No se desbloqueó un cupón.';
+    });
+  }
+
+  void _alternarPausa() {
+    setState(() => _pausaManual = !_pausaManual);
+    _sincronizar();
   }
 
   @override
   void dispose() {
-    _accSub?.cancel();
-    _userAccSub?.cancel();
-    _gyroSub?.cancel();
-    _magSub?.cancel();
-    _simTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    _cancelar();
+    _simulador?.cancel();
+    _acc.dispose();
+    _gyro.dispose();
+    _brujula.dispose();
+    _nivel.dispose();
     super.dispose();
-  }
-
-  double get _fuerzaG => math.sqrt(_ax * _ax + _ay * _ay + _az * _az) / 9.80665;
-
-  double get _rumboGrados {
-    if (_mx == 0 && _my == 0) return 0;
-    final rad = math.atan2(_my, _mx);
-    return (rad * 180 / math.pi + 360) % 360;
-  }
-
-  String get _puntoCardinal {
-    const puntos = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
-    final idx = ((_rumboGrados + 22.5) / 45).floor() % 8;
-    return puntos[idx];
   }
 
   @override
   Widget build(BuildContext context) {
-    final tabNum = const [FontFeature.tabularFigures()];
+    final tokens = TokensMass.de(context);
     return Scaffold(
-      backgroundColor: kMassCream,
-      body: Column(
+      backgroundColor: tokens.fondo,
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-            decoration: const BoxDecoration(
-              color: kMassBlue,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Sensores en Tiempo Real',
-                            style: TextStyle(
-                              color: kMassYellow,
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Telemetría activa · Agita el equipo para desbloquear un cupón',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton.filled(
-                      tooltip: _pausado ? 'Reanudar lectura' : 'Pausar lectura',
-                      style: IconButton.styleFrom(
-                        backgroundColor: kMassYellow,
-                        foregroundColor: kMassBlue,
-                      ),
-                      onPressed: () => setState(() => _pausado = !_pausado),
-                      icon: Icon(_pausado ? Icons.play_arrow : Icons.pause),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    _etiquetaEstado(
-                      icono: _pausado
-                          ? Icons.pause_circle
-                          : Icons.sensors_rounded,
-                      texto: _pausado
-                          ? 'Lectura pausada'
-                          : _modoSimulacion
-                          ? 'Simulación activa'
-                          : _sensorRealDetectado
-                          ? 'Hardware conectado'
-                          : 'Esperando señal física',
-                      colorFondo: _pausado
-                          ? Colors.orange.shade100
-                          : kMassYellow,
-                    ),
-                    ActionChip(
-                      avatar: Icon(
-                        _modoSimulacion
-                            ? Icons.stop_circle_outlined
-                            : Icons.science_outlined,
-                        size: 16,
-                        color: kMassBlue,
-                      ),
-                      label: Text(
-                        _modoSimulacion ? 'Usar sensor físico' : 'Simular señal',
-                        style: const TextStyle(
-                          color: kMassBlue,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                        ),
-                      ),
-                      backgroundColor: Colors.white,
-                      onPressed: () => _alternarSimulacion(!_modoSimulacion),
-                    ),
-                    ActionChip(
-                      avatar: const Icon(
-                        Icons.vibration,
-                        size: 16,
-                        color: kMassBlue,
-                      ),
-                      label: Text(
-                        'Probar agitar ($_sacudidas)',
-                        style: const TextStyle(
-                          color: kMassBlue,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                        ),
-                      ),
-                      backgroundColor: kMassMint,
-                      onPressed: _registrarSacudida,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(14),
-              children: [
-                _tarjetaNivelYBrujula(tabNum),
-                const SizedBox(height: 12),
-                _tarjetaSensor(
-                  titulo: 'Acelerómetro (con gravedad)',
-                  subtitulo:
-                      'Fuerza G: ${_fuerzaG.toStringAsFixed(2)} g · Pico: ${_picoAceleracion.toStringAsFixed(1)} m/s²',
-                  icono: Icons.speed_rounded,
-                  unidad: 'm/s²',
-                  x: _ax,
-                  y: _ay,
-                  z: _az,
-                  escalaMax: 15,
-                  tabNum: tabNum,
-                ),
-                const SizedBox(height: 10),
-                _tarjetaSensor(
-                  titulo: 'Aceleración Lineal (sin gravedad)',
-                  subtitulo: 'Movimiento neto del dispositivo en el espacio',
-                  icono: Icons.trending_up_rounded,
-                  unidad: 'm/s²',
-                  x: _uax,
-                  y: _uay,
-                  z: _uaz,
-                  escalaMax: 10,
-                  tabNum: tabNum,
-                ),
-                const SizedBox(height: 10),
-                _tarjetaSensor(
-                  titulo: 'Giroscopio',
-                  subtitulo: 'Velocidad angular de rotación en 3 ejes',
-                  icono: Icons.threesixty_rounded,
-                  unidad: 'rad/s',
-                  x: _gx,
-                  y: _gy,
-                  z: _gz,
-                  escalaMax: 6,
-                  tabNum: tabNum,
-                ),
-                const SizedBox(height: 10),
-                _tarjetaSensor(
-                  titulo: 'Magnetómetro (Brújula)',
-                  subtitulo:
-                      'Orientación: ${_rumboGrados.toStringAsFixed(0)}° ($_puntoCardinal)',
-                  icono: Icons.explore_rounded,
-                  unidad: 'µT',
-                  x: _mx,
-                  y: _my,
-                  z: _mz,
-                  escalaMax: 80,
-                  tabNum: tabNum,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _etiquetaEstado({
-    required IconData icono,
-    required String texto,
-    required Color colorFondo,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: colorFondo,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icono, size: 16, color: kMassBlue),
-          const SizedBox(width: 6),
           Text(
-            texto,
-            style: const TextStyle(
-              color: kMassBlue,
-              fontWeight: FontWeight.w800,
-              fontSize: 12,
+            'Sensores inteligentes',
+            style: textoMass(
+              tamano: 22,
+              peso: FontWeight.w700,
+              color: tokens.profundo,
             ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Explora las capacidades de tu dispositivo',
+            style: textoMass(tamano: 13, color: tokens.tintaSuave),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Las lecturas se pausan al salir de esta pestaña. No se envían a la nube.',
+            style: textoMass(tamano: 12, color: tokens.tintaSuave),
+          ),
+          const SizedBox(height: 14),
+          ValueListenableBuilder<VistaAcelerometro>(
+            valueListenable: _acc,
+            builder: (_, vista, _) => InstrumentoAcelerometro(
+              vista: vista,
+              alReiniciarPico: () {
+                _pico = 0;
+                _publicar(forzar: true);
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+          ValueListenableBuilder<VistaGiroscopio>(
+            valueListenable: _gyro,
+            builder: (_, vista, _) => InstrumentoGiroscopio(vista: vista),
+          ),
+          const SizedBox(height: 12),
+          ValueListenableBuilder<VistaBrujula>(
+            valueListenable: _brujula,
+            builder: (_, vista, _) => BrujulaMass(vista: vista),
+          ),
+          const SizedBox(height: 12),
+          ValueListenableBuilder<VistaNivel>(
+            valueListenable: _nivel,
+            builder: (_, vista, _) => NivelMass(vista: vista),
+          ),
+          const SizedBox(height: 12),
+          TarjetaCuponMovimiento(
+            cupon: _cuponOfrecido,
+            mensaje: _mensajeCupon,
+            aplicado: _cuponAplicado,
+            alUsar: _cuponOfrecido == null ? null : _usarCupon,
+          ),
+          const SizedBox(height: 12),
+          HerramientasDemostracion(
+            simulando: _simulacion,
+            pausado: _pausaManual,
+            sacudidasSimuladas: _sacudidasSimuladas,
+            aviso: _avisoSimulacion,
+            alSimular: _alternarSimulacion,
+            alSimularSacudida: _simularSacudida,
+            alPausar: _alternarPausa,
           ),
         ],
       ),
-    );
-  }
-
-  Widget _tarjetaNivelYBrujula(List<FontFeature> tabNum) {
-    final normX = (_ax / 9.81).clamp(-1.0, 1.0);
-    final normY = (_ay / 9.81).clamp(-1.0, 1.0);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 96,
-              height: 96,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: kMassMint,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: kMassBlue, width: 2),
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: kMassBlue.withValues(alpha: 0.3),
-                        ),
-                      ),
-                    ),
-                    AnimatedAlign(
-                      duration: const Duration(milliseconds: 110),
-                      alignment: Alignment(-normX * 0.85, normY * 0.85),
-                      child: Container(
-                        width: 22,
-                        height: 22,
-                        decoration: const BoxDecoration(
-                          color: kMassBlue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: SizedBox(
-                            width: 8,
-                            height: 8,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: kMassYellow,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Nivel e Inclinación',
-                    style: TextStyle(
-                      color: kMassBlue,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Rumbo magnético: ${_rumboGrados.toStringAsFixed(1)}° $_puntoCardinal',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFeatures: tabNum,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Fuerza G total: ${_fuerzaG.toStringAsFixed(2)} g',
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontFeatures: tabNum,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton.icon(
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.zero,
-                      ),
-                      onPressed: () => setState(() => _picoAceleracion = 0),
-                      icon: const Icon(Icons.refresh, size: 16),
-                      label: const Text('Reiniciar pico'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _tarjetaSensor({
-    required String titulo,
-    required String subtitulo,
-    required IconData icono,
-    required String unidad,
-    required double x,
-    required double y,
-    required double z,
-    required double escalaMax,
-    required List<FontFeature> tabNum,
-  }) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: kMassYellow,
-                  foregroundColor: kMassBlue,
-                  child: Icon(icono),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        titulo,
-                        style: const TextStyle(
-                          color: kMassBlue,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15,
-                        ),
-                      ),
-                      Text(
-                        subtitulo,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade700,
-                          fontFeatures: tabNum,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _barraEje('X', x, escalaMax, unidad, Colors.red.shade600, tabNum),
-            const SizedBox(height: 6),
-            _barraEje('Y', y, escalaMax, unidad, Colors.green.shade700, tabNum),
-            const SizedBox(height: 6),
-            _barraEje('Z', z, escalaMax, unidad, kMassBlue, tabNum),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _barraEje(
-    String eje,
-    double valor,
-    double escalaMax,
-    String unidad,
-    Color color,
-    List<FontFeature> tabNum,
-  ) {
-    final fraccion = (valor.abs() / escalaMax).clamp(0.0, 1.0);
-    return Row(
-      children: [
-        SizedBox(
-          width: 22,
-          child: Text(
-            eje,
-            style: TextStyle(fontWeight: FontWeight.w900, color: color),
-          ),
-        ),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: fraccion,
-              minHeight: 10,
-              backgroundColor: color.withValues(alpha: 0.14),
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: 84,
-          child: Text(
-            '${valor.toStringAsFixed(2)} $unidad',
-            textAlign: TextAlign.right,
-            maxLines: 1,
-            softWrap: false,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-              fontFeatures: tabNum,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

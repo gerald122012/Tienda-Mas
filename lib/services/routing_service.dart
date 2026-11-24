@@ -33,6 +33,7 @@ class ResultadoRuta {
 }
 
 class RoutingService {
+  /// Fórmula histórica. No se aplica al carrito, al pedido ni a la pantalla.
   static double tarifaDelivery(double metros) {
     const base = 3.00;
     const precioKm = 1.50;
@@ -61,17 +62,19 @@ class RoutingService {
     required LatLng destino,
     required ModoRuta modo,
     required ResultadoRuta ruta,
+    String? aclaracion,
   }) {
     final link = urlGoogleMaps(origen: origen, destino: destino, modo: modo);
     final modoTexto = modo == ModoRuta.carro ? 'En vehículo' : 'Caminando';
-    final tarifa = modo == ModoRuta.carro
-        ? '\nTarifa de envío: S/ ${tarifaDelivery(ruta.distanciaMetros).toStringAsFixed(2)}'
-        : '';
+    final nota = (aclaracion == null || aclaracion.trim().isEmpty)
+        ? ''
+        : '\n${aclaracion.trim()}';
     return 'Ruta Tiendas Mass\n'
         'Destino: $nombreDestino\n'
         'Modo: $modoTexto\n'
-        'Distancia: ${ruta.distanciaKm.toStringAsFixed(2)} km\n'
-        'Tiempo estimado: ${ruta.duracionMinutos} min$tarifa\n'
+        'Distancia de recorrido: ${ruta.distanciaKm.toStringAsFixed(2)} km\n'
+        'Tiempo estimado del recorrido: ${ruta.duracionMinutos} min\n'
+        'No es un tiempo de entrega garantizado.$nota\n'
         'Abrir en Google Maps: $link';
   }
 

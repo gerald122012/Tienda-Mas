@@ -1,0 +1,12 @@
+{
+  "name": "tiendasmass-backend",
+  "private": true,
+  "description": "Intermediario local de TiendasMass. No expone el token de API Perú.",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

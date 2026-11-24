@@ -14,6 +14,8 @@ class Tienda {
   double? latitud;
   double? longitud;
 
+  static const ciudadNoDisponible = 'Ciudad no disponible';
+
   static const ciudades = [
     'Lima',
     'Arequipa',
@@ -24,6 +26,13 @@ class Tienda {
     'Cusco',
     'Huancayo',
   ];
+
+  /// Conserva el texto registrado. Un valor vacío no se sustituye por Lima.
+  static String ciudadVisible(String valor) {
+    final texto = valor.trim();
+    if (texto.isEmpty) return ciudadNoDisponible;
+    return texto;
+  }
 
   Tienda({
     this.id = '',
@@ -64,10 +73,10 @@ class Tienda {
     return Tienda(
       id: id,
       nombre: (datos['nombre'] ?? '').toString(),
-      ciudad: ciudades.contains(ciudadLeida) ? ciudadLeida : ciudades.first,
+      ciudad: ciudadVisible(ciudadLeida),
       distrito: (datos['distrito'] ?? '').toString(),
       direccion: (datos['direccion'] ?? '').toString(),
-      horario: (datos['horario'] ?? '7:00 AM - 10:00 PM').toString(),
+      horario: (datos['horario'] ?? '').toString(),
       cantidadProductos: (datos['cantidadProductos'] ?? 0).toInt(),
       fechaApertura: fecha is Timestamp ? fecha.toDate() : DateTime.now(),
       abierta: datos['abierta'] ?? true,

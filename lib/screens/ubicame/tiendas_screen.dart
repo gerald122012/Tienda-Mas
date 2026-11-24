@@ -1,31 +1,106 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../main.dart';
 import '../../models/tienda.dart';
+import '../../services/consulta_tiendas.dart';
 import '../../services/firebase_service.dart';
+import '../../services/formato_recorrido.dart';
+import '../../services/lectura_ubicacion.dart';
+import '../../tema/tema_mass.dart';
 import '../../utils/utilidades.dart';
-import '../../widgets/aparecer.dart';
-import '../../widgets/botones_acciones.dart';
 import '../delivery/delivery_mapa_screen.dart';
+import 'busqueda_tiendas.dart';
+import 'estado_tiendas.dart';
+import 'estado_ubicacion.dart';
+import 'filtro_ciudades.dart';
+import 'tarjeta_tienda_cliente.dart';
 import 'tienda_form_screen.dart';
 
 class TiendasScreen extends StatefulWidget {
   final bool esAdmin;
+  final Stream<List<Tienda>> Function()? lectura;
+  final Future<LecturaUbicacion> Function()? leerUbicacion;
+  final Future<void> Function()? abrirAjustes;
+  final Widget Function(Tienda tienda)? pantallaRuta;
 
-  const TiendasScreen({super.key, this.esAdmin = false});
+  const TiendasScreen({
+    super.key,
+    this.esAdmin = false,
+    this.lectura,
+    this.leerUbicacion,
+    this.abrirAjustes,
+    this.pantallaRuta,
+  });
 
   @override
   State<TiendasScreen> createState() => _TiendasScreenState();
 }
 
 class _TiendasScreenState extends State<TiendasScreen> {
-  final _servicio = FirebaseService('tiendas_mass');
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> _datos = _servicio
-      .coleccion
-      .snapshots();
-  String _ciudadFiltro = 'Todas';
+  final _busqueda = TextEditingController();
+  final _foco = FocusNode();
+  late Stream<List<Tienda>> _fuente;
+  String _ciudad = 'Todas';
+  LatLng? _origen;
+  SituacionUbicacion? _situacion;
+  bool _obteniendo = false;
+  String? _avisoCoordenadas;
+  FirebaseService? _servicio;
+
+  FirebaseService get _admin => _servicio ??= FirebaseService('tiendas_mass');
+
+  @override
+  void initState() {
+    super.initState();
+    _fuente = _abrirFuente();
+    _foco.addListener(() {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void didUpdateWidget(TiendasScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lectura != widget.lectura) {
+      _fuente = _abrirFuente();
+    }
+  }
+
+  @override
+  void dispose() {
+    _busqueda.dispose();
+    _foco.dispose();
+    super.dispose();
+  }
+
+  Stream<List<Tienda>> _abrirFuente() {
+    final inyectada = widget.lectura;
+    if (inyectada != null) return inyectada();
+    return _admin.coleccion.snapshots().map(
+      (snap) => snap.docs.map((doc) => Tienda.fromMap(doc.id, doc.data())).toList(),
+    );
+  }
+
+  void _reintentar() {
+    setState(() => _fuente = _abrirFuente());
+  }
+
+  Future<void> _usarUbicacion() async {
+    if (_obteniendo) return;
+    setState(() => _obteniendo = true);
+    final lectura = widget.leerUbicacion != null
+        ? await widget.leerUbicacion!()
+        : await leerUbicacionDelDispositivo(context);
+    if (!mounted) return;
+    setState(() {
+      _obteniendo = false;
+      _situacion = lectura.situacion;
+      if (lectura.situacion == SituacionUbicacion.concedida &&
+          lectura.punto != null) {
+        _origen = lectura.punto;
+      }
+    });
+  }
 
   void _abrirFormulario([Tienda? tienda]) {
     Navigator.push(
@@ -40,210 +115,307 @@ class _TiendasScreenState extends State<TiendasScreen> {
 
   Future<void> _eliminar(Tienda tienda) async {
     if (!await confirmarEliminar(context, tienda.nombre)) return;
-    await _servicio.eliminar(tienda.id);
+    await _admin.eliminar(tienda.id);
     if (!mounted) return;
     mostrarDeshacer(
       context,
       'Tienda Mass eliminada',
-      () => _servicio.restaurar(tienda.id, tienda.toMap()),
+      () => _admin.restaurar(tienda.id, tienda.toMap()),
     );
   }
 
-  void _abrirRutaTienda(Tienda t) {
-    final destino = (t.latitud != null && t.longitud != null)
-        ? LatLng(t.latitud!, t.longitud!)
-        : null;
+  void _abrirRuta(Tienda tienda) {
+    if (!coordenadasValidas(tienda.latitud, tienda.longitud)) {
+      setState(() => _avisoCoordenadas = tienda.nombre.trim());
+      return;
+    }
+    final detalle = [
+      tienda.distrito.trim(),
+      tienda.ciudad.trim(),
+      tienda.direccion.trim(),
+    ].where((parte) => parte.isNotEmpty).join(' · ');
+    setState(() => _avisoCoordenadas = null);
+    final nombre = tienda.nombre.trim().isEmpty ? 'Establecimiento' : tienda.nombre.trim();
+    final personalizada = widget.pantallaRuta;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => DeliveryMapaScreen(
-          nombreDestinoInicial: '${t.nombre} (${t.distrito})',
-          destinoInicial: destino,
-        ),
+        builder: (_) => personalizada != null
+            ? personalizada(tienda)
+            : DeliveryMapaScreen(
+                nombreDestinoInicial: nombre,
+                detalleDestinoInicial: detalle,
+                destinoInicial: LatLng(tienda.latitud!, tienda.longitud!),
+                destinoDeTienda: true,
+              ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
     return Scaffold(
-      backgroundColor: kMassCream,
+      backgroundColor: tokens.fondo,
       floatingActionButton: widget.esAdmin
           ? FloatingActionButton.extended(
               heroTag: 'tiendas_mass',
               onPressed: () => _abrirFormulario(),
-              icon: const Icon(Icons.add_location_alt),
-              label: const Text(
-                'NUEVA TIENDA',
-                style: TextStyle(fontWeight: FontWeight.w900),
-              ),
+              icon: const Icon(Icons.add_location_alt_outlined),
+              label: const Text('Nueva tienda'),
             )
           : null,
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-            decoration: const BoxDecoration(
-              color: kMassBlue,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      body: StreamBuilder<List<Tienda>>(
+        key: ValueKey(identityHashCode(_fuente)),
+        stream: _fuente,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return _cuerpo(
+              tokens: tokens,
+              contenido: EstadoTiendas(
+                icono: Icons.cloud_off_rounded,
+                colorIcono: tokens.sello,
+                titulo: 'No pudimos consultar las tiendas',
+                mensaje: 'Revisa tu conexión e inténtalo nuevamente.',
+                accion: 'Reintentar',
+                alAccionar: _reintentar,
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return _cuerpo(
+              tokens: tokens,
+              contenido: const EstadoTiendas(
+                icono: Icons.hourglass_top_rounded,
+                titulo: 'Consultando tiendas',
+                mensaje: 'Estamos leyendo los establecimientos.',
+              ),
+            );
+          }
+          final todas = snapshot.data!;
+          if (todas.isEmpty) {
+            return _cuerpo(
+              tokens: tokens,
+              contenido: EstadoTiendas(
+                icono: Icons.storefront_rounded,
+                titulo: 'Aún no hay tiendas registradas',
+                mensaje: 'Cuando haya establecimientos publicados, aparecerán en esta lista.',
+                accion: widget.esAdmin ? 'Registrar tienda' : null,
+                alAccionar: widget.esAdmin ? () => _abrirFormulario() : null,
+              ),
+            );
+          }
+          final ciudades = ciudadesDe(todas);
+          final ciudadActiva = ciudades.contains(_ciudad) || _ciudad == 'Todas'
+              ? _ciudad
+              : 'Todas';
+          final filtradas = ordenarTiendas(
+            filtrarTiendas(
+              tiendas: todas,
+              consulta: _busqueda.text,
+              ciudad: ciudadActiva,
             ),
-            child: Column(
-              children: [
-                const Text(
-                  'BUSCA TU TIENDA MASS CERQUITA',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kMassYellow,
-                    fontSize: 19,
-                    fontWeight: FontWeight.w900,
+            _origen,
+          );
+          final hayCercania =
+              _origen != null &&
+              filtradas.any(
+                (tienda) => coordenadasValidas(tienda.latitud, tienda.longitud),
+              );
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: _encabezado(tokens, ciudades, ciudadActiva, filtradas.length, hayCercania)),
+              if (_avisoCoordenadas != null)
+                SliverToBoxAdapter(
+                  child: AvisoContextual(
+                    icono: Icons.location_off_outlined,
+                    mensaje: _avisoCoordenadas!.isEmpty
+                        ? 'Esta tienda no tiene coordenadas para trazar una ruta.'
+                        : 'La tienda $_avisoCoordenadas no tiene coordenadas para trazar una ruta.',
                   ),
                 ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  initialValue: _ciudadFiltro,
-                  decoration: const InputDecoration(
-                    labelText: 'Filtrar por Ciudad',
-                    prefixIcon: Icon(Icons.location_city, color: kMassBlue),
-                    isDense: true,
+              if (_situacion != null &&
+                  mensajeSituacionUbicacion(_situacion!, enMapa: false) != null)
+                SliverToBoxAdapter(
+                  child: AvisoContextual(
+                    icono: Icons.my_location_outlined,
+                    mensaje: mensajeSituacionUbicacion(_situacion!, enMapa: false)!,
+                    accion: _situacion == SituacionUbicacion.denegadaPermanentemente
+                        ? 'Abrir ajustes'
+                        : null,
+                    alAccionar: _situacion == SituacionUbicacion.denegadaPermanentemente
+                        ? () {
+                            final abrir = widget.abrirAjustes;
+                            if (abrir != null) {
+                              abrir();
+                            } else {
+                              abrirAjustesUbicacion();
+                            }
+                          }
+                        : null,
                   ),
-                  items: [
-                    const DropdownMenuItem(
-                      value: 'Todas',
-                      child: Text('TODAS LAS CIUDADES'),
-                    ),
-                    ...Tienda.ciudades.map(
-                      (c) => DropdownMenuItem(
-                        value: c,
-                        child: Text(c.toUpperCase()),
-                      ),
-                    ),
-                  ],
-                  onChanged: (valor) =>
-                      setState(() => _ciudadFiltro = valor ?? 'Todas'),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _datos,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Error al cargar tiendas'));
-                }
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final todas = snapshot.data!.docs
-                    .map((doc) => Tienda.fromMap(doc.id, doc.data()))
-                    .toList();
-
-                if (todas.isEmpty) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.store_mall_directory_outlined,
-                            size: 56,
-                            color: kMassBlue,
-                          ),
-                          const SizedBox(height: 12),
-                          const Text(
-                            'No hay sedes registradas en Ubícame',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: kMassBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          if (widget.esAdmin) ...[
-                            const SizedBox(height: 12),
-                            FilledButton.icon(
-                              onPressed: () => _abrirFormulario(),
-                              icon: const Icon(Icons.add_location_alt),
-                              label: const Text('REGISTRAR PRIMERA TIENDA'),
-                            ),
-                          ],
-                        ],
-                      ),
+              if (filtradas.isEmpty)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: const Alignment(0, -0.2),
+                    child: EstadoTiendas(
+                      icono: _busqueda.text.trim().isEmpty
+                          ? Icons.location_city_outlined
+                          : Icons.search_off_rounded,
+                      titulo: _busqueda.text.trim().isEmpty
+                          ? 'No hay tiendas en esta ciudad'
+                          : 'Ninguna tienda coincide con tu búsqueda',
+                      mensaje: _busqueda.text.trim().isEmpty
+                          ? 'Prueba con otra ciudad o mira el listado completo.'
+                          : 'Revisa el nombre, la ciudad o la dirección.',
+                      accion: _busqueda.text.trim().isEmpty
+                          ? 'Ver todas'
+                          : 'Limpiar búsqueda',
+                      alAccionar: _busqueda.text.trim().isEmpty
+                          ? () => setState(() => _ciudad = 'Todas')
+                          : () {
+                              _busqueda.clear();
+                              setState(() {});
+                            },
                     ),
-                  );
-                }
-
-                final tiendas = _ciudadFiltro == 'Todas'
-                    ? todas
-                    : todas.where((t) => t.ciudad == _ciudadFiltro).toList();
-
-                if (tiendas.isEmpty) {
-                  return const Center(
-                    child: Text('No hay tiendas registradas en esta ciudad'),
-                  );
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 85),
-                  itemCount: tiendas.length,
-                  itemBuilder: (context, i) =>
-                      Aparecer(indice: i, child: _tarjeta(tiendas[i])),
-                );
-              },
-            ),
-          ),
-        ],
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, widget.esAdmin ? 96 : 24),
+                  sliver: SliverList.separated(
+                    itemCount: filtradas.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 12),
+                    itemBuilder: (context, indice) {
+                      final tienda = filtradas[indice];
+                      final valida = coordenadasValidas(tienda.latitud, tienda.longitud);
+                      String? distancia;
+                      if (_origen != null && valida) {
+                        distancia = textoDistanciaAproximada(
+                          distanciaLineaRectaMetros(
+                            _origen!,
+                            LatLng(tienda.latitud!, tienda.longitud!),
+                          ),
+                        );
+                      }
+                      return TarjetaTiendaCliente(
+                        tienda: tienda,
+                        lugar: lugarTienda(tienda),
+                        horario: tienda.horario.trim().isEmpty ? null : tienda.horario.trim(),
+                        distanciaAproximada: distancia,
+                        alVerRuta: valida ? () => _abrirRuta(tienda) : null,
+                        alSinCoordenadas: valida ? null : () => _abrirRuta(tienda),
+                        esAdmin: widget.esAdmin,
+                        alDuplicar: () => _duplicar(tienda),
+                        alEditar: () => _abrirFormulario(tienda),
+                        alEliminar: () => _eliminar(tienda),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _tarjeta(Tienda t) {
-    final abierta = t.estaAbierta;
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: abierta ? kMassYellow : Colors.red.shade100,
-              foregroundColor: abierta ? kMassBlue : Colors.red,
-              child: const Icon(Icons.location_on),
-            ),
-            title: Text(
-              t.nombre.toUpperCase(),
-              style: const TextStyle(
-                color: kMassBlue,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            subtitle: Text(
-              '${t.distrito}, ${t.ciudad} · ${t.direccion}\n'
-              'Horario: ${t.horario} · Surtido: ${t.cantidadProductos} prod.\n'
-              '${abierta ? 'Abierta ahora' : 'Cerrada'} · ${t.servicios.join(', ')}',
-            ),
-            isThreeLine: true,
-            onTap: widget.esAdmin ? () => _abrirFormulario(t) : null,
+  Widget _cuerpo({required TokensMass tokens, required Widget contenido}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: _titulo(tokens),
+        ),
+        Expanded(
+          child: Align(
+            alignment: const Alignment(0, -0.2),
+            child: contenido,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 8, 6),
-            child: Row(
-              children: [
-                TextButton.icon(
-                  onPressed: () => _abrirRutaTienda(t),
-                  icon: const Icon(Icons.directions, size: 18),
-                  label: const Text('Ver ruta GPS'),
-                ),
-                const Spacer(),
-                if (widget.esAdmin)
-                  BotonesAcciones(
-                    onDuplicar: () => _duplicar(t),
-                    onEditar: () => _abrirFormulario(t),
-                    onEliminar: () => _eliminar(t),
-                  ),
-              ],
+        ),
+      ],
+    );
+  }
+
+  Widget _titulo(TokensMass tokens) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Encuentra tu Mass',
+          style: textoMass(tamano: 22, peso: FontWeight.w800, color: tokens.profundo),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          'Encuentra nuestras tiendas y planifica tu recorrido.',
+          style: textoMass(tamano: 13, color: tokens.tintaSuave, alto: 1.35),
+        ),
+      ],
+    );
+  }
+
+  Widget _encabezado(
+    TokensMass tokens,
+    List<String> ciudades,
+    String ciudadActiva,
+    int total,
+    bool hayCercania,
+  ) {
+    final etiquetaUbicacion = _obteniendo
+        ? 'Obteniendo tu ubicación'
+        : _origen == null
+        ? 'Usar mi ubicación'
+        : 'Actualizar ubicación';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _titulo(tokens),
+          const SizedBox(height: 12),
+          BusquedaTiendas(
+            controlador: _busqueda,
+            foco: _foco,
+            alCambiar: (_) => setState(() {}),
+            alLimpiar: () {
+              _busqueda.clear();
+              setState(() {});
+            },
+          ),
+          const SizedBox(height: 10),
+          FiltroCiudades(
+            ciudades: ciudades,
+            seleccion: ciudadActiva,
+            alElegir: (ciudad) => setState(() => _ciudad = ciudad),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            total == 1 ? '1 tienda' : '$total tiendas',
+            style: textoMass(tamano: 13, peso: FontWeight.w800, color: tokens.profundo),
+          ),
+          if (hayCercania)
+            Text(
+              'Ordenadas por cercanía en línea recta.',
+              style: textoMass(tamano: 12, color: tokens.tintaSuave),
+            ),
+          const SizedBox(height: 4),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              key: const Key('usar-ubicacion-tiendas'),
+              onPressed: _obteniendo ? null : _usarUbicacion,
+              style: TextButton.styleFrom(
+                foregroundColor: tokens.accion,
+                minimumSize: const Size(48, 48),
+              ),
+              icon: Icon(
+                _origen == null ? Icons.my_location_outlined : Icons.near_me_outlined,
+                size: 18,
+              ),
+              label: Text(etiquetaUbicacion),
             ),
           ),
         ],

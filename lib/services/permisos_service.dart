@@ -4,6 +4,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../main.dart';
 
+enum SituacionCamara {
+  concedida,
+  denegada,
+  denegadaPermanentemente,
+  noDisponible,
+  error,
+}
+
 class PermisosService {
   static bool get _usaPermissionHandler =>
       !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
@@ -77,6 +85,60 @@ class PermisosService {
     }
   }
 
+  /// Variante del escáner. Un fallo del sistema no se trata como permiso concedido.
+  static Future<SituacionCamara> situacionCamara(
+    BuildContext context, {
+    required String motivo,
+  }) async {
+    final aceptado = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Permiso de cámara',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: kMassBlue, fontWeight: FontWeight.w900),
+        ),
+        content: Text(
+          'La cámara se usa para $motivo. Si no la compartes, puedes escribir el código o adjuntar un archivo.',
+          textAlign: TextAlign.center,
+        ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Ahora no'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Permitir cámara'),
+          ),
+        ],
+      ),
+    );
+    if (aceptado != true) return SituacionCamara.denegada;
+    if (!_usaPermissionHandler) return SituacionCamara.concedida;
+    try {
+      var estado = await Permission.camera.status;
+      if (estado.isGranted) return SituacionCamara.concedida;
+      estado = await Permission.camera.request();
+      if (estado.isGranted) return SituacionCamara.concedida;
+      if (context.mounted && estado.isPermanentlyDenied) {
+        await _mostrarDialogoConfiguracion(
+          context,
+          titulo: 'Cámara bloqueada',
+          mensaje:
+              'El permiso de cámara fue denegado permanentemente. Habilítalo desde los ajustes del sistema para continuar.',
+        );
+        return SituacionCamara.denegadaPermanentemente;
+      }
+      return SituacionCamara.denegada;
+    } catch (_) {
+      return SituacionCamara.error;
+    }
+  }
+
   static Future<bool> solicitarPermisoUbicacion(BuildContext context) async {
     final aceptado = await showDialog<bool>(
       context: context,
@@ -100,7 +162,7 @@ class PermisosService {
           style: TextStyle(color: kMassBlue, fontWeight: FontWeight.w900),
         ),
         content: const Text(
-          'Tiendas Mass usará tu ubicación actual para calcular la ruta más cercana, el tiempo estimado de llegada y la tarifa de entrega.',
+          'Tu ubicación se usa para trazar la ruta desde donde estás hasta el destino que elijas. Si no la compartes, puedes continuar sin ella.',
           textAlign: TextAlign.center,
         ),
         actionsAlignment: MainAxisAlignment.spaceBetween,

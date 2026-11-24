@@ -33,6 +33,7 @@ class Pedido {
   final String clienteNombre;
   final String clienteCorreo;
   final DateTime fecha;
+  final bool fechaRegistrada;
   final String estado;
   final double subtotal;
   final double descuento;
@@ -50,6 +51,7 @@ class Pedido {
     required this.clienteNombre,
     required this.clienteCorreo,
     required this.fecha,
+    this.fechaRegistrada = true,
     required this.estado,
     this.subtotal = 0,
     this.descuento = 0,
@@ -106,13 +108,17 @@ class Pedido {
 
   factory Pedido.fromMap(String id, Map<String, dynamic> d) {
     final fechaRaw = d['fecha'];
-    DateTime fecha;
+    var fecha = DateTime.fromMillisecondsSinceEpoch(0);
+    var fechaRegistrada = false;
     if (fechaRaw is Timestamp) {
       fecha = fechaRaw.toDate();
+      fechaRegistrada = true;
     } else if (d['fechaIso'] is String) {
-      fecha = DateTime.tryParse(d['fechaIso'] as String) ?? DateTime.now();
-    } else {
-      fecha = DateTime.now();
+      final interpretada = DateTime.tryParse(d['fechaIso'] as String);
+      if (interpretada != null) {
+        fecha = interpretada;
+        fechaRegistrada = true;
+      }
     }
     final lista = d['items'];
     final items = <ItemPedido>[
@@ -134,6 +140,7 @@ class Pedido {
       clienteNombre: (d['clienteNombre'] ?? '').toString(),
       clienteCorreo: (d['clienteCorreo'] ?? '').toString(),
       fecha: fecha,
+      fechaRegistrada: fechaRegistrada,
       estado: estados.contains(d['estado']) ? d['estado'] : 'pendiente',
       subtotal: subtotal,
       descuento: (d['descuento'] as num?)?.toDouble() ?? 0,

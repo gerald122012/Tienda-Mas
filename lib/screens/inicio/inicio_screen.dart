@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../main.dart';
+import '../../models/producto.dart';
+import '../../services/carrito_service.dart';
+import '../../services/catalogo_sesion.dart';
+import '../../services/catalogo_visual.dart';
+import '../../services/filtro_catalogo.dart';
+import '../../tema/tema_mass.dart';
 import '../../utils/utilidades.dart';
-import '../../widgets/aparecer.dart';
+import '../../widgets/foto_producto.dart';
 import '../delivery/delivery_mapa_screen.dart';
 import '../escaner/escaner_herramientas_screen.dart';
+import 'seleccion_inicio.dart';
 
 class _TemaAprende {
   final String etiqueta;
   final String titulo;
   final String resumen;
-  final String contenidoCompleto;
+  final String contenido;
   final IconData icono;
-  final Color colorFondo;
-  final Color colorAcento;
-  final String? imagenAsset;
 
   const _TemaAprende({
     required this.etiqueta,
     required this.titulo,
     required this.resumen,
-    required this.contenidoCompleto,
+    required this.contenido,
     required this.icono,
-    required this.colorFondo,
-    required this.colorAcento,
-    this.imagenAsset,
   });
 }
 
@@ -39,146 +39,146 @@ class InicioScreen extends StatelessWidget {
     this.mostrarAlquiler = true,
   });
 
-  static const _temasAprende = [
+  static const _temas = [
     _TemaAprende(
-      etiqueta: 'RECETA · 15 MIN',
+      etiqueta: 'Receta · 15 min',
       titulo: 'Almuerzos con arroz',
       resumen: '2 ideas rendidoras',
-      contenidoCompleto:
+      contenido:
           '1. Arroz tapado exprés: saltea cebolla, ajo, carne molida y pasas, sirve con arroz graneado y huevo frito.\n\n'
           '2. Chaufa casero Mass: aprovecha arroz del día anterior con sillao, cebollita china, tortilla picada y hot dog en cubitos.',
       icono: Icons.restaurant_rounded,
-      colorFondo: Color(0xFFFFF2C2),
-      colorAcento: Color(0xFFB45309),
-      imagenAsset: 'assets/productos/marcas/catalogo_001.jpg',
     ),
     _TemaAprende(
-      etiqueta: 'SNACKS · 5 MIN',
+      etiqueta: 'Snacks · 5 min',
       titulo: 'Bocaditos crocantitos',
       resumen: 'Para compartir hoy',
-      contenidoCompleto:
+      contenido:
           'Prepara una tabla económica combinando galletas saladas, queso edam en cubos y dips rápidos de palta o yogurt natural con limón.',
-      icono: Icons.fastfood_rounded,
-      colorFondo: Color(0xFFD6F8F4),
-      colorAcento: Color(0xFF0F766E),
-      imagenAsset: 'assets/productos/marcas/catalogo_011-limpia.png',
+      icono: Icons.cookie_outlined,
     ),
     _TemaAprende(
-      etiqueta: 'AHORRO MASS',
+      etiqueta: 'Ahorro Mass',
       titulo: 'Compra inteligente',
       resumen: 'Cuida tu presupuesto',
-      contenidoCompleto:
+      contenido:
           '• Compara el precio por kg o litro que aparece en cada tarjeta del catálogo.\n'
           '• Activa el Modo Bolsillo en Productos para controlar tu gasto en tiempo real.\n'
           '• Escanea los códigos QR promocionales antes de pagar.',
-      icono: Icons.savings_rounded,
-      colorFondo: Color(0xFFE0E7FF),
-      colorAcento: kMassBlue,
+      icono: Icons.savings_outlined,
     ),
     _TemaAprende(
-      etiqueta: 'HOGAR LIMPIO',
+      etiqueta: 'Hogar limpio',
       titulo: 'Tips de limpieza',
       resumen: 'Rinde más tu compra',
-      contenidoCompleto:
+      contenido:
           'Dosifica el detergente líquido usando la tapa medidora y separa prendas claras de oscuras para duplicar el rendimiento de cada botella.',
-      icono: Icons.cleaning_services_rounded,
-      colorFondo: Color(0xFFFCE7F3),
-      colorAcento: Color(0xFF9D174D),
-      imagenAsset: 'assets/productos/marcas/catalogo_025-limpia.png',
+      icono: Icons.cleaning_services_outlined,
     ),
   ];
 
-  void _mostrarPoliticas(BuildContext context) {
-    showDialog(
+  void _verTodo() {
+    FiltroCatalogo.instancia.verTodo();
+    onCambiarPestana(1);
+  }
+
+  void _buscar(String texto) {
+    if (texto.trim().isEmpty) {
+      _verTodo();
+      return;
+    }
+    FiltroCatalogo.instancia.buscar(texto);
+    onCambiarPestana(1);
+  }
+
+  void _abrirCategoria(String id) {
+    FiltroCatalogo.instancia.abrirCategoria(id);
+    onCambiarPestana(1);
+  }
+
+  void _politicas(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: kMassCream,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Text(
-          'Políticas de cambios y devoluciones',
-          style: TextStyle(color: kMassBlue, fontWeight: FontWeight.w900),
+        backgroundColor: tokens.superficie,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MassRadio.superficie),
         ),
-        content: const Text(
+        title: Text(
+          'Políticas de cambios y devoluciones',
+          style: textoMass(
+            tamano: 18,
+            peso: FontWeight.w700,
+            color: tokens.profundo,
+          ),
+        ),
+        content: Text(
           '1. Acércate a la tienda donde realizaste la compra.\n'
           '2. Presenta tu comprobante y el producto con empaque cerrado.\n\n'
           '• Perecibles: dentro de las 24 horas.\n'
           '• No perecibles: hasta 7 días posteriores.',
+          style: textoMass(tamano: 14, color: tokens.tinta, alto: 1.4),
         ),
         actions: [
           FilledButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ENTENDIDO'),
+            child: const Text('Entendido'),
           ),
         ],
       ),
     );
   }
 
-  void _mostrarDetalleAprende(BuildContext context, _TemaAprende tema) {
-    HapticFeedback.selectionClick();
+  void _detalle(BuildContext context, _TemaAprende tema) {
+    final tokens = TokensMass.de(context);
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: tokens.superficie,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(MassRadio.superficie),
+        ),
       ),
       builder: (ctx) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(22),
+          padding: const EdgeInsets.all(MassEspacio.p24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 22,
-                    backgroundColor: tema.colorFondo,
-                    foregroundColor: tema.colorAcento,
-                    child: Icon(tema.icono),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          tema.etiqueta,
-                          style: TextStyle(
-                            color: tema.colorAcento,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 0.6,
-                          ),
-                        ),
-                        Text(
-                          tema.titulo,
-                          style: const TextStyle(
-                            color: kMassBlue,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
               Text(
-                tema.contenidoCompleto,
-                style: const TextStyle(fontSize: 14.5, height: 1.45),
+                tema.etiqueta,
+                style: textoMass(
+                  tamano: 12,
+                  peso: FontWeight.w700,
+                  color: tokens.accion,
+                ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: MassEspacio.p4),
+              Text(
+                tema.titulo,
+                style: textoMass(
+                  tamano: 20,
+                  peso: FontWeight.w700,
+                  color: tokens.profundo,
+                ),
+              ),
+              const SizedBox(height: MassEspacio.p12),
+              Text(
+                tema.contenido,
+                style: textoMass(tamano: 15, color: tokens.tinta, alto: 1.45),
+              ),
+              const SizedBox(height: MassEspacio.p16),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton.icon(
+                height: 48,
+                child: FilledButton(
                   onPressed: () {
                     Navigator.pop(ctx);
-                    onCambiarPestana(1);
+                    _verTodo();
                   },
-                  icon: const Icon(Icons.shopping_bag_outlined),
-                  label: const Text('VER PRODUCTOS EN CATÁLOGO'),
+                  child: const Text('Ver productos'),
                 ),
               ),
             ],
@@ -190,568 +190,331 @@ class InicioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _heroBanner(context),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 18, 16, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _EncabezadoSeccion(
-                  titulo: 'Accesos rápidos',
-                  subtitulo: 'Elige a dónde quieres ir',
-                ),
-                const SizedBox(height: 12),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final cols = constraints.maxWidth >= 640 ? 4 : 2;
-                    return GridView.count(
-                      crossAxisCount: cols,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: cols == 4 ? 1.05 : 1.12,
-                      children: [
-                        Aparecer(
-                          indice: 0,
-                          child: _PanelAcceso(
-                            titulo: 'Productos',
-                            subtitulo: 'Ingresar a productos',
-                            etiqueta: 'CATÁLOGO',
-                            colorFondo: const Color(0xFFEAF2FF),
-                            colorAcento: kMassBlue,
-                            icono: Icons.shopping_basket_rounded,
-                            imagenAsset:
-                                'assets/productos/marcas/catalogo_003-limpia.png',
-                            onTap: () => onCambiarPestana(1),
-                          ),
-                        ),
-                        Aparecer(
-                          indice: 1,
-                          child: _PanelAcceso(
-                            titulo: 'Ubicación',
-                            subtitulo: 'Tiendas y rutas',
-                            etiqueta: 'UBÍCAME',
-                            colorFondo: kMassMint,
-                            colorAcento: const Color(0xFF0F766E),
-                            icono: Icons.location_on_rounded,
-                            onTap: () => onCambiarPestana(2),
-                          ),
-                        ),
-                        Aparecer(
-                          indice: 2,
-                          child: _PanelAcceso(
-                            titulo: 'Mis Compras',
-                            subtitulo: 'Historial y recojo',
-                            etiqueta: 'PEDIDOS',
-                            colorFondo: const Color(0xFFFFF3CC),
-                            colorAcento: const Color(0xFFB45309),
-                            icono: Icons.receipt_long_rounded,
-                            onTap: () => onCambiarPestana(3),
-                          ),
-                        ),
-                        Aparecer(
-                          indice: 3,
-                          child: _PanelAcceso(
-                            titulo: 'Sensores',
-                            subtitulo: 'Tiempo real y QR',
-                            etiqueta: 'EN VIVO',
-                            colorFondo: const Color(0xFFEDE9FE),
-                            colorAcento: const Color(0xFF5B21B6),
-                            icono: Icons.sensors_rounded,
-                            onTap: () => onCambiarPestana(4),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 14),
-                Aparecer(
-                  indice: 4,
-                  child: _bannerDelivery(context),
-                ),
-                const SizedBox(height: 18),
-                Aparecer(
-                  indice: 5,
-                  child: _franjaIndicadores(),
-                ),
-                const SizedBox(height: 22),
-                const _EncabezadoSeccion(
-                  titulo: 'Aprende Mass',
-                  subtitulo: 'Toca un cuadro para ver el tip completo',
-                ),
-                const SizedBox(height: 12),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final cols = constraints.maxWidth >= 640 ? 4 : 2;
-                    return GridView.builder(
-                      itemCount: _temasAprende.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: cols,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        mainAxisExtent: 172,
-                      ),
-                      itemBuilder: (context, i) {
-                        final tema = _temasAprende[i];
-                        return Aparecer(
-                          indice: i + 2,
-                          child: _CuadroAprende(
-                            tema: tema,
-                            onTap: () => _mostrarDetalleAprende(context, tema),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-                if (mostrarAlquiler) ...[
-                  const SizedBox(height: 18),
-                  _tarjetaAlquiler(),
+    return Column(
+      children: [
+        _BusquedaInicio(alBuscar: _buscar),
+        Expanded(
+          child: ListenableBuilder(
+            listenable: Listenable.merge([
+              CatalogoSesion.instancia,
+              CarritoService.instance,
+            ]),
+            builder: (context, _) {
+              final sesion = CatalogoSesion.instancia;
+              final destacados = productosParaInicio(sesion.productos);
+              return ListView(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                children: [
+                  _HeroeInicio(productos: destacados, alVerProductos: _verTodo),
+                  const SizedBox(height: MassEspacio.p16),
+                  _CategoriasInicio(
+                    alElegir: _abrirCategoria,
+                    alVerTodo: _verTodo,
+                  ),
+                  const SizedBox(height: MassEspacio.p16),
+                  _VitrinaInicio(
+                    sesion: sesion,
+                    productos: destacados,
+                    alVerTodos: _verTodo,
+                    alAgregar: (producto) {
+                      final ok = CarritoService.instance.agregar(producto);
+                      mostrarMensaje(
+                        context,
+                        ok
+                            ? '${producto.nombre} agregado al carrito'
+                            : 'No hay más stock disponible de este producto.',
+                      );
+                    },
+                  ),
+                  const SizedBox(height: MassEspacio.p24),
+                  _ServiciosInicio(
+                    mostrarAlquiler: mostrarAlquiler,
+                    alAlquilar: () => onCambiarPestana(0),
+                  ),
+                  const SizedBox(height: MassEspacio.p24),
+                  _AprendeInicio(
+                    temas: _temas,
+                    alAbrir: (tema) => _detalle(context, tema),
+                  ),
+                  const SizedBox(height: MassEspacio.p16),
+                  _PieInicio(alPoliticas: () => _politicas(context)),
                 ],
-                const SizedBox(height: 20),
-                _pieCompacto(context),
-              ],
-            ),
+              );
+            },
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class _BusquedaInicio extends StatefulWidget {
+  final ValueChanged<String> alBuscar;
+
+  const _BusquedaInicio({required this.alBuscar});
+
+  @override
+  State<_BusquedaInicio> createState() => _BusquedaInicioState();
+}
+
+class _BusquedaInicioState extends State<_BusquedaInicio> {
+  final _campo = TextEditingController();
+
+  @override
+  void dispose() {
+    _campo.dispose();
+    super.dispose();
+  }
+
+  void _enviar() => widget.alBuscar(_campo.text);
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: TextField(
+        controller: _campo,
+        textInputAction: TextInputAction.search,
+        onSubmitted: (_) => _enviar(),
+        style: textoMass(tamano: 15, color: tokens.tinta),
+        decoration: InputDecoration(
+          hintText: '¿Qué necesitas comprar hoy?',
+          hintStyle: textoMass(tamano: 15, color: tokens.tintaSuave),
+          prefixIcon: Icon(Icons.search_rounded, color: tokens.accion),
+          suffixIcon: IconButton(
+            tooltip: 'Buscar',
+            onPressed: _enviar,
+            icon: Icon(Icons.arrow_forward_rounded, color: tokens.profundo),
+          ),
+          filled: true,
+          fillColor: tokens.superficie,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(MassRadio.control),
+            borderSide: BorderSide(color: tokens.linea),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(MassRadio.control),
+            borderSide: BorderSide(color: tokens.linea),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(MassRadio.control),
+            borderSide: BorderSide(color: tokens.accion, width: 1.4),
+          ),
+        ),
       ),
     );
   }
+}
 
-  Widget _heroBanner(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [kMassBlue, Color(0xFF051D7A)],
-        ),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -18,
-            top: -12,
-            child: Container(
-              width: 110,
-              height: 110,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kMassYellow.withValues(alpha: 0.14),
-              ),
-            ),
+class _HeroeInicio extends StatelessWidget {
+  final List<Producto> productos;
+  final VoidCallback alVerProductos;
+
+  const _HeroeInicio({required this.productos, required this.alVerProductos});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    final fotos = [
+      for (final producto in productos)
+        if (bytesImagenProductoEnCache(producto) != null ||
+            producto.imagenUrl.trim().isNotEmpty ||
+            producto.imagenAsset.trim().startsWith('assets/'))
+          producto,
+    ].take(2).toList();
+    return LayoutBuilder(
+      builder: (context, limites) {
+        final estrecho = limites.maxWidth < 360;
+        final texto = _HeroeTexto(alVerProductos: alVerProductos);
+        final vitrina = fotos.isEmpty
+            ? const SizedBox.shrink()
+            : _HeroeFotos(productos: fotos);
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: tokens.profundo,
+            borderRadius: BorderRadius.circular(MassRadio.superficie),
           ),
-          Positioned(
-            right: 24,
-            bottom: -24,
-            child: Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kMassTurquoise.withValues(alpha: 0.16),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: kMassYellow,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.bolt_rounded, size: 15, color: kMassBlue),
-                    SizedBox(width: 4),
-                    Text(
-                      'LLEVA MASS PAGANDO MENOS',
-                      style: TextStyle(
-                        color: kMassBlue,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 11.5,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  const Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(MassRadio.superficie),
+            child: estrecho
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Tu tienda Mass,\nsiempre cerca',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                            height: 1.12,
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Ahorra en cada compra diaria.',
-                          style: TextStyle(
-                            color: Color(0xFFDCE7FF),
-                            fontSize: 13.5,
-                          ),
-                        ),
+                        texto,
+                        if (fotos.isNotEmpty) ...[
+                          const SizedBox(height: MassEspacio.p8),
+                          _HeroeFotosEstrecho(productos: fotos),
+                        ],
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(flex: 5, child: texto),
+                        if (fotos.isNotEmpty) ...[
+                          const SizedBox(width: MassEspacio.p8),
+                          SizedBox(width: 148, height: 156, child: vitrina),
+                        ],
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Container(
-                    width: 78,
-                    height: 78,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(22),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.18),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: Image.asset(
-                      'assets/productos/marcas/catalogo_012-limpia.png',
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, _, _) => const Icon(
-                        Icons.storefront_rounded,
-                        color: kMassBlue,
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kMassYellow,
-                        foregroundColor: kMassBlue,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      onPressed: () {
-                        HapticFeedback.selectionClick();
-                        onCambiarPestana(1);
-                      },
-                      icon: const Icon(Icons.local_offer_rounded, size: 18),
-                      label: const Text(
-                        'VER PRODUCTOS',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      side: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.45),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    onPressed: () {
-                      HapticFeedback.selectionClick();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const EscanerHerramientasScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
-                    label: const Text(
-                      'QR',
-                      style: TextStyle(fontWeight: FontWeight.w900),
-                    ),
-                  ),
-                ],
-              ),
-            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
+}
 
-  Widget _bannerDelivery(BuildContext context) {
-    return _PanelPulsable(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const DeliveryMapaScreen()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [kMassTurquoise, Color(0xFF1BB8A6)],
-          ),
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: [
-            BoxShadow(
-              color: kMassTurquoise.withValues(alpha: 0.28),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(11),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Icon(
-                Icons.delivery_dining_rounded,
-                color: kMassBlue,
-                size: 28,
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Delivery y Rutas GPS',
-                    style: TextStyle(
-                      color: kMassBlue,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    'Calcula tu ruta y compártela al instante',
-                    style: TextStyle(
-                      color: kMassDark,
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const CircleAvatar(
-              radius: 16,
-              backgroundColor: kMassBlue,
-              foregroundColor: kMassYellow,
-              child: Icon(Icons.arrow_forward_rounded, size: 18),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class _HeroeTexto extends StatelessWidget {
+  final VoidCallback alVerProductos;
 
-  Widget _franjaIndicadores() {
-    return Row(
+  const _HeroeTexto({required this.alVerProductos});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _indicador(Icons.storefront_rounded, '+900', 'Tiendas'),
-        const SizedBox(width: 10),
-        _indicador(Icons.shopping_basket_rounded, '+1000', 'Productos'),
-        const SizedBox(width: 10),
-        _indicador(Icons.map_rounded, '15', 'Regiones'),
+        Container(
+          width: 36,
+          height: 4,
+          decoration: BoxDecoration(
+            color: tokens.sello,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        Text(
+          'Compra más,\ngasta menos.',
+          style: textoMass(
+            tamano: 26,
+            peso: FontWeight.w800,
+            color: Colors.white,
+            alto: 1.05,
+          ),
+        ),
+        const SizedBox(height: MassEspacio.p8),
+        Text(
+          'Todo lo que necesitas,\ncerca de ti.',
+          style: textoMass(
+            tamano: 14,
+            peso: FontWeight.w500,
+            color: Colors.white.withValues(alpha: 0.82),
+            alto: 1.3,
+          ),
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: tokens.sello,
+            foregroundColor: tokens.profundo,
+            minimumSize: const Size(48, 48),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(MassRadio.control),
+            ),
+            textStyle: textoMass(
+              tamano: 14,
+              peso: FontWeight.w700,
+              color: tokens.profundo,
+            ),
+          ),
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            alVerProductos();
+          },
+          child: const Text('Ver productos'),
+        ),
+      ],
+    );
+  }
+}
+
+class _HeroeFotos extends StatelessWidget {
+  final List<Producto> productos;
+
+  const _HeroeFotos({required this.productos});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Stack(
+      children: [
+        Positioned(
+          right: 0,
+          top: 8,
+          bottom: 8,
+          width: 96,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: tokens.sello,
+              borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+            ),
+          ),
+        ),
+        Positioned(top: 0, right: 14, child: _marco(productos.first, 100)),
+        if (productos.length > 1)
+          Positioned(left: 0, bottom: 0, child: _marco(productos[1], 84)),
       ],
     );
   }
 
-  Widget _indicador(IconData icono, String numero, String texto) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: kMassBlue.withValues(alpha: 0.1)),
-        ),
-        child: Column(
-          children: [
-            Icon(icono, color: kMassBlue, size: 22),
-            const SizedBox(height: 4),
-            Text(
-              numero,
-              style: const TextStyle(
-                color: kMassBlue,
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-                fontFeatures: [FontFeature.tabularFigures()],
-              ),
-            ),
-            Text(
-              texto,
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 11.5,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _tarjetaAlquiler() {
-    return _PanelPulsable(
-      onTap: () => onCambiarPestana(0),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: kMassBlue,
-          borderRadius: BorderRadius.circular(22),
-        ),
-        child: const Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: kMassYellow,
-              foregroundColor: kMassBlue,
-              child: Icon(Icons.real_estate_agent_rounded),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Alquila tu local (+200 m²)',
-                    style: TextStyle(
-                      color: kMassYellow,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    'Registra tu espacio comercial aquí',
-                    style: TextStyle(color: Colors.white, fontSize: 12.5),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right_rounded, color: kMassYellow),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _pieCompacto(BuildContext context) {
+  Widget _marco(Producto producto, double lado) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: lado,
+      height: lado,
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: kMassYellow,
-        borderRadius: BorderRadius.circular(24),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+        boxShadow: sombraMass(),
       ),
-      child: Column(
+      child: FotoProducto(producto: producto),
+    );
+  }
+}
+
+class _HeroeFotosEstrecho extends StatelessWidget {
+  final List<Producto> productos;
+
+  const _HeroeFotosEstrecho({required this.productos});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return SizedBox(
+      height: 96,
+      child: Stack(
+        alignment: Alignment.bottomRight,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.schedule_rounded, size: 16, color: kMassBlue),
-              SizedBox(width: 6),
-              Text(
-                'Lun a Dom · 7:00 AM - 10:00 PM',
-                style: TextStyle(
-                  color: kMassBlue,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 12.5,
-                ),
+          Positioned(
+            right: 0,
+            bottom: 4,
+            child: Container(
+              width: 168,
+              height: 48,
+              decoration: BoxDecoration(
+                color: tokens.sello,
+                borderRadius: BorderRadius.circular(MassRadio.tarjeta),
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            alignment: WrapAlignment.center,
-            children: [
-              for (final metodo in ['Yape', 'Plin', 'Visa / MC', 'Efectivo'])
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.85),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    metodo,
-                    style: const TextStyle(
-                      color: kMassBlue,
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: kMassBlue,
-                  visualDensity: VisualDensity.compact,
-                ),
-                onPressed: () => _mostrarPoliticas(context),
-                icon: const Icon(Icons.policy_outlined, size: 16),
-                label: const Text(
-                  'Políticas',
-                  style: TextStyle(fontWeight: FontWeight.w800),
-                ),
-              ),
-              const Text(
-                'Tiendas Mass · v$kAppVersion',
-                style: TextStyle(
-                  color: kMassBlue,
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+              if (productos.length > 1) ...[
+                _marcoFoto(productos[1], 76),
+                const SizedBox(width: 8),
+              ],
+              _marcoFoto(productos.first, 90),
             ],
           ),
         ],
@@ -760,307 +523,639 @@ class InicioScreen extends StatelessWidget {
   }
 }
 
-class _EncabezadoSeccion extends StatelessWidget {
-  final String titulo;
-  final String subtitulo;
+Widget _marcoFoto(Producto producto, double lado) {
+  return Container(
+    width: lado,
+    height: lado,
+    padding: const EdgeInsets.all(6),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+      boxShadow: sombraMass(),
+    ),
+    child: FotoProducto(producto: producto),
+  );
+}
 
-  const _EncabezadoSeccion({required this.titulo, required this.subtitulo});
+class _CategoriasInicio extends StatelessWidget {
+  final ValueChanged<String> alElegir;
+  final VoidCallback alVerTodo;
+
+  const _CategoriasInicio({required this.alElegir, required this.alVerTodo});
+
+  static const _iconos = {
+    'abarrotes': Icons.kitchen_outlined,
+    'bebidas': Icons.local_drink_outlined,
+    'lácteos': Icons.breakfast_dining_outlined,
+    'limpieza': Icons.cleaning_services_outlined,
+    'snacks': Icons.cookie_outlined,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _Encabezado(
+          titulo: 'Compra por categoría',
+          accion: 'Ver todo',
+          alAccion: alVerTodo,
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        SizedBox(
+          height: 88,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: Producto.categorias.length,
+            separatorBuilder: (_, _) => const SizedBox(width: MassEspacio.p8),
+            itemBuilder: (context, i) {
+              final id = Producto.categorias[i];
+              return _Categoria(
+                icono: _iconos[id] ?? Icons.shopping_bag_outlined,
+                etiqueta: etiquetaCategoria(id),
+                colorIcono: tokens.accion,
+                alElegir: () => alElegir(id),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Categoria extends StatelessWidget {
+  final IconData icono;
+  final String etiqueta;
+  final Color colorIcono;
+  final VoidCallback alElegir;
+
+  const _Categoria({
+    required this.icono,
+    required this.etiqueta,
+    required this.colorIcono,
+    required this.alElegir,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Semantics(
+      button: true,
+      label: etiqueta,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+        onTap: () {
+          HapticFeedback.selectionClick();
+          alElegir();
+        },
+        child: ExcludeSemantics(
+          child: SizedBox(
+            width: 76,
+            child: Column(
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: tokens.superficie,
+                    borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+                    border: Border.all(color: tokens.linea),
+                  ),
+                  child: Icon(icono, color: colorIcono, size: 24),
+                ),
+                const SizedBox(height: MassEspacio.p8),
+                Text(
+                  etiqueta,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textoMass(
+                    tamano: 12,
+                    peso: FontWeight.w600,
+                    color: tokens.tinta,
+                    alto: 1.1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _VitrinaInicio extends StatelessWidget {
+  final CatalogoSesion sesion;
+  final List<Producto> productos;
+  final VoidCallback alVerTodos;
+  final ValueChanged<Producto> alAgregar;
+
+  const _VitrinaInicio({
+    required this.sesion,
+    required this.productos,
+    required this.alVerTodos,
+    required this.alAgregar,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _Encabezado(
+          titulo: 'Explora nuestros productos',
+          subtitulo: 'Una selección de lo disponible hoy.',
+          accion: productos.isEmpty ? null : 'Ver todos',
+          alAccion: alVerTodos,
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        if (sesion.cargando)
+          const _EsperaProductos()
+        else if (sesion.fallo && productos.isEmpty)
+          Text(
+            'No pudimos cargar los productos. Revisa tu conexión.',
+            style: textoMass(tamano: 14, color: tokens.error),
+          )
+        else if (productos.isEmpty)
+          Text(
+            'Todavía no hay productos disponibles.',
+            style: textoMass(tamano: 14, color: tokens.tintaSuave),
+          )
+        else
+          SizedBox(
+            height: 252,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: productos.length,
+              separatorBuilder: (_, _) =>
+                  const SizedBox(width: MassEspacio.p12),
+              itemBuilder: (context, i) {
+                final producto = productos[i];
+                return _TarjetaInicio(
+                  producto: producto,
+                  enCarrito: CarritoService.instance.cantidadDe(producto),
+                  alAgregar: () => alAgregar(producto),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _EsperaProductos extends StatelessWidget {
+  const _EsperaProductos();
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return SizedBox(
+      height: 160,
+      child: Row(
+        children: [
+          for (var i = 0; i < 2; i++)
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(right: i == 0 ? 12 : 0),
+                decoration: BoxDecoration(
+                  color: tokens.superficie,
+                  borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+                  border: Border.all(color: tokens.linea),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TarjetaInicio extends StatelessWidget {
+  final Producto producto;
+  final int enCarrito;
+  final VoidCallback alAgregar;
+
+  const _TarjetaInicio({
+    required this.producto,
+    required this.enCarrito,
+    required this.alAgregar,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    final presentacion = producto.presentaciones.join(' · ');
+    return Container(
+      width: 156,
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+      decoration: BoxDecoration(
+        color: tokens.superficie,
+        borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+        border: Border.all(color: tokens.linea),
+        boxShadow: sombraMass(),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 72,
+            width: double.infinity,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: tokens.fondo,
+              borderRadius: BorderRadius.circular(MassRadio.control),
+            ),
+            child: FotoProducto(producto: producto),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            producto.marca.toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textoMass(
+              tamano: 11,
+              peso: FontWeight.w700,
+              color: tokens.accion,
+              alto: 1.1,
+            ),
+          ),
+          Text(
+            producto.nombre,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: textoMass(
+              tamano: 13,
+              peso: FontWeight.w700,
+              color: tokens.profundo,
+              alto: 1.15,
+            ),
+          ),
+          if (presentacion.isNotEmpty)
+            Text(
+              presentacion,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textoMass(tamano: 12, color: tokens.tintaSuave, alto: 1.2),
+            ),
+          const Spacer(),
+          precioUnaLinea(
+            formatoPrecio(producto.precio),
+            style: textoMass(
+              tamano: 20,
+              peso: FontWeight.w800,
+              color: tokens.profundo,
+              alto: 1,
+              tabular: true,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Disponible',
+            style: textoMass(
+              tamano: 11,
+              peso: FontWeight.w600,
+              color: tokens.exito,
+              alto: 1.1,
+            ),
+          ),
+          const SizedBox(height: MassEspacio.p8),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: tokens.accion,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(MassRadio.control),
+                ),
+                textStyle: textoMass(
+                  tamano: 13,
+                  peso: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: alAgregar,
+              child: Text(enCarrito > 0 ? 'Agregar ($enCarrito)' : 'Agregar'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ServiciosInicio extends StatelessWidget {
+  final bool mostrarAlquiler;
+  final VoidCallback alAlquilar;
+
+  const _ServiciosInicio({
+    required this.mostrarAlquiler,
+    required this.alAlquilar,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          titulo,
-          style: const TextStyle(
-            color: kMassBlue,
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
+        const _Encabezado(
+          titulo: 'Servicios Mass',
+          subtitulo: 'Herramientas para completar tu compra.',
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        Row(
+          children: [
+            Expanded(
+              child: _Servicio(
+                icono: Icons.qr_code_scanner_rounded,
+                titulo: 'Escáner',
+                detalle: 'QR, barras y archivos',
+                alAbrir: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const EscanerHerramientasScreen(),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: MassEspacio.p12),
+            Expanded(
+              child: _Servicio(
+                icono: Icons.delivery_dining_rounded,
+                titulo: 'Delivery',
+                detalle: 'Rutas GPS',
+                alAbrir: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const DeliveryMapaScreen()),
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (mostrarAlquiler) ...[
+          const SizedBox(height: MassEspacio.p12),
+          _Servicio(
+            icono: Icons.real_estate_agent_outlined,
+            titulo: 'Alquila tu local',
+            detalle: 'Espacios de más de 200 m²',
+            alAbrir: alAlquilar,
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _Servicio extends StatelessWidget {
+  final IconData icono;
+  final String titulo;
+  final String detalle;
+  final VoidCallback alAbrir;
+
+  const _Servicio({
+    required this.icono,
+    required this.titulo,
+    required this.detalle,
+    required this.alAbrir,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Material(
+      color: tokens.superficie,
+      borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+        onTap: alAbrir,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 72),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+            border: Border.all(color: tokens.linea),
+          ),
+          child: Row(
+            children: [
+              Icon(icono, color: tokens.accion, size: 22),
+              const SizedBox(width: MassEspacio.p8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      titulo,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textoMass(
+                        tamano: 14,
+                        peso: FontWeight.w700,
+                        color: tokens.profundo,
+                        alto: 1.1,
+                      ),
+                    ),
+                    Text(
+                      detalle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textoMass(
+                        tamano: 12,
+                        color: tokens.tintaSuave,
+                        alto: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        Text(
-          subtitulo,
-          style: TextStyle(fontSize: 12.5, color: Colors.grey.shade700),
+      ),
+    );
+  }
+}
+
+class _AprendeInicio extends StatelessWidget {
+  final List<_TemaAprende> temas;
+  final ValueChanged<_TemaAprende> alAbrir;
+
+  const _AprendeInicio({required this.temas, required this.alAbrir});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _Encabezado(
+          titulo: 'Aprende Mass',
+          subtitulo: 'Ideas para aprovechar mejor tu compra.',
+        ),
+        const SizedBox(height: MassEspacio.p12),
+        for (final tema in temas) ...[
+          Material(
+            color: tokens.superficie,
+            borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+              onTap: () => alAbrir(tema),
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(MassRadio.tarjeta),
+                  border: Border.all(color: tokens.linea),
+                ),
+                child: Row(
+                  children: [
+                    Icon(tema.icono, color: tokens.accion, size: 22),
+                    const SizedBox(width: MassEspacio.p12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tema.etiqueta,
+                            style: textoMass(
+                              tamano: 11,
+                              peso: FontWeight.w700,
+                              color: tokens.tintaSuave,
+                            ),
+                          ),
+                          Text(
+                            tema.titulo,
+                            style: textoMass(
+                              tamano: 15,
+                              peso: FontWeight.w700,
+                              color: tokens.profundo,
+                            ),
+                          ),
+                          Text(
+                            tema.resumen,
+                            style: textoMass(
+                              tamano: 13,
+                              color: tokens.tintaSuave,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.chevron_right_rounded, color: tokens.tintaSuave),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: MassEspacio.p8),
+        ],
+      ],
+    );
+  }
+}
+
+class _PieInicio extends StatelessWidget {
+  final VoidCallback alPoliticas;
+
+  const _PieInicio({required this.alPoliticas});
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensMass.de(context);
+    return Row(
+      children: [
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            minimumSize: const Size(48, 48),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: alPoliticas,
+          icon: Icon(Icons.policy_outlined, size: 18, color: tokens.accion),
+          label: Text(
+            'Políticas',
+            style: textoMass(
+              tamano: 13,
+              peso: FontWeight.w700,
+              color: tokens.accion,
+            ),
+          ),
+        ),
+        const SizedBox(width: MassEspacio.p8),
+        Flexible(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Tiendas Mass · v$kAppVersion',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textoMass(tamano: 12, color: tokens.tintaSuave),
+            ),
+          ),
         ),
       ],
     );
   }
 }
 
-class _PanelPulsable extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onTap;
-
-  const _PanelPulsable({required this.child, required this.onTap});
-
-  @override
-  State<_PanelPulsable> createState() => _PanelPulsableState();
-}
-
-class _PanelPulsableState extends State<_PanelPulsable> {
-  bool _presionado = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _presionado = true),
-      onTapUp: (_) {
-        setState(() => _presionado = false);
-        HapticFeedback.selectionClick();
-        widget.onTap();
-      },
-      onTapCancel: () => setState(() => _presionado = false),
-      child: AnimatedScale(
-        scale: _presionado ? 0.96 : 1.0,
-        duration: const Duration(milliseconds: 130),
-        curve: Curves.easeOutCubic,
-        child: widget.child,
-      ),
-    );
-  }
-}
-
-class _PanelAcceso extends StatelessWidget {
+class _Encabezado extends StatelessWidget {
   final String titulo;
-  final String subtitulo;
-  final String etiqueta;
-  final Color colorFondo;
-  final Color colorAcento;
-  final IconData icono;
-  final String? imagenAsset;
-  final VoidCallback onTap;
+  final String? subtitulo;
+  final String? accion;
+  final VoidCallback? alAccion;
 
-  const _PanelAcceso({
+  const _Encabezado({
     required this.titulo,
-    required this.subtitulo,
-    required this.etiqueta,
-    required this.colorFondo,
-    required this.colorAcento,
-    required this.icono,
-    required this.onTap,
-    this.imagenAsset,
+    this.subtitulo,
+    this.accion,
+    this.alAccion,
   });
 
   @override
   Widget build(BuildContext context) {
-    return _PanelPulsable(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: colorAcento.withValues(alpha: 0.14)),
-          boxShadow: [
-            BoxShadow(
-              color: kMassBlue.withValues(alpha: 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 52,
-                  height: 52,
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    color: colorFondo,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: imagenAsset != null
-                      ? Image.asset(
-                          imagenAsset!,
-                          fit: BoxFit.contain,
-                          errorBuilder: (_, _, _) =>
-                              Icon(icono, color: colorAcento, size: 28),
-                        )
-                      : Icon(icono, color: colorAcento, size: 28),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: colorFondo,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    etiqueta,
-                    style: TextStyle(
-                      color: colorAcento,
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Text(
-              titulo,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: kMassBlue,
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    subtitulo,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 12,
-                  color: colorAcento,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CuadroAprende extends StatelessWidget {
-  final _TemaAprende tema;
-  final VoidCallback onTap;
-
-  const _CuadroAprende({required this.tema, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return _PanelPulsable(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: tema.colorAcento.withValues(alpha: 0.14)),
-          boxShadow: [
-            BoxShadow(
-              color: kMassBlue.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: 80,
-              color: tema.colorFondo,
-              padding: const EdgeInsets.all(10),
-              child: Stack(
-                children: [
-                  Center(
-                    child: tema.imagenAsset != null
-                        ? Image.asset(
-                            tema.imagenAsset!,
-                            fit: BoxFit.contain,
-                            errorBuilder: (_, _, _) => Icon(
-                              tema.icono,
-                              color: tema.colorAcento,
-                              size: 38,
-                            ),
-                          )
-                        : Icon(tema.icono, color: tema.colorAcento, size: 38),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 7,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.92),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        tema.etiqueta,
-                        style: TextStyle(
-                          color: tema.colorAcento,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tema.titulo,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: kMassBlue,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 13.5,
-                        height: 1.2,
-                      ),
-                    ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            tema.resumen,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.add_circle_outline_rounded,
-                          size: 16,
-                          color: tema.colorAcento,
-                        ),
-                      ],
-                    ),
-                  ],
+    final tokens = TokensMass.de(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                titulo,
+                style: textoMass(
+                  tamano: 20,
+                  peso: FontWeight.w700,
+                  color: tokens.profundo,
+                  alto: 1.15,
                 ),
               ),
-            ),
-          ],
+              if (subtitulo != null)
+                Text(
+                  subtitulo!,
+                  style: textoMass(tamano: 13, color: tokens.tintaSuave),
+                ),
+            ],
+          ),
         ),
-      ),
+        if (accion != null)
+          TextButton(
+            onPressed: alAccion,
+            child: Text(
+              accion!,
+              style: textoMass(
+                tamano: 13,
+                peso: FontWeight.w700,
+                color: tokens.accion,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

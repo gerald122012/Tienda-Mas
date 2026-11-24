@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/tienda.dart';
+import '../../services/consulta_tiendas.dart';
 import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
 import '../../utils/validaciones.dart';
@@ -23,6 +24,23 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
   final _servicio = FirebaseService('tiendas_mass');
 
   bool get _esNuevo => (widget.tienda?.id ?? '').isEmpty;
+
+  List<String> get _opcionesCiudad {
+    final actual = _ciudad;
+    final opciones = List<String>.from(Tienda.ciudades);
+    if (actual != null &&
+        actual != Tienda.ciudadNoDisponible &&
+        !opciones.contains(actual)) {
+      opciones.add(actual);
+    }
+    return opciones;
+  }
+
+  String? get _ciudadEnLista {
+    final actual = _ciudad;
+    if (actual == null || actual == Tienda.ciudadNoDisponible) return null;
+    return _opcionesCiudad.contains(actual) ? actual : null;
+  }
 
   final _nombre = TextEditingController();
   final _distrito = TextEditingController();
@@ -66,6 +84,20 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
     _latitud.dispose();
     _longitud.dispose();
     super.dispose();
+  }
+
+  String? _validarCoordenada(String? valor, {required bool latitud}) {
+    final texto = (valor ?? '').trim();
+    final pareja = (latitud ? _longitud : _latitud).text.trim();
+    if (texto.isEmpty && pareja.isEmpty) return null;
+    if (texto.isEmpty) return 'Completa el par o deja ambas vacías';
+    final numero = double.tryParse(texto.replaceAll(',', '.'));
+    if (numero == null || !numero.isFinite) return 'Usa un número decimal';
+    if (latitud && (numero < -90 || numero > 90)) return 'La latitud va de -90 a 90';
+    if (!latitud && (numero < -180 || numero > 180)) {
+      return 'La longitud va de -180 a 180';
+    }
+    return null;
   }
 
   Future<void> _guardar() async {
@@ -163,11 +195,16 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
                   validator: (valor) => minimoCaracteres(valor, 3),
                 ),
                 DropdownButtonFormField<String>(
-                  initialValue: _ciudad,
+                  initialValue: _ciudadEnLista,
+                  isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Ciudad *'),
-                  items: Tienda.ciudades
-                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                      .toList(),
+                  items: [
+                    for (final ciudad in _opcionesCiudad)
+                      DropdownMenuItem(
+                        value: ciudad,
+                        child: Text(ciudad, overflow: TextOverflow.ellipsis),
+                      ),
+                  ],
                   onChanged: (valor) => _ciudad = valor,
                   validator: (valor) =>
                       valor == null ? 'Seleccione una ciudad' : null,
@@ -188,13 +225,14 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
                       child: TextFormField(
                         controller: _latitud,
                         decoration: const InputDecoration(
-                          labelText: 'Latitud GPS (opcional)',
+                          labelText: 'Latitud (opcional)',
                           hintText: '-12.0681',
                         ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                           signed: true,
                         ),
+                        validator: (valor) => _validarCoordenada(valor, latitud: true),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -202,17 +240,23 @@ class _TiendaFormScreenState extends State<TiendaFormScreen> {
                       child: TextFormField(
                         controller: _longitud,
                         decoration: const InputDecoration(
-                          labelText: 'Longitud GPS (opcional)',
+                          labelText: 'Longitud (opcional)',
                           hintText: '-75.2103',
                         ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                           signed: true,
                         ),
+                        validator: (valor) => _validarCoordenada(valor, latitud: false),
                       ),
                     ),
                   ],
                 ),
+                if (widget.tienda != null &&
+                    !coordenadasValidas(widget.tienda!.latitud, widget.tienda!.longitud))
+                  const Text(
+                    'Este establecimiento no tiene un par de coordenadas válido. Si dejas los campos vacíos, se conserva así. No se asigna una ubicación automática.',
+                  ),
                 TextFormField(
                   controller: _horario,
                   decoration: const InputDecoration(

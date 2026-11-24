@@ -5,11 +5,15 @@ import '../../main.dart';
 import '../../models/producto.dart';
 import '../../services/carrito_service.dart';
 import '../../services/catalogo_inicial_service.dart';
+import '../../services/catalogo_sesion.dart';
+import '../../services/catalogo_visual.dart';
+import '../../services/filtro_catalogo.dart';
 import '../../services/firebase_service.dart';
 import '../../utils/utilidades.dart';
 import '../../widgets/aparecer.dart';
 import '../../widgets/producto_catalogo_card.dart';
 import '../escaner/escaner_herramientas_screen.dart';
+import 'catalogo_cliente.dart';
 import 'producto_form_screen.dart';
 
 class ProductosScreen extends StatefulWidget {
@@ -23,16 +27,64 @@ class ProductosScreen extends StatefulWidget {
 
 class _ProductosScreenState extends State<ProductosScreen> {
   final _servicio = FirebaseService('productos_mass');
-  late final _datos = _servicio.coleccion.snapshots();
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _datos;
   List<Producto> _respaldo = const [];
   String _categoriaFiltro = 'todas';
   String _busqueda = '';
+  String _firmaVisual = '';
+  int _marcaAplicada = 0;
+  bool _falloAvisado = false;
+  final _busquedaCtrl = TextEditingController();
   final _carrito = CarritoService.instance;
 
   @override
   void initState() {
     super.initState();
+    _datos = _servicio.coleccion.snapshots();
+    _busquedaCtrl.addListener(_alEscribir);
+    if (!widget.esAdmin) {
+      FiltroCatalogo.instancia.addListener(_alIntencion);
+    }
     _cargarRespaldo();
+  }
+
+  @override
+  void dispose() {
+    _busquedaCtrl.removeListener(_alEscribir);
+    if (!widget.esAdmin) {
+      FiltroCatalogo.instancia.removeListener(_alIntencion);
+    }
+    _busquedaCtrl.dispose();
+    super.dispose();
+  }
+
+  void _alEscribir() {
+    final texto = _busquedaCtrl.text.trim();
+    if (texto == _busqueda) return;
+    setState(() => _busqueda = texto);
+  }
+
+  void _alIntencion() {
+    final intencion = FiltroCatalogo.instancia.pendiente;
+    if (!mounted || intencion == null || intencion.marca == _marcaAplicada) {
+      return;
+    }
+    _marcaAplicada = intencion.marca;
+    final categoria =
+        intencion.categoria == 'todas' ||
+            Producto.categorias.contains(intencion.categoria)
+        ? intencion.categoria
+        : 'todas';
+    if (_busquedaCtrl.text != intencion.consulta) {
+      _busquedaCtrl.value = TextEditingValue(
+        text: intencion.consulta,
+        selection: TextSelection.collapsed(offset: intencion.consulta.length),
+      );
+    }
+    setState(() {
+      _busqueda = intencion.consulta.trim();
+      _categoriaFiltro = categoria;
+    });
   }
 
   Future<void> _cargarRespaldo() async {
@@ -40,6 +92,26 @@ class _ProductosScreenState extends State<ProductosScreen> {
       final lista = await CatalogoInicialService.productosLocales();
       if (mounted) setState(() => _respaldo = lista);
     } catch (_) {}
+  }
+
+  void _publicarImagenes(List<Producto> productos) {
+    final firma = productos
+        .map(
+          (producto) =>
+              '${producto.id}|${producto.imagenBase64.hashCode}|${producto.imagenUrl}|${producto.imagenAsset}',
+        )
+        .join(';');
+    if (firma == _firmaVisual) return;
+    _firmaVisual = firma;
+    final copia = List<Producto>.of(productos);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      CatalogoVisual.instancia.recordar(copia);
+      if (!widget.esAdmin) {
+        _falloAvisado = false;
+        CatalogoSesion.instancia.publicar(copia);
+      }
+    });
   }
 
   void _agregar(Producto producto) {
@@ -94,36 +166,38 @@ class _ProductosScreenState extends State<ProductosScreen> {
           'Modo Bolsillo Mass',
           style: TextStyle(color: kMassBlue, fontWeight: FontWeight.w900),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Define cuánto deseas gastar hoy y te avisaremos en tiempo real cuánto te queda disponible.',
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: ctrl,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'Define cuánto deseas gastar hoy y te avisaremos en tiempo real cuánto te queda disponible.',
               ),
-              decoration: const InputDecoration(
-                labelText: 'Presupuesto máximo (S/)',
-                prefixIcon: Icon(Icons.savings_outlined),
+              const SizedBox(height: 12),
+              TextField(
+                controller: ctrl,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Presupuesto máximo (S/)',
+                  prefixIcon: Icon(Icons.savings_outlined),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 6,
-              children: [
-                for (final monto in [20, 40, 60, 100])
-                  ActionChip(
-                    label: Text('S/ $monto'),
-                    onPressed: () => ctrl.text = '$monto',
-                  ),
-              ],
-            ),
-          ],
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                children: [
+                  for (final monto in [20, 40, 60, 100])
+                    ActionChip(
+                      label: Text('S/ $monto'),
+                      onPressed: () => ctrl.text = '$monto',
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           if (_carrito.presupuesto != null)
@@ -136,6 +210,12 @@ class _ProductosScreenState extends State<ProductosScreen> {
             child: const Text('Cancelar'),
           ),
           FilledButton(
+            style: widget.esAdmin
+                ? null
+                : FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF082EB7),
+                    foregroundColor: Colors.white,
+                  ),
             onPressed: () => Navigator.pop(ctx, leerDouble(ctrl.text)),
             child: const Text('Guardar'),
           ),
@@ -157,7 +237,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: kMassCream,
+      backgroundColor: widget.esAdmin ? kMassCream : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -283,6 +363,12 @@ class _ProductosScreenState extends State<ProductosScreen> {
                     ),
                     const SizedBox(height: 12),
                     FilledButton.icon(
+                      style: widget.esAdmin
+                          ? null
+                          : FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFF082EB7),
+                              foregroundColor: Colors.white,
+                            ),
                       onPressed: () {
                         for (final p in combo) {
                           _carrito.agregar(p);
@@ -316,8 +402,57 @@ class _ProductosScreenState extends State<ProductosScreen> {
     return resultado;
   }
 
+  void _reintentar() {
+    setState(() {
+      _falloAvisado = false;
+      _datos = _servicio.coleccion.snapshots();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!widget.esAdmin) return _cliente();
+    return _administracion();
+  }
+
+  Widget _cliente() {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: _datos,
+      builder: (context, snapshot) {
+        if (snapshot.hasError && !_falloAvisado) {
+          _falloAvisado = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            CatalogoSesion.instancia.publicarFallo();
+          });
+        }
+        final docs = snapshot.data?.docs;
+        final todos = docs == null
+            ? _respaldo
+            : docs.isEmpty
+            ? _respaldo
+            : docs.map((doc) => Producto.fromMap(doc.id, doc.data())).toList();
+        if (docs != null) _publicarImagenes(todos);
+        final cargando =
+            docs == null && _respaldo.isEmpty && !snapshot.hasError;
+        final fallo = snapshot.hasError && todos.isEmpty;
+        return CatalogoCliente(
+          productos: todos,
+          cargando: cargando,
+          fallo: fallo,
+          busqueda: _busquedaCtrl,
+          categoria: _categoriaFiltro,
+          alCategoria: (categoria) =>
+              setState(() => _categoriaFiltro = categoria),
+          alReintentar: _reintentar,
+          alBolsillo: _configurarPresupuesto,
+          alCanasta: _abrirCanastaExpress,
+        );
+      },
+    );
+  }
+
+  Widget _administracion() {
     return Scaffold(
       backgroundColor: kMassCream,
       floatingActionButton: widget.esAdmin
@@ -350,8 +485,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
                 ),
                 const SizedBox(height: 10),
                 TextField(
-                  onChanged: (valor) =>
-                      setState(() => _busqueda = valor.trim()),
+                  controller: _busquedaCtrl,
                   decoration: InputDecoration(
                     hintText: 'Buscar productos, marcas o código',
                     prefixIcon: const Icon(Icons.search),
@@ -400,6 +534,13 @@ class _ProductosScreenState extends State<ProductosScreen> {
               stream: _datos,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
+                  if (!widget.esAdmin && !_falloAvisado) {
+                    _falloAvisado = true;
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (!mounted) return;
+                      CatalogoSesion.instancia.publicarFallo();
+                    });
+                  }
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(24),
@@ -420,6 +561,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
                     : docs
                           .map((doc) => Producto.fromMap(doc.id, doc.data()))
                           .toList();
+                _publicarImagenes(todos);
                 final consulta = _normalizar(_busqueda);
                 final productos =
                     todos
@@ -507,7 +649,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
                                     12,
                                     4,
                                     12,
-                                    widget.esAdmin ? 88 : 20,
+                                    widget.esAdmin ? 88 : 16,
                                   ),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
