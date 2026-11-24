@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
@@ -103,7 +104,9 @@ class RoutingService {
     for (final uri in uris) {
       try {
         final response = await http
-            .get(uri, headers: {'User-Agent': 'TiendasMassApp/2.0'})
+            // En la web el navegador no permite cambiar User-Agent y Safari
+            // rechaza la consulta; por eso solo se envía en la app.
+            .get(uri, headers: kIsWeb ? null : {'User-Agent': 'TiendasMassApp/2.0'})
             .timeout(const Duration(seconds: 15));
         if (response.statusCode != 200) continue;
         final data = jsonDecode(response.body) as Map<String, dynamic>;
