@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../models/cupon.dart';
 import '../../services/firebase_service.dart';
@@ -135,6 +136,48 @@ class _GestionCuponesState extends State<GestionCupones> {
     if (guardado == true && mounted) mostrarMensaje(context, 'Cupón guardado correctamente.');
   }
 
+  /// Muestra el QR que leen el escáner y el carrito de la app (formato MASS:CÓDIGO).
+  Future<void> _verQr(CuponDescuento cupon) {
+    return showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('QR del cupón ${cupon.codigo}'),
+        content: SizedBox(
+          width: 300,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(12),
+                child: QrImageView(
+                  data: 'MASS:${cupon.codigo}',
+                  size: 240,
+                  backgroundColor: Colors.white,
+                  semanticsLabel: 'Código QR del cupón ${cupon.codigo}',
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '${cupon.codigo} · ${cupon.etiquetaDescuento}',
+                style: textoGestion(peso: FontWeight.w800, color: GestionColores.profundo),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Escanéalo desde la app en Escáner → QR o en el carrito.',
+                textAlign: TextAlign.center,
+                style: textoGestion(tamano: 12.5, color: GestionColores.tintaSuave),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cerrar')),
+        ],
+      ),
+    );
+  }
+
   Future<void> _eliminar(CuponDescuento cupon) async {
     if (!await confirmarEliminar(context, 'cupón ${cupon.codigo}')) return;
     try {
@@ -206,6 +249,11 @@ class _GestionCuponesState extends State<GestionCupones> {
                         texto: cupon.activo ? 'Activo' : 'Inactivo',
                         color: cupon.activo ? GestionColores.exito : GestionColores.tintaSuave,
                         icono: cupon.activo ? Icons.check_rounded : Icons.pause_rounded,
+                      ),
+                      IconButton(
+                        tooltip: 'Ver QR de ${cupon.codigo}',
+                        onPressed: () => _verQr(cupon),
+                        icon: const Icon(Icons.qr_code_2_rounded),
                       ),
                       IconButton(
                         tooltip: 'Editar ${cupon.codigo}',
