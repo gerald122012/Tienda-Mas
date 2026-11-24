@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const kAppVersion = '2.2.0';
-const kAppBuild = '5';
+const kAppVersion = '2.3.0';
+const kAppBuild = '6';
 
 const kUrlPaginaWeb = 'https://tiendasmass-abc06.web.app';
 
