@@ -5,6 +5,7 @@ import '../../main.dart';
 import '../../models/usuario.dart';
 import '../../services/auth_service.dart';
 import '../../services/dni_service.dart';
+import '../../utils/utilidades.dart';
 import '../../utils/validaciones.dart';
 import 'widgets/boton_acceso.dart';
 import 'widgets/campo_acceso.dart';
@@ -351,6 +352,13 @@ class _AccesoClienteState extends State<AccesoCliente> {
               color: kMassBlue,
             ),
           ),
+        ),
+        const SizedBox(height: 4),
+        OutlinedButton.icon(
+          key: const Key('ir-pagina-web'),
+          onPressed: () => abrirPaginaWeb(context),
+          icon: const Icon(Icons.language_rounded, size: 18),
+          label: const Text('Ir a la página web Mass'),
         ),
       ],
     );

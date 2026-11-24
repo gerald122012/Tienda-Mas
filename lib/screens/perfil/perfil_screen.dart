@@ -284,6 +284,13 @@ class _PerfilScreenState extends State<PerfilScreen> {
                             ),
                           ),
                           Divider(height: 20, color: tokens.linea),
+                          _OpcionCuenta(
+                            icono: Icons.language_rounded,
+                            titulo: 'Página web Mass',
+                            detalle: 'Panel web de la tienda',
+                            alPulsar: () => abrirPaginaWeb(context),
+                          ),
+                          Divider(height: 20, color: tokens.linea),
                           _Dato(
                             etiqueta: 'Versión',
                             valor: 'v$kAppVersion ($kAppBuild)',

@@ -491,7 +491,11 @@ void main() {
     ScaffoldMessenger.of(tester.element(find.text('Perfil'))).hideCurrentSnackBar();
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.widgetWithText(OutlinedButton, 'Cerrar sesión'));
+    await Scrollable.ensureVisible(
+      tester.element(find.widgetWithText(OutlinedButton, 'Cerrar sesión')),
+      alignment: 0.5,
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(OutlinedButton, 'Cerrar sesión'));
     await tester.pumpAndSettle();
     expect(find.text('Saldrás de tu cuenta en este dispositivo.'), findsOneWidget);
@@ -499,7 +503,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(AuthService.instance.usuario, isNotNull);
 
-    await tester.ensureVisible(find.widgetWithText(OutlinedButton, 'Cerrar sesión'));
+    await Scrollable.ensureVisible(
+      tester.element(find.widgetWithText(OutlinedButton, 'Cerrar sesión')),
+      alignment: 0.5,
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(OutlinedButton, 'Cerrar sesión'));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, 'Cerrar sesión'));
