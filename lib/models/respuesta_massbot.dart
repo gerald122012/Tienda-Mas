@@ -123,6 +123,7 @@ class RespuestaMassBot {
   final double? restante;
   final String consultadoEn;
   final bool simulado;
+  final bool sinConexion;
 
   const RespuestaMassBot({
     required this.texto,
@@ -134,6 +135,7 @@ class RespuestaMassBot {
     required this.restante,
     required this.consultadoEn,
     required this.simulado,
+    this.sinConexion = false,
   });
 
   factory RespuestaMassBot.fromJson(Map<String, dynamic> json) {

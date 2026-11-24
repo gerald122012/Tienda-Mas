@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/respuesta_massbot.dart';
+import 'massbot_local.dart';
 
 class MassBotException implements Exception {
   final String mensaje;
@@ -23,12 +25,14 @@ class MassBotServicio {
     List<TurnoMassBot> historial,
   )?
   enviarDirecto;
+  final MassBotLocal local;
 
   MassBotServicio({
     http.Client? cliente,
     String? urlBase,
     this.tiempoLimite = const Duration(seconds: 25),
     this.enviarDirecto,
+    this.local = const MassBotLocal(),
   }) : _cliente = cliente ?? http.Client(),
        _cerrarCliente = cliente == null,
        urlBase = _normalizar(urlBase ?? urlBasePredeterminada);
@@ -51,6 +55,11 @@ class MassBotServicio {
     required List<TurnoMassBot> historial,
   }) async {
     if (enviarDirecto != null) return enviarDirecto!(mensaje, historial);
+    // En el APK no hay servidor de laptop: responde la app con datos reales.
+    if (kReleaseMode && urlBase == _normalizar(urlBasePredeterminada) &&
+        urlBasePredeterminada.contains('10.0.2.2')) {
+      return local.responder(mensaje);
+    }
     final uri = Uri.parse('$urlBase/api/chat');
     http.Response respuesta;
     try {
@@ -65,7 +74,8 @@ class MassBotServicio {
           )
           .timeout(tiempoLimite);
     } catch (_) {
-      throw const MassBotException('MassBot no está disponible.');
+      // Servidor apagado o sin red: no se queda sin respuesta.
+      return local.responder(mensaje);
     }
 
     Map<String, dynamic>? json;

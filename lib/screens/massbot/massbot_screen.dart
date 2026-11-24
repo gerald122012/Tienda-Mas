@@ -219,6 +219,29 @@ class _MassBotScreenState extends State<MassBotScreen> {
                         ),
                       ),
                     ),
+                  if (entrada.respuesta!.sinConexion)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.wifi_off_rounded,
+                            size: 14,
+                            color: kTintaSuaveBot,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              'Modo sin conexión al asistente IA: respondo con el catálogo de la tienda.',
+                              style: textoMassBot(
+                                tamano: 11.5,
+                                color: kTintaSuaveBot,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
                 const SizedBox(height: 12),
               ],
