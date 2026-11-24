@@ -48,6 +48,14 @@ void main() {
     expect(r.productos, isNotEmpty);
   });
 
+  test('la lista aprovecha el presupuesto sin pasarse', () async {
+    final r = await _local().responder('desayuno con 30 soles');
+    expect(r.total, lessThanOrEqualTo(30));
+    expect(r.total, greaterThanOrEqualTo(25));
+    final suma = r.productos.fold<double>(0, (t, p) => t + (p.subtotal ?? 0));
+    expect(suma, closeTo(r.total!, 0.001));
+  });
+
   test('lista cupones vigentes', () async {
     final r = await _local().responder('¿hay cupones?');
     expect(r.cupones.first.codigo, 'MASS10');

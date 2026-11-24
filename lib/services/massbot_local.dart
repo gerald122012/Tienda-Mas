@@ -152,11 +152,15 @@ class MassBotLocal {
         final pb = claves.any((k) => normalizar(b.nombre).contains(k)) ? 0 : 1;
         return pa != pb ? pa - pb : a.precio.compareTo(b.precio);
       });
+    // Un producto por categoría (los afines primero), hasta 6 distintos.
     final elegidos = <Producto>[];
+    final categorias = <String>{};
     var total = 0.0;
-    for (final p in candidatos) {
-      if (elegidos.length == 4) break;
-      if (total + p.precio <= presupuesto) {
+    for (final ronda in [true, false]) {
+      for (final p in candidatos) {
+        if (elegidos.length == 6) break;
+        if (elegidos.contains(p) || total + p.precio > presupuesto) continue;
+        if (ronda && !categorias.add(p.categoria)) continue;
         elegidos.add(p);
         total += p.precio;
       }
@@ -166,11 +170,29 @@ class MassBotLocal {
         'Con S/ ${presupuesto.toStringAsFixed(2)} no alcanza para ningún producto del catálogo.',
       );
     }
+    // Completa el presupuesto subiendo cantidades (máximo 3 por producto).
+    final cantidades = {for (final p in elegidos) p.id: 1};
+    var cambio = true;
+    while (cambio) {
+      cambio = false;
+      for (final p in [...elegidos]..sort((a, b) => a.precio.compareTo(b.precio))) {
+        if (cantidades[p.id]! < 3 && total + p.precio <= presupuesto) {
+          cantidades[p.id] = cantidades[p.id]! + 1;
+          total += p.precio;
+          cambio = true;
+        }
+      }
+    }
     return RespuestaMassBot(
       texto: 'Con S/ ${presupuesto.toStringAsFixed(2)} te propongo esta lista'
           '${preferencia.isEmpty ? '' : ' para $preferencia'}:',
       productos: [
-        for (final p in elegidos) _producto(p, cantidad: 1, subtotal: p.precio),
+        for (final p in elegidos)
+          _producto(
+            p,
+            cantidad: cantidades[p.id]!,
+            subtotal: p.precio * cantidades[p.id]!,
+          ),
       ],
       tiendas: const [],
       cupones: const [],
