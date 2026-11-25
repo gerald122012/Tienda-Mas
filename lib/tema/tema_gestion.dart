@@ -80,9 +80,9 @@ ThemeData temaGestionEmpresarial() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: GestionColores.accion,
-        foregroundColor: Colors.white,
+        foregroundColor: GestionColores.sello,
         minimumSize: const Size(48, 48),
-        textStyle: textoGestion(peso: FontWeight.w700, color: Colors.white),
+        textStyle: textoGestion(peso: FontWeight.w800, color: GestionColores.sello),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),

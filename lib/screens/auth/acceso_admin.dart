@@ -86,12 +86,21 @@ class _AccesoAdminState extends State<AccesoAdmin> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: GestionColores.sello,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const LogoMass(alto: 42),
             ),
             const SizedBox(height: 18),
+            Container(
+              width: 56,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 14),
+              decoration: BoxDecoration(
+                color: GestionColores.sello,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
             Text(
               'Mass Gestión Empresarial',
               style: textoGestion(
