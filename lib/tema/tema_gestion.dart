@@ -48,7 +48,7 @@ ThemeData temaGestionEmpresarial() {
       error: GestionColores.error,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: GestionColores.superficie,
+      backgroundColor: GestionColores.sello,
       foregroundColor: GestionColores.profundo,
       elevation: 0,
       scrolledUnderElevation: 0,

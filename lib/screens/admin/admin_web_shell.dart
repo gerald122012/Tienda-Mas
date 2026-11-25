@@ -125,12 +125,14 @@ class _AdminWebShellState extends State<AdminWebShell> {
     final foto = usuario.fotoBase64;
     final tieneFoto = foto != null && foto.isNotEmpty;
     return Material(
-      color: GestionColores.superficie,
+      color: GestionColores.sello,
       child: Container(
         height: 72,
         padding: const EdgeInsets.symmetric(horizontal: 18),
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: GestionColores.linea)),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: GestionColores.profundo.withValues(alpha: 0.15)),
+          ),
         ),
         child: Row(
           children: [
@@ -168,7 +170,7 @@ class _AdminWebShellState extends State<AdminWebShell> {
                     usuario.correo,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: textoGestion(tamano: 12, color: GestionColores.tintaSuave),
+                    style: textoGestion(tamano: 12, color: GestionColores.profundo.withValues(alpha: 0.75)),
                   ),
                 ],
               ),
@@ -244,7 +246,7 @@ class _AdminWebShellState extends State<AdminWebShell> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: GestionColores.sello,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: LogoMass(alto: expandido ? 34 : 26),
