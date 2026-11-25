@@ -19,10 +19,12 @@ class BarraSuperiorMass extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final tokens = TokensMass.de(context);
     return Material(
-      color: tokens.superficie,
+      color: tokens.sello,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: tokens.linea)),
+          border: Border(
+            bottom: BorderSide(color: tokens.profundo.withValues(alpha: 0.12)),
+          ),
         ),
         child: SafeArea(
           bottom: false,

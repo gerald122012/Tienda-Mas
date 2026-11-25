@@ -366,7 +366,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
     return Scaffold(
       backgroundColor: tokens.fondo,
       appBar: AppBar(
-        backgroundColor: tokens.superficie,
+        backgroundColor: tokens.sello,
         foregroundColor: tokens.profundo,
         elevation: 0,
         scrolledUnderElevation: 0,

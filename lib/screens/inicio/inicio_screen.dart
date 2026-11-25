@@ -445,21 +445,8 @@ class _HeroeFotos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = TokensMass.de(context);
     return Stack(
       children: [
-        Positioned(
-          right: 0,
-          top: 8,
-          bottom: 8,
-          width: 96,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: tokens.sello,
-              borderRadius: BorderRadius.circular(MassRadio.tarjeta),
-            ),
-          ),
-        ),
         Positioned(top: 0, right: 14, child: _marco(productos.first, 100)),
         if (productos.length > 1)
           Positioned(left: 0, bottom: 0, child: _marco(productos[1], 84)),
@@ -489,24 +476,11 @@ class _HeroeFotosEstrecho extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = TokensMass.de(context);
     return SizedBox(
       height: 96,
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          Positioned(
-            right: 0,
-            bottom: 4,
-            child: Container(
-              width: 168,
-              height: 48,
-              decoration: BoxDecoration(
-                color: tokens.sello,
-                borderRadius: BorderRadius.circular(MassRadio.tarjeta),
-              ),
-            ),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

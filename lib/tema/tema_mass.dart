@@ -144,7 +144,7 @@ ThemeData temaClienteMovil() {
     ),
     scaffoldBackgroundColor: tokens.fondo,
     appBarTheme: AppBarTheme(
-      backgroundColor: tokens.superficie,
+      backgroundColor: tokens.sello,
       foregroundColor: tokens.profundo,
       centerTitle: false,
       elevation: 0,

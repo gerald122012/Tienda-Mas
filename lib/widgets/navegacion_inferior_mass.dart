@@ -26,10 +26,12 @@ class NavegacionInferiorMass extends StatelessWidget {
     final tokens = TokensMass.de(context);
     final reducir = MediaQuery.disableAnimationsOf(context);
     return Material(
-      color: tokens.superficie,
+      color: tokens.sello,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: tokens.linea)),
+          border: Border(
+            top: BorderSide(color: tokens.profundo.withValues(alpha: 0.12)),
+          ),
         ),
         child: SafeArea(
           top: false,
@@ -71,7 +73,7 @@ class _PestanaNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = TokensMass.de(context);
-    final color = activa ? tokens.accion : tokens.tintaSuave;
+    final color = activa ? tokens.accion : tokens.profundo.withValues(alpha: 0.72);
     return Semantics(
       button: true,
       selected: activa,
@@ -93,7 +95,7 @@ class _PestanaNav extends StatelessWidget {
                   height: 3,
                   margin: const EdgeInsets.only(bottom: 6),
                   decoration: BoxDecoration(
-                    color: activa ? tokens.sello : Colors.transparent,
+                    color: activa ? tokens.accion : Colors.transparent,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
